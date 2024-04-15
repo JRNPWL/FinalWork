@@ -294,7 +294,9 @@ MongoClient.connect(mongoURI)
       }
     });
 
-    // Route to retrieve journal
+    // ALLOW USER TO PICK FROM ICONS TO REPRESENT TYPE OF EXERCISE (LEG ICON, BICEP ICON, ...)
+
+    // Route to retrieve exercises
     // app.get('/api/exercises', async (req, res) => {
     //     try {
     //         const exercises = await exercisesCollection.find({}).toArray();
@@ -334,10 +336,13 @@ MongoClient.connect(mongoURI)
 
     // Route to add a journal entry for a specific user
     app.post("/api/journal/:userId", async (req, res) => {
+      const currentDate = new Date();
+
       let newEntry = {
         userId: req.params.userId,
         journalId: uuidv4(),
         journalMessage: req.body.journalMessage, // Assuming the request body contains an 'id' and 'message' field for the journal entry
+        journalDate: currentDate,
       };
 
       try {

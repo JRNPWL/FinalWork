@@ -11,6 +11,7 @@ import {
 import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import CustomHeader from "../snippets/CustomHeader";
 
 const UserProfile = () => {
   const navigation = useNavigation();
@@ -19,6 +20,10 @@ const UserProfile = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [loading, setLoading] = useState(true);
   const defaultProfilePhoto = require("../assets/Default_pfp.png");
+
+  const handleMenuPress = () => {
+    navigation.push("MenuScreen");
+  };
 
   const navigateToEditProfile = async () => {
     navigation.navigate("EditUserProfile");
@@ -79,6 +84,11 @@ const UserProfile = () => {
 
   return (
     <View style={styles.container}>
+      <CustomHeader
+        title="Home"
+        iconName="menu"
+        onMenuPress={handleMenuPress}
+      />
       {userData ? (
         <>
           <Image

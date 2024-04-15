@@ -12,6 +12,7 @@ import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import * as Notifications from "expo-notifications";
+import { fetchMedicationData } from "../services/dataService";
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
@@ -40,42 +41,42 @@ const MedicationScreen = () => {
   };
 
   useEffect(() => {
-    const fetchMedicationData = async () => {
-      try {
-        const userId = await getUserId();
+    // const fetchMedicationData = async () => {
+    //   try {
+    //     const userId = await getUserId();
 
-        // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-        if (!userId) {
-          throw new Error("User is not logged in");
-        }
+    //     // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
+    //     if (!userId) {
+    //       throw new Error("User is not logged in");
+    //     }
 
-        const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
+    //     const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
 
-        const response = await axios.get(apiUrl);
-        // console.log(response);
-        // setMedicationData(response.data);
-        // const data = await response.json();
-        if (Array.isArray(response.data)) {
-          setMedicationData(response.data); // Set medicationData to the array of medication objects
-          console.log(response.data);
+    //     const response = await axios.get(apiUrl);
+    //     // console.log(response);
+    //     // setMedicationData(response.data);
+    //     // const data = await response.json();
+    //     if (Array.isArray(response.data)) {
+    //       setMedicationData(response.data); // Set medicationData to the array of medication objects
+    //       console.log(response.data);
 
-          response.data.forEach((medication) => {
-            console.log(medication);
-            scheduleNotificationsForReminders(
-              medication.reminders,
-              medication.name
-            );
-          });
-        }
+    //       response.data.forEach((medication) => {
+    //         console.log(medication);
+    //         scheduleNotificationsForReminders(
+    //           medication.reminders,
+    //           medication.name
+    //         );
+    //       });
+    //     }
 
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setLoading(false);
-      }
-    };
+    //     setLoading(false);
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //     setLoading(false);
+    //   }
+    // };
 
-    fetchMedicationData();
+    // fetchMedicationData();
 
     // const fetchUserProfilePic = async () => {
     //   try {
@@ -95,6 +96,18 @@ const MedicationScreen = () => {
     // };
 
     // fetchUserProfilePic();
+    const fetchMedications = async () => {
+      try {
+        const meds = await fetchMedicationData();
+        console.log(meds);
+        setMedicationData(meds);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching medications:", error);
+      }
+    };
+
+    fetchMedications();
   }, []);
 
   if (loading) {

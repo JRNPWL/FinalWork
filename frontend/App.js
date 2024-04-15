@@ -15,6 +15,7 @@ import MedicationScreen from "./medication/MedicationScreen";
 import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
 import * as Notifications from "expo-notifications";
+import { fetchMedicationData, fetchJournalData } from "./services/dataService";
 
 const Stack = createStackNavigator();
 
@@ -31,17 +32,51 @@ const App = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [loggedIn, setLoggedIn] = useState(false);
 
+  const [medications, setMedications] = useState([]);
+  const [journalEntries, setJournalEntries] = useState([]);
+
   const checkLoggedIn = async () => {
     try {
       const logged = await isLoggedIn();
       setLoggedIn(logged);
+      console.log(logged);
     } finally {
       setIsLoading(false);
     }
   };
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
+  //   checkLoggedIn();
+  // }, []);
+
+  useEffect(() => {
     checkLoggedIn();
+
+    // Fetch medications data
+    const fetchMedications = async () => {
+      try {
+        const meds = await fetchMedicationData();
+        console.log(meds);
+        setMedications(meds);
+      } catch (error) {
+        console.error("Error fetching medications:", error);
+      }
+    };
+
+    // Fetch journal entries data
+    const fetchJournal = async () => {
+      try {
+        const entries = await fetchJournalData();
+        console.log(entries);
+        setJournalEntries(entries);
+      } catch (error) {
+        console.error("Error fetching journal entries:", error);
+      }
+    };
+
+    // Fetch data when the component mounts
+    fetchMedications();
+    fetchJournal();
   }, []);
 
   const handleLoginSuccess = () => {
@@ -55,12 +90,17 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
         {loggedIn ? (
           <>
-            <Stack.Screen name="Home">
+            <Stack.Screen name="HomeScreen">
               {(props) => (
-                <HomeScreen {...props} onLogoutSuccess={handleLoginSuccess} />
+                <HomeScreen
+                  {...props}
+                  onLogoutSuccess={handleLoginSuccess}
+                  medications={medications}
+                  journalEntries={journalEntries}
+                />
               )}
             </Stack.Screen>
             <Stack.Screen name="UserProfile" component={UserProfile} />

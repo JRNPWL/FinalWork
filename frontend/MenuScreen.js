@@ -1,19 +1,33 @@
 import React, { useState } from "react";
-import { View, TextInput, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  Button,
+} from "react-native";
 // import { logout } from "./services/authService";
 import { useNavigation } from "@react-navigation/native";
+import CustomHeader from "./snippets/CustomHeader";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import {
+  faHouse,
+  faUser,
+  faPills,
+  faBook,
+} from "@fortawesome/free-solid-svg-icons";
 
-const MenuScreen = ({ onLogoutSuccess }) => {
+const MenuScreen = ({}) => {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const goBack = () => {
+    navigation.goBack();
+  };
 
-  // const handleLogout = async () => {
-  //   logout();
-  //   onLogoutSuccess();
-  // };
-
+  const navigateToHome = async () => {
+    navigation.navigate("HomeScreen");
+  };
   const navigateToProfile = async () => {
     navigation.navigate("UserProfile");
   };
@@ -24,24 +38,43 @@ const MenuScreen = ({ onLogoutSuccess }) => {
     navigation.navigate("JournalScreen");
   };
 
-  //   const handleLogin = async () => {
-  //     const success = await login(email, password);
-  //     if (success) {
-  //       // Navigate to home screen or fetch user data
-  //     } else {
-  //       // Show error message
-  //     }
-  //   };
-
   return (
     <View>
-      {/* <h1>Menu</h1> */}
-      <Button title="Profile" onPress={navigateToProfile} />
-      <Button title="Medication" onPress={navigateToMedication} />
-      <Button title="Journal" onPress={navigateToJournal} />
-      {/* <Button title="Logout" onPress={handleLogout} /> */}
+      <CustomHeader
+        title="Home"
+        iconName="close-outline"
+        onMenuPress={goBack}
+      />
+      <TouchableOpacity style={styles.menuItem} onPress={navigateToHome}>
+        <FontAwesomeIcon icon={faHouse} size={24} />
+        <Text style={styles.menuItemText}>Home</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={navigateToProfile}>
+        <FontAwesomeIcon icon={faUser} size={24} />
+        <Text style={styles.menuItemText}>Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={navigateToMedication}>
+        <FontAwesomeIcon icon={faPills} size={24} />
+        <Text style={styles.menuItemText}>Medication</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={navigateToJournal}>
+        <FontAwesomeIcon icon={faBook} size={24} />
+        <Text style={styles.menuItemText}>Journal</Text>
+      </TouchableOpacity>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  menuItemText: {
+    marginLeft: 10,
+  },
+});
 
 export default MenuScreen;

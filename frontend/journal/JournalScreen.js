@@ -11,6 +11,8 @@ import {
 import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { fetchJournalData } from "../services/dataService";
+import CustomHeader from "../snippets/CustomHeader";
 
 const JournalScreen = () => {
   const navigation = useNavigation();
@@ -20,32 +22,46 @@ const JournalScreen = () => {
   const [newEntryText, setNewEntryText] = useState("");
   const [displayedJournalData, setDisplayedJournalData] = useState([]);
 
-  const navigateToEditProfile = async () => {
-    navigation.navigate("EditUserProfile");
+  const handleMenuPress = () => {
+    navigation.push("MenuScreen");
   };
 
   useEffect(() => {
-    const fetchJournalData = async () => {
+    // const fetchJournalData = async () => {
+    //   try {
+    //     const userId = await getUserId();
+
+    //     if (!userId) {
+    //       throw new Error("User is not logged in");
+    //     }
+
+    //     const apiUrl = `http://192.168.0.119:3000/api/journal/${userId}`;
+
+    //     const response = await axios.get(apiUrl);
+    //     setJournalData(response.data);
+    //     setDisplayedJournalData(response.data.reverse()); // Reverse the order for display
+    //     setLoading(false);
+    //   } catch (error) {
+    //     console.error("Error fetching journal data:", error);
+    //     setLoading(false);
+    //   }
+    // };
+
+    // fetchJournalData();
+
+    const fetchJournal = async () => {
       try {
-        const userId = await getUserId();
-
-        if (!userId) {
-          throw new Error("User is not logged in");
-        }
-
-        const apiUrl = `http://192.168.0.119:3000/api/journal/${userId}`;
-
-        const response = await axios.get(apiUrl);
-        setJournalData(response.data);
-        setDisplayedJournalData(response.data.reverse()); // Reverse the order for display
+        const entries = await fetchJournalData();
+        console.log(entries);
+        setJournalData(entries);
+        setDisplayedJournalData(entries.reverse());
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching journal data:", error);
-        setLoading(false);
+        console.error("Error fetching journal entries:", error);
       }
     };
 
-    fetchJournalData();
+    fetchJournal();
   }, []);
 
   const handleAddEntry = async () => {
@@ -57,13 +73,19 @@ const JournalScreen = () => {
       }
 
       const apiUrl = `http://192.168.0.119:3000/api/journal/${userId}`;
+      const currentDate = new Date();
       const response = await axios.post(apiUrl, {
         journalMessage: newEntryText,
+        journalDate: currentDate,
       });
 
       setJournalData((prevData) => [response.data, ...prevData]);
       setDisplayedJournalData((prevData) => [
-        { ...response.data, journalMessage: newEntryText }, // Include the new entry's message
+        {
+          ...response.data,
+          journalMessage: newEntryText,
+          journalDate: currentDate,
+        }, // Include thes new entry's mesage
         ...prevData,
       ]);
       setNewEntryText("");
@@ -83,11 +105,21 @@ const JournalScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CustomHeader
+        title="Home"
+        iconName="menu"
+        onMenuPress={handleMenuPress}
+      />
       <FlatList
         data={displayedJournalData}
         renderItem={({ item }) => (
           <View style={styles.entryContainer}>
-            <Text style={styles.label}>Entry</Text>
+            <Text style={styles.label}>
+              {new Date(item.journalDate).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+              })}
+            </Text>
             <View style={styles.entryTextContainer}>
               <Text style={styles.text}>{item.journalMessage}</Text>
             </View>
