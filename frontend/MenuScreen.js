@@ -13,6 +13,7 @@ import CustomHeader from "./snippets/CustomHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faHouse,
+  faDumbbell,
   faUser,
   faPills,
   faBook,
@@ -37,6 +38,9 @@ const MenuScreen = ({}) => {
   const navigateToJournal = async () => {
     navigation.navigate("JournalScreen");
   };
+  const navigateToExercises = async () => {
+    navigation.navigate("ExercisesScreen");
+  };
 
   return (
     <View>
@@ -60,6 +64,10 @@ const MenuScreen = ({}) => {
       <TouchableOpacity style={styles.menuItem} onPress={navigateToJournal}>
         <FontAwesomeIcon icon={faBook} size={24} />
         <Text style={styles.menuItemText}>Journal</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.menuItem} onPress={navigateToExercises}>
+        <FontAwesomeIcon icon={faDumbbell} size={24} />
+        <Text style={styles.menuItemText}>Exercises</Text>
       </TouchableOpacity>
     </View>
   );

@@ -14,6 +14,9 @@ import MenuScreen from "./MenuScreen";
 import MedicationScreen from "./medication/MedicationScreen";
 import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
+import ExercisesScreen from "./exercises/ExercisesScreen";
+import AddExercisesScreen from "./exercises/AddExercisesScreen";
+
 import * as Notifications from "expo-notifications";
 import { fetchMedicationData, fetchJournalData } from "./services/dataService";
 
@@ -113,6 +116,11 @@ const App = () => {
             <Stack.Screen
               name="AddMedicationScreen"
               component={AddMedicationScreen}
+            />
+            <Stack.Screen name="ExercisesScreen" component={ExercisesScreen} />
+            <Stack.Screen
+              name="AddExercisesScreen"
+              component={AddExercisesScreen}
             />
             <Stack.Screen name="MenuScreen" component={MenuScreen} />
           </>

@@ -102,6 +102,24 @@ const UserProfile = () => {
 
           <Text style={styles.label}>Email</Text>
           <Text style={styles.text}>{userData.email}</Text>
+          <Text style={styles.label}>Age</Text>
+          <Text style={styles.text}>{userData.age}</Text>
+          <Text style={styles.label}>Sex</Text>
+          <Text style={styles.text}>{userData.sex}</Text>
+          <Text style={styles.label}>Blood Type</Text>
+          <Text style={styles.text}>{userData.bloodType}</Text>
+
+          <Text style={styles.label}>Medical History</Text>
+          <View>
+            {userData.medicalHistory.map((medicalHistoryItem, index) => (
+              <View key={index}>
+                <Text
+                  style={styles.text}
+                >{`\u2022 ${medicalHistoryItem}`}</Text>
+              </View>
+            ))}
+          </View>
+
           <Button title="Edit Profile" onPress={navigateToEditProfile} />
         </>
       ) : (
@@ -126,7 +144,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   image: {
     width: 150,

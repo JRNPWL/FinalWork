@@ -52,12 +52,14 @@ MongoClient.connect(mongoURI)
     // Middleware to parse JSON requests
     app.use(express.json());
     app.use(cors());
+
     // Route to add/create a user
     app.post(
       "/api/users",
       upload.single("profilePicture"),
       async (req, res) => {
-        const { name, email, password } = req.body;
+        const { name, email, password, age, sex, bloodType, medicalHistory } =
+          req.body;
 
         try {
           // Check if email already exists in database
@@ -86,12 +88,20 @@ MongoClient.connect(mongoURI)
             profilePictureType = req.file.contentType;
           }
 
+          const medicalHistoryArray = Array.isArray(medicalHistory)
+            ? medicalHistory
+            : [medicalHistory];
+
           // Create a new user object with hashed password
           const newUser = {
             userId: uuidv4(),
             name: name,
             email: email,
             password: hashedPassword,
+            age: age,
+            sex: sex,
+            bloodType: bloodType,
+            medicalHistory: medicalHistoryArray,
             profilePictureId: profilePictureId,
             profilePicture: profilePicture,
             profilePictureType: profilePictureType,
@@ -297,15 +307,57 @@ MongoClient.connect(mongoURI)
     // ALLOW USER TO PICK FROM ICONS TO REPRESENT TYPE OF EXERCISE (LEG ICON, BICEP ICON, ...)
 
     // Route to retrieve exercises
-    // app.get('/api/exercises', async (req, res) => {
-    //     try {
-    //         const exercises = await exercisesCollection.find({}).toArray();
-    //         res.json(exercises);
-    //     } catch (error) {
-    //         console.error('Error retrieving exercises:', error);
-    //         res.status(500).json({ error: 'Internal server error' });
-    //     }
-    // });
+    app.get("/api/exercises", async (req, res) => {
+      try {
+        const exercises = await exercisesCollection.find({}).toArray();
+        res.json(exercises);
+      } catch (error) {
+        console.error("Error retrieving exercises:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    // Route to retrieve exercises for a specific user
+    app.get("/api/exercises/:userId", async (req, res) => {
+      const userId = req.params.userId;
+      try {
+        const userExercises = await exercisesCollection
+          .find({ userId: userId })
+          .toArray();
+        res.json(userExercises);
+      } catch (error) {
+        console.error("Error retrieving user exercises:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    // Route to add a new exercises with reminders
+    app.post("/api/exercises/:userId", async (req, res) => {
+      const userId = req.params.userId;
+      const { name, reps, sets, icon } = req.body; // Extract medication details and reminders from request body
+
+      // Generate unique ID for medication
+      const exercisesId = uuidv4();
+
+      // Create medication object with basic details
+      let newExercise = {
+        userId: userId,
+        medicationId: exercisesId,
+        name: name,
+        sets: sets,
+        reps: reps,
+        icon: icon,
+      };
+
+      try {
+        // Insert exercises into medications collection
+        const result = await exercisesCollection.insertOne(newExercise);
+        res.status(201).json(result);
+      } catch (error) {
+        console.error("Error adding new exercises:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
 
     // Route to retrieve all journals
     app.get("/api/journal", async (req, res) => {
@@ -331,8 +383,6 @@ MongoClient.connect(mongoURI)
         res.status(500).json({ error: "Internal server error" });
       }
     });
-
-    // ADD DATE
 
     // Route to add a journal entry for a specific user
     app.post("/api/journal/:userId", async (req, res) => {
