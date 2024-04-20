@@ -4,9 +4,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Text,
-  TextInput,
-  Button,
-  Image,
+  TouchableOpacity,
 } from "react-native";
 import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
@@ -151,6 +149,9 @@ const MedicationScreen = () => {
         <Text>No medication data available</Text>
         // <Text style={styles.error}>Error: Failed to load user data.</Text>
       )}
+      <TouchableOpacity onPress={navigateToAddMedication}>
+        <Text>Add Medication</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 20,
+    paddingBottom: 80, // Keep same number as footer+20
   },
   label: {
     fontSize: 18,

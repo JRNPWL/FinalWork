@@ -1,10 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { ScrollView, View, StyleSheet, TextInput, Button } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  ScrollView,
+  View,
+  StyleSheet,
+  TextInput,
+  Button,
+  ActivityIndicator,
+} from "react-native";
 import { logout } from "./services/authService";
 import { useNavigation } from "@react-navigation/native";
 import MedicationSnippet from "./snippets/MedicationSnippet";
 import JournalSnippet from "./snippets/JournalSnippet";
-import CustomHeader from "./snippets/CustomHeader";
+// import CustomHeader from "./snippets/CustomHeader";
+import CustomFooter from "./snippets/CustomFooter";
+import Animated from "react-native-reanimated";
 
 const HomeScreen = ({
   onLogoutSuccess,
@@ -12,7 +21,14 @@ const HomeScreen = ({
   medications,
   journalEntries,
 }) => {
-  const navigate = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Check if medications and journalEntries are available
+    if (medications.length > 0 && journalEntries.length > 0) {
+      setIsLoading(false); // Set loading state to false once data is available
+    }
+  }, [medications, journalEntries]);
 
   const handleLogout = async () => {
     logout();
@@ -23,31 +39,30 @@ const HomeScreen = ({
     navigation.navigate("MenuScreen");
   };
 
-  //   const handleLogin = async () => {
-  //     const success = await login(email, password);
-  //     if (success) {
-  //       // Navigate to home screen or fetch user data
-  //     } else {
-  //       // Show error message
-  //     }
-  //   };
-
   return (
     <View style={styles.container}>
-      <CustomHeader
+      {/* <CustomHeader
         title="Home"
         iconName="menu"
         onMenuPress={handleMenuPress}
-      />
-      <ScrollView>
-        <MedicationSnippet navigation={navigation} medications={medications} />
-        <JournalSnippet
-          navigation={navigation}
-          journalEntries={journalEntries}
-        />
-      </ScrollView>
-      {/* <Button title="Menu" onPress={navigateToMenu} /> */}
+      /> */}
       <Button title="Logout" onPress={handleLogout} />
+      {isLoading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <ScrollView style={styles.scrollContainer}>
+          <MedicationSnippet
+            navigation={navigation}
+            medications={medications}
+          />
+          <JournalSnippet
+            navigation={navigation}
+            journalEntries={journalEntries}
+          />
+        </ScrollView>
+      )}
+      {/* <CustomFooter /> */}
+      {/* {isFooterVisible && <CustomFooter />} */}
     </View>
   );
 };
@@ -55,8 +70,10 @@ const HomeScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // flexDirection: "column",
-    padding: "20",
+    // backgroundColor: "white",
+  },
+  scrollContainer: {
+    padding: 20,
   },
 });
 

@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Text,
   TextInput,
+  TouchableOpacity,
   Button,
   Image,
 } from "react-native";
@@ -12,6 +13,7 @@ import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import CustomHeader from "../snippets/CustomHeader";
+import CustomFooter from "../snippets/CustomFooter";
 
 const UserProfile = () => {
   const navigation = useNavigation();
@@ -84,47 +86,68 @@ const UserProfile = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader
+      {/* <CustomHeader
         title="Home"
         iconName="menu"
         onMenuPress={handleMenuPress}
-      />
+      /> */}
       {userData ? (
         <>
-          <Image
-            style={styles.image}
-            source={
-              profilePicture ? { uri: profilePicture } : defaultProfilePhoto
-            }
-          />
-          <Text style={styles.label}>Name</Text>
-          <Text style={styles.text}>{userData.name}</Text>
-
-          <Text style={styles.label}>Email</Text>
-          <Text style={styles.text}>{userData.email}</Text>
-          <Text style={styles.label}>Age</Text>
-          <Text style={styles.text}>{userData.age}</Text>
-          <Text style={styles.label}>Sex</Text>
-          <Text style={styles.text}>{userData.sex}</Text>
-          <Text style={styles.label}>Blood Type</Text>
-          <Text style={styles.text}>{userData.bloodType}</Text>
-
-          <Text style={styles.label}>Medical History</Text>
-          <View>
-            {userData.medicalHistory.map((medicalHistoryItem, index) => (
-              <View key={index}>
-                <Text
-                  style={styles.text}
-                >{`\u2022 ${medicalHistoryItem}`}</Text>
+          <View style={styles.topContainer}>
+            <TouchableOpacity
+              onPress={navigateToEditProfile}
+              style={styles.text}
+            >
+              <Text style={styles.editProfile}>Edit Profile</Text>
+            </TouchableOpacity>
+            <Image
+              style={styles.image}
+              source={
+                profilePicture ? { uri: profilePicture } : defaultProfilePhoto
+              }
+            />
+          </View>
+          <View style={styles.gridContainer}>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Name</Text>
+              <Text style={styles.text}>{userData.name}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Email</Text>
+              <Text style={styles.text}>{userData.email}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Age</Text>
+              <Text style={styles.text}>{userData.age}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Sex</Text>
+              <Text style={styles.text}>{userData.sex}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Blood Type</Text>
+              <Text style={styles.text}>{userData.bloodType}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Medical History</Text>
+              <View>
+                {userData.medicalHistory.map((medicalHistoryItem, index) => (
+                  <View key={index}>
+                    <Text
+                      style={styles.text}
+                    >{`\u2022 ${medicalHistoryItem}`}</Text>
+                  </View>
+                ))}
               </View>
-            ))}
+            </View>
           </View>
 
-          <Button title="Edit Profile" onPress={navigateToEditProfile} />
+          {/* <Button title="Edit Profile" onPress={navigateToEditProfile} /> */}
         </>
       ) : (
         <Text style={styles.error}>Error: Failed to load user data.</Text>
       )}
+      {/* <CustomFooter /> */}
     </View>
   );
 };
@@ -133,9 +156,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // justifyContent: "center",
+    // alignItems: "center",
+    // paddingHorizontal: 20,
+    // paddingVertical: 20,
+  },
+  topContainer: {
     alignItems: "center",
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    flexDirection: "column",
+    padding: 10,
+  },
+  editProfile: {
+    marginBottom: 20,
+    color: "grey",
+    fontWeight: "bold",
+  },
+  image: {
+    width: 150,
+    height: 150,
+    resizeMode: "cover",
+    borderRadius: 75,
+    backgroundColor: "grey",
+    marginBottom: "2vh",
+  },
+  gridContainer: {
+    // flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    padding: 10,
+  },
+  gridItem: {
+    width: "50%",
+    alignItems: "center",
+    marginBottom: "5vh",
   },
   label: {
     fontSize: 18,
@@ -144,20 +197,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    textAlign: "left",
     // marginBottom: 20,
   },
-  image: {
-    width: 150,
-    height: 150,
-    // width: "20vh",
-    // height: "20vh",
-    resizeMode: "cover",
-    borderRadius: 75,
-    backgroundColor: "grey",
-    marginTop: "5vh",
-    marginBottom: "5vh",
-    // paddingBottom: 20,
-  },
+
   error: {
     fontSize: 16,
     color: "red",

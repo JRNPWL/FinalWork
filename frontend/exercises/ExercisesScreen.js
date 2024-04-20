@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
+  FlatList,
   StyleSheet,
   ActivityIndicator,
   Text,
@@ -53,30 +54,31 @@ const ExercisesScreen = () => {
         </View>
       ) : (
         <View style={styles.exercisesContainer}>
-          <CustomHeader
+          {/* <CustomHeader
             title="Home"
             iconName="menu"
             onMenuPress={handleMenuPress}
-          />
+          /> */}
           <TouchableOpacity onPress={navigateToAddExercise}>
             <Text>Add Exercise</Text>
           </TouchableOpacity>
-
-          {exerciseData.length > 0 ? (
-            exerciseData.map((exercise, index) => (
-              <View key={index} style={styles.exerciseItem}>
+          <FlatList
+            data={exerciseData}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.exerciseItem}>
                 <View style={styles.itemContainer}>
                   <View style={styles.topContainer}>
-                    <Text style={styles.title}>{exercise.name}</Text>
+                    <Text style={styles.title}>{item.name}</Text>
                   </View>
 
                   <View style={styles.bottomContainer}>
                     <View style={styles.iconContainer}>
                       <FontAwesomeIcon
                         icon={
-                          exercise.icon === "faDumbbell"
+                          item.icon === "faDumbbell"
                             ? faDumbbell
-                            : exercise.icon === "faRunning"
+                            : item.icon === "faRunning"
                             ? faRunning
                             : faBicycle
                         }
@@ -88,20 +90,20 @@ const ExercisesScreen = () => {
                     <View style={styles.detailsContainer}>
                       <View style={styles.detailItem}>
                         <Text style={styles.label}>Sets:</Text>
-                        <Text style={styles.text}>{exercise.sets}</Text>
+                        <Text style={styles.text}>{item.sets}</Text>
                       </View>
                       <View style={styles.detailItem}>
                         <Text style={styles.label}>Reps:</Text>
-                        <Text style={styles.text}>{exercise.reps}</Text>
+                        <Text style={styles.text}>{item.reps}</Text>
                       </View>
                     </View>
                   </View>
                 </View>
               </View>
-            ))
-          ) : (
-            <Text>No exercises available</Text>
-          )}
+            )}
+          />
+          {/* <Text>No exercises available</Text> */}
+
           {/* <Button title="Add Exercise" onPress={navigateToAddExercise} /> */}
         </View>
       )}
@@ -114,6 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     alignItems: "center",
+    paddingBottom: 80, // Keep same number as footer+20
   },
   loadingContainer: {
     flex: 1,

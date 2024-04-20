@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -13,6 +13,9 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { fetchJournalData } from "../services/dataService";
 import CustomHeader from "../snippets/CustomHeader";
+import CustomFooter from "../snippets/CustomFooter";
+
+import FooterVisibilityContext from "../services/FooterVisibilityContext";
 
 const JournalScreen = () => {
   const navigation = useNavigation();
@@ -21,6 +24,7 @@ const JournalScreen = () => {
   const [loading, setLoading] = useState(true);
   const [newEntryText, setNewEntryText] = useState("");
   const [displayedJournalData, setDisplayedJournalData] = useState([]);
+  // const { isFooterVisible } = useContext(FooterVisibilityContext);
 
   const handleMenuPress = () => {
     navigation.push("MenuScreen");
@@ -105,11 +109,11 @@ const JournalScreen = () => {
 
   return (
     <View style={styles.container}>
-      <CustomHeader
+      {/* <CustomHeader
         title="Home"
         iconName="menu"
         onMenuPress={handleMenuPress}
-      />
+      /> */}
       <FlatList
         data={displayedJournalData}
         renderItem={({ item }) => (
@@ -138,6 +142,7 @@ const JournalScreen = () => {
         />
         <Button title="Add Entry" onPress={handleAddEntry} />
       </View>
+      {/* {isFooterVisible && <CustomFooter />} */}
     </View>
   );
 };
@@ -147,6 +152,8 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 20,
+    paddingBottom: 80, // Keep same number as footer+20
+    backgroundColor: "white",
   },
   entryContainer: {
     marginBottom: 20,
@@ -168,7 +175,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 10,
   },
   input: {
     flex: 1,

@@ -1,57 +1,123 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, TouchableOpacity, Text } from "react-native";
-import { register } from "../services/authService";
-import { useNavigation } from "@react-navigation/native";
+import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
-const AddMedicationScreen = () => {
-  const navigation = useNavigation();
+import { addMedication } from "../services/dataService";
 
+const AddMedicationScreen = ({ navigation }) => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [profilePicture, setProfilePicture] = useState(null);
-  const [error, setError] = useState(null);
+  const [dosage, setDosage] = useState("");
+  const [frequency, setFrequency] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
-  const handleRegister = async () => {
-    const success = await register(name, email, password, profilePicture);
-    if (success) {
-      navigation.navigate("Login");
-    } else {
-      setError("A user with this email already exists!");
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirmDate = (date) => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
+  };
+
+  const handleConfirmTime = (time) => {
+    setSelectedTime(time);
+    hideTimePicker();
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await addMedication(name, dosage, frequency, selectedDate, selectedTime);
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error adding medication:", error);
     }
   };
 
-  const handleChooseProfilePicture = (event) => {
-    const selectedFile = event.target.files[0];
-    setProfilePicture(selectedFile);
-  };
-
-  const navigateToRegister = () => {
-    navigation.navigate("Register");
-  };
-
   return (
-    <View>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+    <View style={styles.container}>
+      <Text style={styles.label}>Name:</Text>
       <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
+        style={styles.input}
+        value={name}
+        onChangeText={setName}
+        placeholder="Enter medication name"
       />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleChooseProfilePicture}
+
+      <Text style={styles.label}>Dosage:</Text>
+      <TextInput
+        style={styles.input}
+        value={dosage}
+        onChangeText={setDosage}
+        placeholder="Enter dosage"
       />
-      <Button title="Login" onPress={handleRegister} />
-      {error && <Text style={{ color: "red" }}>{error}</Text>}
-      <TouchableOpacity onPress={navigateToRegister}>
-        <Text>Register</Text>
-      </TouchableOpacity>
+
+      <Text style={styles.label}>Frequency:</Text>
+      <TextInput
+        style={styles.input}
+        value={frequency}
+        onChangeText={setFrequency}
+        placeholder="Enter frequency"
+      />
+
+      <Button title="Select Date" onPress={showDatePicker} />
+      {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
+
+      <Button title="Select Time" onPress={showTimePicker} />
+      {selectedTime && <Text>Time: {selectedTime.toLocaleTimeString()}</Text>}
+
+      <Button title="Add Medication" onPress={handleSubmit} />
+
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirmDate}
+        onCancel={hideDatePicker}
+      />
+
+      <DateTimePickerModal
+        isVisible={isTimePickerVisible}
+        mode="time"
+        onConfirm={handleConfirmTime}
+        onCancel={hideTimePicker}
+      />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  input: {
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 5,
+    marginBottom: 10,
+    padding: 10,
+  },
+});
 
 export default AddMedicationScreen;
