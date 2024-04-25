@@ -115,6 +115,8 @@ const JournalScreen = () => {
         onMenuPress={handleMenuPress}
       /> */}
       <FlatList
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
         data={displayedJournalData}
         renderItem={({ item }) => (
           <View style={styles.entryContainer}>
@@ -159,6 +161,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   entryTextContainer: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
     backgroundColor: "lightgrey",
     padding: 10,
     borderRadius: 15,

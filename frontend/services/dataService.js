@@ -106,3 +106,39 @@ export const fetchJournalData = async () => {
     setLoading(false);
   }
 };
+
+export const fetchUserData = async () => {
+  try {
+    const userId = await getUserId();
+
+    // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
+    if (!userId) {
+      throw new Error("User is not logged in");
+    }
+
+    const apiUrl = `http://192.168.0.119:3000/api/users/${userId}`;
+
+    const response = await axios.get(apiUrl);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    setLoading(false);
+  }
+};
+
+export const fetchUserProfilePic = async () => {
+  try {
+    const userId = await getUserId();
+
+    // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
+    if (!userId) {
+      throw new Error("User is not logged in");
+    }
+
+    const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
+    const response = await axios.get(photoApiUrl);
+    return response;
+  } catch {
+    console.error("Error fetching user profile picture:", error);
+  }
+};

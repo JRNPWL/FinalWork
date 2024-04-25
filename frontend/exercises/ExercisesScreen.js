@@ -15,6 +15,7 @@ import {
   faDumbbell,
   faRunning,
   faBicycle,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons"; // Import Font Awesome icons
 import CustomHeader from "../snippets/CustomHeader";
 
@@ -54,57 +55,50 @@ const ExercisesScreen = () => {
         </View>
       ) : (
         <View style={styles.exercisesContainer}>
-          {/* <CustomHeader
-            title="Home"
-            iconName="menu"
-            onMenuPress={handleMenuPress}
-          /> */}
-          <TouchableOpacity onPress={navigateToAddExercise}>
-            <Text>Add Exercise</Text>
+          <Text style={styles.pageTitle}>Exercises</Text>
+          <TouchableOpacity
+            onPress={navigateToAddExercise}
+            style={styles.addExercise}
+          >
+            <Text style={styles.addExerciseText}>Add Exercise</Text>
+            <FontAwesomeIcon icon={faPlus} size={12} color="black" />
           </TouchableOpacity>
           <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={exerciseData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <View style={styles.exerciseItem}>
-                <View style={styles.itemContainer}>
-                  <View style={styles.topContainer}>
-                    <Text style={styles.title}>{item.name}</Text>
+              <View style={styles.bottomContainer}>
+                <View style={styles.iconContainer}>
+                  <FontAwesomeIcon
+                    icon={
+                      item.icon === "faDumbbell"
+                        ? faDumbbell
+                        : item.icon === "faRunning"
+                        ? faRunning
+                        : faBicycle
+                    }
+                    size={64}
+                    style={styles.icon}
+                  />
+                </View>
+
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.title}>{item.name}</Text>
+
+                  <View style={styles.detailItem}>
+                    <Text style={styles.label}>Sets:</Text>
+                    <Text style={styles.text}>{item.sets}</Text>
                   </View>
-
-                  <View style={styles.bottomContainer}>
-                    <View style={styles.iconContainer}>
-                      <FontAwesomeIcon
-                        icon={
-                          item.icon === "faDumbbell"
-                            ? faDumbbell
-                            : item.icon === "faRunning"
-                            ? faRunning
-                            : faBicycle
-                        }
-                        size={64}
-                        style={styles.icon}
-                      />
-                    </View>
-
-                    <View style={styles.detailsContainer}>
-                      <View style={styles.detailItem}>
-                        <Text style={styles.label}>Sets:</Text>
-                        <Text style={styles.text}>{item.sets}</Text>
-                      </View>
-                      <View style={styles.detailItem}>
-                        <Text style={styles.label}>Reps:</Text>
-                        <Text style={styles.text}>{item.reps}</Text>
-                      </View>
-                    </View>
+                  <View style={styles.detailItem}>
+                    <Text style={styles.label}>Reps:</Text>
+                    <Text style={styles.text}>{item.reps}</Text>
                   </View>
                 </View>
               </View>
             )}
           />
-          {/* <Text>No exercises available</Text> */}
-
-          {/* <Button title="Add Exercise" onPress={navigateToAddExercise} /> */}
         </View>
       )}
     </View>
@@ -114,62 +108,76 @@ const ExercisesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
     alignItems: "center",
+    width: "100%",
     paddingBottom: 80, // Keep same number as footer+20
+    paddingTop: 10, // Keep same number as header+20
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  exercisesContainer: {
-    width: "80%",
-  },
-  exerciseItem: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between", // Aligns items to opposite ends
+  addExercise: {
+    flexDirection: "row",
     marginBottom: 20,
-    // borderWidth: 1, // Add border for visualization
-    borderRadius: 15,
-    backgroundColor: "lightgrey",
-    padding: 10, // Add padding for visualization
-    paddingTop: 25, // Add padding for visualization
-    paddingBottom: 25, // Add padding for visualization
+    alignItems: "center",
   },
-  itemContainer: {
-    // alignSelf: "flex-start",
+  addExerciseText: {
+    fontSize: 16,
+    marginRight: 3,
   },
-  topContainer: {
-    alignSelf: "flex-start",
-    marginBottom: 10,
+  exercisesContainer: {
+    width: "90%",
   },
   bottomContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    borderRadius: 25,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 5,
+    // elevation: 6,
+    marginBottom: 20,
+    backgroundColor: "lightgrey",
+    padding: 10,
   },
   iconContainer: {
-    marginRight: 30, // Add margin for spacing between icon and details
+    width: "50%",
+    alignItems: "center",
+    justifyContent: "center",
   },
   detailsContainer: {
-    flex: 1, // Expand to take remaining space
+    width: "50%",
+    justifyContent: "center",
+  },
+  detailItem: {
+    flexDirection: "row",
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   title: {
-    fontSize: 21,
+    fontSize: 18,
     fontWeight: "bold",
-    textAlign: "left",
   },
   label: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
   text: {
     fontSize: 16,
+    marginLeft: 5,
   },
   icon: {
-    marginTop: 5,
+    // marginTop: 5,
   },
 });
 

@@ -21,12 +21,17 @@ import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
 import ExercisesScreen from "./exercises/ExercisesScreen";
 import AddExercisesScreen from "./exercises/AddExercisesScreen";
+import AboutScreen from "./AboutScreen";
 import CustomFooter from "./snippets/CustomFooter";
 import CustomHeader from "./snippets/CustomHeader";
 import { FooterVisibilityProvider } from "./services/FooterVisibilityContext";
 
 import * as Notifications from "expo-notifications";
-import { fetchMedicationData, fetchJournalData } from "./services/dataService";
+import {
+  fetchMedicationData,
+  fetchJournalData,
+  fetchUserData,
+} from "./services/dataService";
 
 const Stack = createStackNavigator();
 
@@ -44,6 +49,7 @@ const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [medications, setMedications] = useState([]);
   const [journalEntries, setJournalEntries] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   const checkLoggedIn = async () => {
     try {
@@ -69,8 +75,10 @@ const App = () => {
       try {
         const meds = await fetchMedicationData();
         const entries = await fetchJournalData();
+        const user = await fetchUserData();
         setMedications(meds);
         setJournalEntries(entries);
+        setUserData(user);
       } catch (error) {
         console.error("Error fetching data:", error);
         // Handle error (e.g., show error message, redirect to login screen, etc.)
@@ -171,9 +179,11 @@ const App = () => {
                     onLogoutSuccess={checkLoggedIn}
                     medications={medications}
                     journalEntries={journalEntries}
+                    userData={userData}
                   />
                 )}
               </Stack.Screen>
+              <Stack.Screen name="AboutScreen" component={AboutScreen} />
               <Stack.Screen name="UserProfile" component={UserProfile} />
               <Stack.Screen
                 name="EditUserProfile"
