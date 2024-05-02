@@ -36,27 +36,27 @@ const LoginScreen = ({ onLoginSuccess }) => {
   };
 
   return (
-    <LinearGradient colors={["#4facfe", "#00f2fe"]} style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.loginContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>Email</Text>
+          {/* <Text style={styles.inputText}>Email</Text> */}
           <TextInput
-            style={styles.input}
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
-            placeholderTextColor="#ffffff"
+            // placeholderTextColor="#ffffff"
+            style={styles.input}
           />
         </View>
         <View style={styles.inputContainer}>
-          <Text style={styles.inputText}>Password</Text>
+          {/* <Text style={styles.inputText}>Password</Text> */}
           <TextInput
-            style={styles.input}
             placeholder="Password"
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            placeholderTextColor="#ffffff"
+            // placeholderTextColor="#ffffff"
+            style={styles.input}
           />
         </View>
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
@@ -71,7 +71,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
           <Text style={styles.registerText2}>Register</Text>
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 
@@ -80,8 +80,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#4facfe",
+    width: "100%",
   },
   loginContainer: {
+    width: "70%",
     backgroundColor: "rgba(255, 255, 255, 0.7)",
     borderRadius: 10,
     padding: 20,
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 10,
+    width: "100%",
   },
   inputText: {
     color: "black",

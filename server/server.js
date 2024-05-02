@@ -194,20 +194,59 @@ MongoClient.connect(mongoURI)
     });
 
     // Route to update user profile
-    app.put("/api/users/:userId", async (req, res) => {
-      const userId = req.params.userId;
-      const updatedProfile = req.body;
-      try {
-        const result = await usersCollection.updateOne(
-          { userId: userId },
-          { $set: updatedProfile }
-        );
-        res.json({ message: "User profile updated successfully" });
-      } catch (error) {
-        console.error("Error updating user profile:", error);
-        res.status(500).json({ error: "Internal server error" });
+    // app.put("/api/users/:userId", async (req, res) => {
+    //   const userId = req.params.userId;
+    //   const updatedProfile = req.body;
+    //   try {
+    //     const result = await usersCollection.updateOne(
+    //       { userId: userId },
+    //       { $set: updatedProfile }
+    //     );
+    //     res.json({ message: "User profile updated successfully" });
+    //   } catch (error) {
+    //     console.error("Error updating user profile:", error);
+    //     res.status(500).json({ error: "Internal server error" });
+    //   }
+    // });
+    app.put(
+      "/api/users/:userId",
+      upload.single("profilePicture"),
+      async (req, res) => {
+        const userId = req.params.userId;
+        const updatedProfile = req.body;
+        try {
+          let profilePictureId = "";
+          let profilePicture = "";
+          let profilePictureType = "";
+
+          // If a profile picture is uploaded, update the profile picture fields
+          if (req.file) {
+            profilePictureId = req.file.id;
+            profilePicture = req.file.filename;
+            profilePictureType = req.file.contentType;
+          }
+
+          // Merge existing profile with updated data
+          const updatedData = {
+            ...updatedProfile,
+            profilePictureId:
+              profilePictureId || updatedProfile.profilePictureId,
+            profilePicture: profilePicture || updatedProfile.profilePicture,
+            profilePictureType:
+              profilePictureType || updatedProfile.profilePictureType,
+          };
+
+          const result = await usersCollection.updateOne(
+            { userId: userId },
+            { $set: updatedData }
+          );
+          res.json({ message: "User profile updated successfully" });
+        } catch (error) {
+          console.error("Error updating user profile:", error);
+          res.status(500).json({ error: "Internal server error" });
+        }
       }
-    });
+    );
 
     // Route to retrieve medications for a specific user
     app.get("/api/medications/:userId", async (req, res) => {

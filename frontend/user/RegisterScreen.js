@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, TouchableOpacity, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 import { register } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 
@@ -26,32 +33,161 @@ const RegisterScreen = () => {
     setProfilePicture(selectedFile);
   };
 
-  const navigateToRegister = () => {
-    navigation.navigate("Register");
+  const navigateToLogin = () => {
+    navigation.navigate("Login");
   };
 
   return (
-    <View>
-      <TextInput placeholder="Name" value={name} onChangeText={setName} />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleChooseProfilePicture}
-      />
-      <Button title="Login" onPress={handleRegister} />
-      {error && <Text style={{ color: "red" }}>{error}</Text>}
-      <TouchableOpacity onPress={navigateToRegister}>
-        <Text>Register</Text>
-      </TouchableOpacity>
+    // <View>
+    //   <TextInput placeholder="Name" value={name} onChangeText={setName} />
+    //   <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
+    //   <TextInput
+    //     placeholder="Password"
+    //     value={password}
+    //     onChangeText={setPassword}
+    //     secureTextEntry
+    //   />
+    //   <input
+    //     type="file"
+    //     accept="image/*"
+    //     onChange={handleChooseProfilePicture}
+    //   />
+    //   <Button title="Login" onPress={handleRegister} />
+    //   {error && <Text style={{ color: "red" }}>{error}</Text>}
+    //   <TouchableOpacity onPress={navigateToRegister}>
+    //     <Text>Register</Text>
+    //   </TouchableOpacity>
+    // </View>
+    <View style={styles.container}>
+      <View style={styles.loginContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={setName}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.input}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.input}
+          />
+        </View>
+        <TouchableOpacity onPress={handleChooseProfilePicture}>
+          <Text>Choose Profile Picture</Text>
+        </TouchableOpacity>
+        {/* <input
+          type="file"
+          accept="image/*"
+          onChange={handleChooseProfilePicture}
+        /> */}
+        <TouchableOpacity style={styles.loginButton} onPress={handleRegister}>
+          <Text style={styles.buttonText}>Register</Text>
+        </TouchableOpacity>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        <TouchableOpacity
+          onPress={navigateToLogin}
+          style={styles.registerButton}
+        >
+          <Text style={styles.registerText}>Already have an account?</Text>
+          <Text style={styles.registerText2}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#4facfe",
+    width: "100%",
+  },
+  loginContainer: {
+    width: "70%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    borderRadius: 10,
+    padding: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+  },
+  inputContainer: {
+    marginBottom: 10,
+    width: "100%",
+  },
+  input: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+    width: "100%",
+  },
+  loginButton: {
+    backgroundColor: "#4facfe",
+    borderRadius: 10,
+    padding: 15,
+    width: "100%",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.27,
+    shadowRadius: 4.65,
+    elevation: 6,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
+  },
+  errorText: {
+    color: "red",
+    marginBottom: 10,
+  },
+  registerButton: {
+    alignItems: "center",
+  },
+  registerText: {
+    color: "black",
+    marginTop: 10,
+  },
+  registerText2: {
+    color: "black",
+    fontWeight: "bold",
+    marginTop: 5,
+  },
+});
 export default RegisterScreen;

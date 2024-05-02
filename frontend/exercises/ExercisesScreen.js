@@ -17,7 +17,6 @@ import {
   faBicycle,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons"; // Import Font Awesome icons
-import CustomHeader from "../snippets/CustomHeader";
 
 const ExercisesScreen = () => {
   const navigation = useNavigation();
@@ -55,45 +54,50 @@ const ExercisesScreen = () => {
         </View>
       ) : (
         <View style={styles.exercisesContainer}>
-          <Text style={styles.pageTitle}>Exercises</Text>
-          <TouchableOpacity
-            onPress={navigateToAddExercise}
-            style={styles.addExercise}
-          >
-            <Text style={styles.addExerciseText}>Add Exercise</Text>
-            <FontAwesomeIcon icon={faPlus} size={12} color="black" />
-          </TouchableOpacity>
+          <View style={styles.topContainer}>
+            <Text style={styles.pageTitle}>Exercises</Text>
+            <TouchableOpacity
+              onPress={navigateToAddExercise}
+              style={styles.addExercise}
+            >
+              <Text style={styles.addExerciseText}>Add Exercise</Text>
+              <FontAwesomeIcon icon={faPlus} size={11} color="black" />
+            </TouchableOpacity>
+          </View>
           <FlatList
+            style={styles.contentContainer}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={exerciseData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <View style={styles.bottomContainer}>
-                <View style={styles.iconContainer}>
-                  <FontAwesomeIcon
-                    icon={
-                      item.icon === "faDumbbell"
-                        ? faDumbbell
-                        : item.icon === "faRunning"
-                        ? faRunning
-                        : faBicycle
-                    }
-                    size={64}
-                    style={styles.icon}
-                  />
-                </View>
-
-                <View style={styles.detailsContainer}>
-                  <Text style={styles.title}>{item.name}</Text>
-
-                  <View style={styles.detailItem}>
-                    <Text style={styles.label}>Sets:</Text>
-                    <Text style={styles.text}>{item.sets}</Text>
+              <View style={styles.centerBottomContainer}>
+                <View style={styles.bottomContainer}>
+                  <View style={styles.iconContainer}>
+                    <FontAwesomeIcon
+                      icon={
+                        item.icon === "faDumbbell"
+                          ? faDumbbell
+                          : item.icon === "faRunning"
+                          ? faRunning
+                          : faBicycle
+                      }
+                      size={64}
+                      style={styles.icon}
+                    />
                   </View>
-                  <View style={styles.detailItem}>
-                    <Text style={styles.label}>Reps:</Text>
-                    <Text style={styles.text}>{item.reps}</Text>
+
+                  <View style={styles.detailsContainer}>
+                    <Text style={styles.title}>{item.name}</Text>
+
+                    <View style={styles.detailItem}>
+                      <Text style={styles.label}>Sets:</Text>
+                      <Text style={styles.text}>{item.sets}</Text>
+                    </View>
+                    <View style={styles.detailItem}>
+                      <Text style={styles.label}>Reps:</Text>
+                      <Text style={styles.text}>{item.reps}</Text>
+                    </View>
                   </View>
                 </View>
               </View>
@@ -110,13 +114,30 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     width: "100%",
-    paddingBottom: 80, // Keep same number as footer+20
+    paddingBottom: 150, // Keep same number as footer+20
     paddingTop: 10, // Keep same number as header+20
+    backgroundColor: "white",
+  },
+  contentContainer: {
+    paddingBottom: 20, // List is reversed, add padding to bottom to add to top
+    width: "100%",
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  exercisesContainer: {
+    width: "100%",
+  },
+  topContainer: {
+    width: "90%",
+    marginLeft: "7%",
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
   addExercise: {
     flexDirection: "row",
@@ -127,22 +148,25 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 3,
   },
-  exercisesContainer: {
-    width: "90%",
+  centerBottomContainer: {
+    alignItems: "center",
   },
   bottomContainer: {
+    width: "90%",
+    alignItems: "center",
     flexDirection: "row",
     borderRadius: 25,
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 3,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 5,
-    // elevation: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
     marginBottom: 20,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
     padding: 10,
   },
   iconContainer: {
@@ -159,11 +183,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginBottom: 5,
   },
-  pageTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   title: {
     fontSize: 18,
     fontWeight: "bold",
@@ -175,9 +194,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginLeft: 5,
-  },
-  icon: {
-    // marginTop: 5,
   },
 });
 

@@ -33,50 +33,50 @@ const UserSnippet = ({ navigation, userData }) => {
   };
 
   return (
-    <TouchableOpacity onPress={navigateToJournalScreen}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Profile</Text>
-        <View style={styles.gridContainer}>
-          <View style={styles.imageContainer}>
-            <Image
-              style={styles.image}
-              source={
-                profilePicture ? { uri: profilePicture } : defaultProfilePhoto
-              }
-            />
+    <View style={styles.container}>
+      <Text style={styles.pageTitle}>Profile</Text>
+      <TouchableOpacity
+        onPress={navigateToJournalScreen}
+        style={styles.gridContainer}
+      >
+        {/* <View style={styles.gridContainer}> */}
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={
+              profilePicture ? { uri: profilePicture } : defaultProfilePhoto
+            }
+          />
+        </View>
+        <View style={styles.personlInfo}>
+          <View style={styles.gridItem}>
+            <Text style={styles.label}>Name:</Text>
+            <Text style={styles.text}>{userData.name}</Text>
           </View>
-          <View style={styles.personlInfo}>
-            <View style={styles.gridItem}>
-              <Text style={styles.label}>Name:</Text>
-              <Text style={styles.text}>{userData.name}</Text>
-            </View>
-            {/* <View style={styles.gridItem}>
-              <Text style={styles.label}>Email:</Text>
-              <Text style={styles.text}>{userData.email}</Text>
-            </View> */}
-            <View style={styles.gridItem}>
-              <Text style={styles.label}>Age:</Text>
-              <Text style={styles.text}>{userData.age}</Text>
-            </View>
-            <View style={styles.gridItem}>
-              <Text style={styles.label}>DOB:</Text>
-              <Text style={styles.text}>{userData.sex}</Text>
-            </View>
-            <View style={styles.gridItem}>
-              <Text style={styles.label}>Sex:</Text>
-              <Text style={styles.text}>{userData.sex}</Text>
-            </View>
+          <View style={styles.gridItem}>
+            <Text style={styles.label}>DOB:</Text>
+            <Text style={styles.text}>11/09/2001</Text>
+          </View>
+          <View style={styles.gridItem}>
+            <Text style={styles.label}>Age:</Text>
+            <Text style={styles.text}>{userData.age}</Text>
+          </View>
+          <View style={styles.gridItem}>
+            <Text style={styles.label}>Sex:</Text>
+            <Text style={styles.text}>{userData.sex}</Text>
           </View>
         </View>
-      </View>
-    </TouchableOpacity>
+        {/* </View> */}
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f0f0f0",
-    marginBottom: 40,
+    // backgroundColor: "#f0f0f0",
+    backgroundColor: "white",
+    marginBottom: 25,
     borderRadius: 10,
     width: "100%",
   },
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: "cover",
     borderRadius: 50, // Half of width and height
-    backgroundColor: "grey",
+    backgroundColor: "lightgrey",
   },
   gridContainer: {
     flexDirection: "row",
@@ -102,24 +102,29 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 15,
     paddingBottom: 15,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
   },
   imageContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: "50%",
+    width: "40%",
   },
   personlInfo: {
-    width: "50%",
+    // height: "100%",
+    width: "60%",
+    // padding: 10,
+    // paddingTop: 15,
+    // paddingBottom: 15,
+    paddingLeft: 15,
     flexDirection: "column",
     flexWrap: "wrap",
     margin: "auto",
-    paddingLeft: 10,
   },
   gridItem: {
     flexDirection: "row",
   },
-  title: {
+  pageTitle: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,

@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
 import * as Notifications from "expo-notifications";
 import { fetchMedicationData } from "../services/dataService";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus, faPills } from "@fortawesome/free-solid-svg-icons";
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
@@ -110,7 +111,7 @@ const MedicationScreen = () => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text>Loading...</Text>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
@@ -119,58 +120,156 @@ const MedicationScreen = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.topContainer}>
+        <Text style={styles.pageTitle}>Medication</Text>
+        <TouchableOpacity
+          style={styles.addMeds}
+          onPress={navigateToAddMedication}
+        >
+          <Text style={styles.addMedsText}>Add Medication</Text>
+          <FontAwesomeIcon icon={faPlus} size={11} color="black" />
+        </TouchableOpacity>
+      </View>
       {medicationData.length > 0 ? (
         medicationData.map((medicationData, index) => (
           <View key={index} style={styles.medicationContainer}>
-            <Text style={styles.label}>Name:</Text>
-            <Text style={styles.text}>{medicationData.name}</Text>
-
-            <Text style={styles.label}>Dosage:</Text>
-            <Text style={styles.text}>{medicationData.dosage}</Text>
-
-            <Text style={styles.label}>Frequency:</Text>
-            <Text style={styles.text}>{medicationData.frequency}</Text>
-
-            <Text style={styles.label}>Time:</Text>
-            <Text style={styles.text}>{medicationData.time}</Text>
-
-            <Text style={styles.label}>Reminders:</Text>
-            {/* <View style={styles.reminderContainer}>
-        {medicationData.reminders.map((reminder, index) => (
-          <View key={index} style={styles.reminderItem}>
-            <Text>Date: {reminder.date}</Text>
-            <Text>Time: {reminder.time}</Text>
-          </View>
-        ))}
-      </View> */}
+            <View style={styles.infoContainer}>
+              <View style={styles.iconContainer}>
+                <FontAwesomeIcon icon={faPills} size={64} color="black" />
+              </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.label}>{medicationData.name}</Text>
+                <View style={styles.infoBottomContainer}>
+                  <Text style={styles.text}>{medicationData.dosage}, </Text>
+                  <Text style={styles.text}>{medicationData.frequency}, </Text>
+                  <Text style={styles.text}>{medicationData.time}</Text>
+                </View>
+              </View>
+            </View>
           </View>
         ))
       ) : (
         <Text>No medication data available</Text>
-        // <Text style={styles.error}>Error: Failed to load user data.</Text>
       )}
-      <TouchableOpacity onPress={navigateToAddMedication}>
-        <Text>Add Medication</Text>
-      </TouchableOpacity>
     </View>
+    // <View style={styles.container}>
+    //   {medicationData.length > 0 ? (
+    //     medicationData.map((medicationData, index) => (
+    //       <View key={index} style={styles.medicationContainer}>
+    //         <View style={styles.medicationContainer}></View>
+
+    //         <View style={styles.infoContainer}>
+    //           {/* <Text style={styles.label}>Name:</Text> */}
+    //           <Text style={styles.text}>{medicationData.name}</Text>
+
+    //           <View style={styles.infoBottomContainer}>
+    //             {/* <Text style={styles.label}>Dosage:</Text> */}
+    //             <Text style={styles.text}>{medicationData.dosage}, </Text>
+
+    //             {/* <Text style={styles.label}>Frequency:</Text> */}
+    //             <Text style={styles.text}>{medicationData.frequency}, </Text>
+
+    //             {/* <Text style={styles.label}>Time:</Text> */}
+    //             <Text style={styles.text}>{medicationData.time}</Text>
+    //           </View>
+
+    //           {/* <Text style={styles.label}>Reminders:</Text>
+    //           <View style={styles.reminderContainer}>
+    //             {medicationData.reminders.map((reminder, index) => (
+    //               <View key={index} style={styles.reminderItem}>
+    //                 <Text>Date: {reminder.date}</Text>
+    //                 <Text>Time: {reminder.time}</Text>
+    //               </View>
+    //             ))}
+    //           </View> */}
+    //         </View>
+    //       </View>
+    //     ))
+    //   ) : (
+    //     <Text>No medication data available</Text>
+    //     // <Text style={styles.error}>Error: Failed to load user data.</Text>
+    //   )}
+    //   <TouchableOpacity onPress={navigateToAddMedication}>
+    //     <Text>Add Medication</Text>
+    //   </TouchableOpacity>
+    // </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    width: "100%",
+    alignItems: "center",
     paddingBottom: 80, // Keep same number as footer+20
+    paddingTop: 10, // Keep same number as header+20
+    backgroundColor: "white",
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  topContainer: {
+    width: "90%",
+    marginLeft: "7%",
+  },
+  pageTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  addMeds: {
+    flexDirection: "row",
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  addMedsText: {
+    fontSize: 16,
+    marginRight: 3,
+  },
+  medicationContainer: {
+    alignItems: "center",
+    width: "90%",
+  },
+  infoContainer: {
+    width: "100%",
+    flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
+    padding: 15,
+    borderRadius: 15,
+    marginBottom: 20,
+  },
+  iconContainer: {
+    width: "45%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  detailsContainer: {
+    width: "55%",
+  },
+  infoBottomContainer: {
+    flexDirection: "column",
   },
   label: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   text: {
     fontSize: 16,
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   reminderContainer: {
     marginTop: 10,

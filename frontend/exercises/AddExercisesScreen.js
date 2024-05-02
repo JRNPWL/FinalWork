@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
+    backgroundColor: "white",
   },
   backButton: {
     position: "absolute",

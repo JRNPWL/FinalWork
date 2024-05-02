@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Button,
+  TouchableOpacity,
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { addMedication } from "../services/dataService";
 
 const AddMedicationScreen = ({ navigation }) => {
@@ -50,51 +58,71 @@ const AddMedicationScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Name:</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Enter medication name"
-      />
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
+      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <View style={styles.inputTitleContainer}>
+          <Text style={styles.label}>Name:</Text>
+          <TextInput
+            style={styles.input}
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter medication name"
+          />
+        </View>
 
-      <Text style={styles.label}>Dosage:</Text>
-      <TextInput
-        style={styles.input}
-        value={dosage}
-        onChangeText={setDosage}
-        placeholder="Enter dosage"
-      />
+        <View style={styles.inputTitleContainer}>
+          <Text style={styles.label}>Dosage:</Text>
+          <TextInput
+            style={styles.input}
+            value={dosage}
+            onChangeText={setDosage}
+            placeholder="Enter dosage"
+          />
+        </View>
 
-      <Text style={styles.label}>Frequency:</Text>
-      <TextInput
-        style={styles.input}
-        value={frequency}
-        onChangeText={setFrequency}
-        placeholder="Enter frequency"
-      />
+        <View style={styles.inputTitleContainer}>
+          <Text style={styles.label}>Frequency:</Text>
+          <TextInput
+            style={styles.input}
+            value={frequency}
+            onChangeText={setFrequency}
+            placeholder="Enter frequency"
+          />
+        </View>
 
-      <Button title="Select Date" onPress={showDatePicker} />
-      {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
+        <View style={styles.inputTitleContainer}>
+          <Button title="Select Date" onPress={showDatePicker} />
+          {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
+        </View>
 
-      <Button title="Select Time" onPress={showTimePicker} />
-      {selectedTime && <Text>Time: {selectedTime.toLocaleTimeString()}</Text>}
+        <View style={styles.inputTitleContainer}>
+          <Button title="Select Time" onPress={showTimePicker} />
+          {selectedTime && (
+            <Text>Time: {selectedTime.toLocaleTimeString()}</Text>
+          )}
+        </View>
 
-      <Button title="Add Medication" onPress={handleSubmit} />
+        <Button title="Add Medication" onPress={handleSubmit} />
 
-      <DateTimePickerModal
+        {/* <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirmDate}
         onCancel={hideDatePicker}
-      />
+      /> */}
 
-      <DateTimePickerModal
-        isVisible={isTimePickerVisible}
-        mode="time"
-        onConfirm={handleConfirmTime}
-        onCancel={hideTimePicker}
-      />
+        <DateTimePickerModal
+          isVisible={isTimePickerVisible}
+          mode="time"
+          onConfirm={handleConfirmTime}
+          onCancel={hideTimePicker}
+        />
+      </View>
     </View>
   );
 };
@@ -102,8 +130,26 @@ const AddMedicationScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
-    paddingVertical: 20,
+    // paddingVertical: 20,
+    backgroundColor: "white",
+  },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
+  },
+  inputContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  inputTitleContainer: {
+    width: "100%",
+    alignSelf: "flex-start",
+    marginBottom: 10,
   },
   label: {
     fontSize: 18,

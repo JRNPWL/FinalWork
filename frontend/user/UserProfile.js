@@ -11,12 +11,13 @@ import {
   Image,
 } from "react-native";
 import { getUserId } from "../services/authService";
+import { logout } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import CustomHeader from "../snippets/CustomHeader";
 import CustomFooter from "../snippets/CustomFooter";
 
-const UserProfile = () => {
+const UserProfile = ({ onLogoutSuccess }) => {
   const navigation = useNavigation();
 
   const [userData, setUserData] = useState(null);
@@ -24,8 +25,9 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const defaultProfilePhoto = require("../assets/Default_pfp.png");
 
-  const handleMenuPress = () => {
-    navigation.push("MenuScreen");
+  const handleLogout = async () => {
+    logout();
+    onLogoutSuccess();
   };
 
   const navigateToEditProfile = async () => {
@@ -56,24 +58,24 @@ const UserProfile = () => {
 
     fetchUserData();
 
-    const fetchUserProfilePic = async () => {
-      try {
-        const userId = await getUserId();
+    // const fetchUserProfilePic = async () => {
+    //   try {
+    //     const userId = await getUserId();
 
-        // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-        if (!userId) {
-          throw new Error("User is not logged in");
-        }
+    //     // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
+    //     if (!userId) {
+    //       throw new Error("User is not logged in");
+    //     }
 
-        const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
-        const response = await axios.get(photoApiUrl);
-        setProfilePicture(photoApiUrl);
-      } catch {
-        console.error("Error fetching user profile picture:", error);
-      }
-    };
+    //     const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
+    //     // const response = await axios.get(photoApiUrl);
+    //     setProfilePicture(photoApiUrl);
+    //   } catch {
+    //     console.error("Error fetching user profile picture:", error);
+    //   }
+    // };
 
-    fetchUserProfilePic();
+    // fetchUserProfilePic();
   }, []);
 
   if (loading) {
@@ -88,11 +90,6 @@ const UserProfile = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {/* <CustomHeader
-        title="Home"
-        iconName="menu"
-        onMenuPress={handleMenuPress}
-      /> */}
         {userData ? (
           <>
             <View style={styles.topContainer}>
@@ -107,69 +104,78 @@ const UserProfile = () => {
                 source={
                   profilePicture ? { uri: profilePicture } : defaultProfilePhoto
                 }
+                // source={defaultProfilePhoto}
+                // source={profilePicture}
               />
             </View>
             <View style={styles.gridContainer}>
               <Text style={styles.perTitle}>Personal Info</Text>
               <View style={styles.personlInfo}>
-                <View style={styles.gridItem}>
+                <View style={styles.infoGridItem}>
                   <Text style={styles.label}>Name:</Text>
                   <Text style={styles.text}>{userData.name}</Text>
                 </View>
-                <View style={styles.gridItem}>
-                  <Text style={styles.label}>Email:</Text>
-                  <Text style={styles.text}>{userData.email}</Text>
+                <View style={styles.infoGridItem}>
+                  <Text style={styles.label}>DOB:</Text>
+                  <Text style={styles.text}>11/09/2001</Text>
                 </View>
-                <View style={styles.gridItem}>
+                <View style={styles.infoGridItem}>
                   <Text style={styles.label}>Age:</Text>
                   <Text style={styles.text}>{userData.age}</Text>
                 </View>
-                <View style={styles.gridItem}>
+                <View style={styles.infoGridItem}>
                   <Text style={styles.label}>Sex:</Text>
                   <Text style={styles.text}>{userData.sex}</Text>
                 </View>
               </View>
               <Text style={styles.medTitle}>Medical Info</Text>
               <View style={styles.medicalInfo}>
-                <View style={styles.gridItem}>
+                <View style={styles.medGridItemRow}>
                   <Text style={styles.label}>Blood Type:</Text>
                   <Text style={styles.text}>{userData.bloodType}</Text>
                 </View>
-                <View style={styles.gridItem}>
+                <View style={styles.medGridItemRow}>
+                  <Text style={styles.label}>Doctor:</Text>
+                  <Text style={styles.text}>Dr. {userData.name}</Text>
+                </View>
+                <View style={styles.medicalSubInfo}>
+                  <View style={styles.medGridItem}>
+                    <Text style={styles.medGridItemLabel}>
+                      Emergency Contact:
+                    </Text>
+                    <Text style={styles.text}>+32 425 94 78 30</Text>
+                  </View>
+                  {/* <View style={styles.gridItem}>
                   <Text style={styles.label}>Blood Type:</Text>
                   <Text style={styles.text}>{userData.bloodType}</Text>
-                </View>
-                <View style={styles.gridItem}>
-                  <Text style={styles.label}>Blood Type:</Text>
-                  <Text style={styles.text}>{userData.bloodType}</Text>
-                </View>
-                <View style={styles.gridItem}>
-                  <Text style={styles.label}>Blood Type:</Text>
-                  <Text style={styles.text}>{userData.bloodType}</Text>
-                </View>
-                <View style={styles.medHistory}>
-                  <Text style={styles.label}>Medical History:</Text>
-                  <View>
-                    {userData.medicalHistory.map(
-                      (medicalHistoryItem, index) => (
-                        <View key={index}>
-                          <Text
-                            style={styles.text}
-                          >{`\u2022 ${medicalHistoryItem}`}</Text>
-                        </View>
-                      )
-                    )}
+                </View> */}
+                  <View style={styles.medGridItem}>
+                    <Text style={styles.medGridItemLabel}>
+                      Medical History:
+                    </Text>
+                    <View>
+                      {userData.medicalHistory.map(
+                        (medicalHistoryItem, index) => (
+                          <View key={index}>
+                            <Text
+                              style={styles.text}
+                            >{`\u2022 ${medicalHistoryItem}`}</Text>
+                          </View>
+                        )
+                      )}
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-
+            <TouchableOpacity onPress={handleLogout} style={styles.text}>
+              <Text style={styles.editProfile}>logout</Text>
+            </TouchableOpacity>
             {/* <Button title="Edit Profile" onPress={navigateToEditProfile} /> */}
           </>
         ) : (
           <Text style={styles.error}>Error: Failed to load user data.</Text>
         )}
-        {/* <CustomFooter /> */}
       </View>
     </ScrollView>
   );
@@ -180,6 +186,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     width: "100%",
+    paddingBottom: 80, // Keep same number as footer+20
+    backgroundColor: "white",
   },
   loadingContainer: {
     flex: 1,
@@ -203,8 +211,7 @@ const styles = StyleSheet.create({
     height: 150,
     resizeMode: "cover",
     borderRadius: 75,
-    backgroundColor: "grey",
-    marginBottom: "2vh",
+    backgroundColor: "lightgrey",
   },
   gridContainer: {
     flexDirection: "column",
@@ -218,20 +225,22 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingBottom: 10,
     paddingLeft: 20,
-    color: "white",
-    textShadowColor: "black",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    color: "black",
+    // color: "white",
+    // textShadowColor: "black",
+    // textShadowOffset: { width: 1, height: 1 },
+    // textShadowRadius: 1,
   },
   medTitle: {
     fontSize: 22,
     fontWeight: "bold",
     paddingBottom: 10,
     paddingLeft: 20,
-    color: "white",
-    textShadowColor: "black",
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 1,
+    color: "black",
+    // color: "white",
+    // textShadowColor: "black",
+    // textShadowOffset: { width: 1, height: 1 },
+    // textShadowRadius: 1,
   },
   personlInfo: {
     flexDirection: "row",
@@ -249,11 +258,12 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 40,
     marginBottom: 20,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
   },
   medicalInfo: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: "column",
+    // flexWrap: "wrap",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -267,24 +277,42 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 40,
     marginBottom: 30,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
   },
-  gridItem: {
+  medicalSubInfo: {
+    flexDirection: "column",
+    // margin: "auto",
+    width: "100%",
+    marginBottom: 10,
+  },
+  infoGridItem: {
     flexDirection: "row",
     margin: "auto",
     width: "50%",
-    marginBottom: 10,
+    marginBottom: 15,
   },
-  medHistory: {
+  medGridItemRow: {
     flexDirection: "row",
-    margin: "auto",
-    width: "50%",
-    marginBottom: 10,
+    marginBottom: 15,
   },
+  medGridItem: {
+    flexDirection: "column",
+    marginBottom: 15,
+  },
+  // medHistory: {
+  //   flexDirection: "column",
+  //   marginBottom: 15,
+  // },
   label: {
     fontSize: 16,
     fontWeight: "bold",
     marginRight: 10,
+  },
+  medGridItemLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
   },
   text: {
     fontSize: 16,

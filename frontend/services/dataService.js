@@ -15,20 +15,55 @@ export const fetchMedicationData = async () => {
 
     const response = await axios.get(apiUrl);
     if (Array.isArray(response.data)) {
-      return response.data; // Set medicationData to the array of medication objects
-      //   console.log(response.data);
-
-      //   response.data.forEach((medication) => {
-      //     console.log(medication);
-      //     scheduleNotificationsForReminders(
-      //       medication.reminders,
-      //       medication.name
-      //     );
-      //   });
+      const formattedData = response.data.map((medication) => ({
+        ...medication,
+        time: new Date(medication.time).toLocaleTimeString([], {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      }));
+      return formattedData;
     }
   } catch (error) {
     console.error("Error fetching user data:", error);
     setLoading(false);
+  }
+};
+
+export const addMedication = async (
+  name,
+  dosage,
+  frequency,
+  selectedDate,
+  selectedTime
+) => {
+  try {
+    const userId = await getUserId();
+
+    const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
+
+    const formattedTime = selectedTime.toLocaleTimeString([], {
+      hour12: false,
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const postData = {
+      userId: userId,
+      name: name,
+      dosage: dosage,
+      frequency: frequency,
+      time: formattedTime,
+    };
+
+    const response = await axios.post(apiUrl, postData);
+
+    console.log(response);
+    return true;
+  } catch (error) {
+    console.error("Error adding exercise:", error);
+    return false;
   }
 };
 
@@ -64,7 +99,8 @@ export const fetchExercisesData = async () => {
 
 export const addExercise = async (userId, name, sets, reps, iconName) => {
   try {
-    // console.log(profilePicture);
+    const userId = await getUserId();
+
     const apiUrl = `http://192.168.0.119:3000/api/exercises/${userId}`;
 
     const postData = {
@@ -76,9 +112,6 @@ export const addExercise = async (userId, name, sets, reps, iconName) => {
 
     const response = await axios.post(apiUrl, postData);
 
-    // const token = response.data.userId;
-    // console.log(token)
-    // await AsyncStorage.setItem(AUTH_TOKEN_KEY, token);
     console.log(response);
     return true;
   } catch (error) {

@@ -11,6 +11,8 @@ import {
 import { getUserId, editProfile } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const EditUserProfile = () => {
   const navigation = useNavigation();
@@ -65,6 +67,12 @@ const EditUserProfile = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={styles.backButton}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
+      </TouchableOpacity>
       <Text style={styles.label}>Name</Text>
       <TextInput
         placeholder="Name"
@@ -102,6 +110,12 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     justifyContent: "center",
+    backgroundColor: "white",
+  },
+  backButton: {
+    position: "absolute",
+    top: 20,
+    left: 20,
   },
   label: {
     fontSize: 18,
@@ -123,7 +137,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "100%",
-    backgroundColor: "grey", // Example background color
+    backgroundColor: "#4facfe",
+    // backgroundColor: "grey", // Example background color
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 15, // Border radius

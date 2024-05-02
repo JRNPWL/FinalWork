@@ -184,7 +184,12 @@ const App = () => {
                 )}
               </Stack.Screen>
               <Stack.Screen name="AboutScreen" component={AboutScreen} />
-              <Stack.Screen name="UserProfile" component={UserProfile} />
+              <Stack.Screen name="UserProfile">
+                {(props) => (
+                  <UserProfile {...props} onLogoutSuccess={checkLoggedIn} />
+                )}
+              </Stack.Screen>
+
               <Stack.Screen
                 name="EditUserProfile"
                 component={EditUserProfile}
@@ -212,21 +217,21 @@ const App = () => {
           <Stack.Screen name="MenuScreen" component={MenuScreen} />
         </>
       ) : (
-        <SafeAreaView
-          style={{
-            flex: 1,
-            paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          }}
-        >
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="Login">
-              {(props) => (
-                <LoginScreen {...props} onLoginSuccess={handleLoginSuccess} />
-              )}
-            </Stack.Screen>
-            <Stack.Screen name="Register" component={RegisterScreen} />
-          </Stack.Navigator>
-        </SafeAreaView>
+        // <SafeAreaView
+        //   style={{
+        //     flex: 1,
+        //     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        //   }}
+        // >
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login">
+            {(props) => (
+              <LoginScreen {...props} onLoginSuccess={handleLoginSuccess} />
+            )}
+          </Stack.Screen>
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </Stack.Navigator>
+        // </SafeAreaView>
       )}
     </NavigationContainer>
   );

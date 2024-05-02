@@ -100,7 +100,7 @@ const JournalScreen = () => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
         <Text>Loading...</Text>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
@@ -114,37 +114,44 @@ const JournalScreen = () => {
         iconName="menu"
         onMenuPress={handleMenuPress}
       /> */}
+      {/* <View style={styles.contentContainer}> */}
       <FlatList
+        style={styles.contentContainer}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         data={displayedJournalData}
         renderItem={({ item }) => (
-          <View style={styles.entryContainer}>
-            <Text style={styles.label}>
-              {new Date(item.journalDate).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-              })}
-            </Text>
-            <View style={styles.entryTextContainer}>
-              <Text style={styles.text}>{item.journalMessage}</Text>
+          <View style={styles.entryCenterContainer}>
+            <View style={styles.entryContainer}>
+              <Text style={styles.label}>
+                {new Date(item.journalDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+              <View style={styles.entryTextContainer}>
+                <Text style={styles.text}>{item.journalMessage}</Text>
+              </View>
             </View>
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         inverted={true} // Display newest entries at the top
       />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={newEntryText}
-          onChangeText={setNewEntryText}
-          placeholder="Add a new journal entry..."
-          onSubmitEditing={handleAddEntry}
-        />
-        <Button title="Add Entry" onPress={handleAddEntry} />
+      <View style={styles.inputCenterContainer}>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={newEntryText}
+            onChangeText={setNewEntryText}
+            placeholder="Add a new journal entry..."
+            onSubmitEditing={handleAddEntry}
+          />
+          <Button title="Add Entry" onPress={handleAddEntry} />
+        </View>
       </View>
-      {/* {isFooterVisible && <CustomFooter />} */}
+
+      {/* </View> */}
     </View>
   );
 };
@@ -152,24 +159,37 @@ const JournalScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    width: "100%",
     paddingBottom: 80, // Keep same number as footer+20
     backgroundColor: "white",
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  contentContainer: {
+    paddingBottom: 20, // List is reversed, add padding to bottom to add to top
+    width: "100%",
+  },
+  entryCenterContainer: {
+    alignItems: "center",
+  },
   entryContainer: {
+    width: "90%",
     marginBottom: 20,
   },
   entryTextContainer: {
     shadowColor: "#000",
     shadowOffset: {
-      width: 0,
+      width: 2,
       height: 3,
     },
     shadowOpacity: 0.25,
     shadowRadius: 5,
     elevation: 6,
-    backgroundColor: "lightgrey",
+    // backgroundColor: "lightgrey",
+    backgroundColor: "#F2f2f2",
     padding: 10,
     borderRadius: 15,
   },
@@ -182,7 +202,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  inputCenterContainer: {
+    alignItems: "center",
+  },
   inputContainer: {
+    width: "90%",
     flexDirection: "row",
     alignItems: "center",
     marginTop: 10,
