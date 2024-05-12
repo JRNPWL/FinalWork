@@ -159,7 +159,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faHouse,
   faDumbbell,
-  faUser,
+  faChartSimple,
   faPills,
   faBook,
 } from "@fortawesome/free-solid-svg-icons";
@@ -228,7 +228,7 @@ const CustomFooter = () => {
             ]}
           >
             <FontAwesomeIcon
-              icon={faUser}
+              icon={faChartSimple}
               size={iconSize}
               style={styles.menuItemIcon}
             />

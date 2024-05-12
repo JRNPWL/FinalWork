@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const AUTH_TOKEN_KEY = "@auth_token";
+const DEV_IP = "192.168.0.119:3000";
 
 export const register = async (name, email, password, profilePicture) => {
   try {
@@ -34,7 +35,7 @@ export const register = async (name, email, password, profilePicture) => {
 
 export const login = async (email, password) => {
   try {
-    const apiUrl = "http://192.168.0.119:3000/api/login";
+    const apiUrl = `http://${DEV_IP}/api/login`;
 
     const postData = {
       email: email,

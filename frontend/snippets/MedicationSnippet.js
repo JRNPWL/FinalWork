@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
     // paddingTop: 15,
     paddingBottom: 20,
     // backgroundColor: "lightgrey",
-    backgroundColor: "#F2f2f2",
+    // backgroundColor: "#F2f2f2",
+    backgroundColor: "#F6F6F6",
   },
   medicationItem: {
     paddingTop: 20,

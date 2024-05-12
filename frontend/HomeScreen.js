@@ -20,6 +20,12 @@ const HomeScreen = ({
   userData,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const currentDate = new Date();
+  // Format the date as "Month Day" (e.g., "January 8")
+  const formattedDate = currentDate.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+  });
 
   useEffect(() => {
     // Check if medications and journalEntries are available
@@ -61,7 +67,17 @@ const HomeScreen = ({
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
       >
-        <Text style={styles.pageTitle}>Dashboard</Text>
+        <View style={styles.contentContainer}>
+          <View style={styles.dateContainer}>
+            <Text style={styles.dateTitle}>Today</Text>
+            <Text style={styles.dateText}>{formattedDate}</Text>
+          </View>
+          <View style={styles.titleContainer}>
+            <Text style={styles.pageAlign}>text</Text>
+            <Text style={styles.pageTitle}>Dashboard</Text>
+          </View>
+        </View>
+
         <UserSnippet navigation={navigation} userData={userData} />
         <MedicationSnippet navigation={navigation} medications={medications} />
         <JournalSnippet
@@ -89,12 +105,40 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 20,
+    paddingTop: 15,
+  },
+  contentContainer: {
+    flexDirection: "row",
+    marginBottom: 10,
+  },
+  titleContainer: {
+    width: "60%",
+    alignItems: "flex-end",
+    paddingRight: 10,
+  },
+  dateContainer: {
+    width: "40%",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    paddingLeft: 20,
+  },
+  dateTitle: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "grey",
+  },
+  dateText: {
+    fontSize: 28,
+    fontWeight: "bold",
+  },
+  pageAlign: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "white",
   },
   pageTitle: {
     fontSize: 28,
     fontWeight: "bold",
-    marginBottom: 15,
-    paddingLeft: 20,
   },
 });
 

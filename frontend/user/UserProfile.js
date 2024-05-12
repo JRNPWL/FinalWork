@@ -259,7 +259,8 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     marginBottom: 20,
     // backgroundColor: "lightgrey",
-    backgroundColor: "#F2f2f2",
+    // backgroundColor: "#F2f2f2",
+    backgroundColor: "#F8f8f8",
   },
   medicalInfo: {
     flexDirection: "column",
@@ -278,7 +279,8 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     marginBottom: 30,
     // backgroundColor: "lightgrey",
-    backgroundColor: "#F2f2f2",
+    // backgroundColor: "#F2f2f2",
+    backgroundColor: "#F8f8f8",
   },
   medicalSubInfo: {
     flexDirection: "column",

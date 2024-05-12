@@ -11,7 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
 import { fetchMedicationData } from "../services/dataService";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus, faPills } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faPills,
+  faArrowRight,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
@@ -140,10 +145,13 @@ const MedicationScreen = () => {
               <View style={styles.detailsContainer}>
                 <Text style={styles.label}>{medicationData.name}</Text>
                 <View style={styles.infoBottomContainer}>
-                  <Text style={styles.text}>{medicationData.dosage}, </Text>
-                  <Text style={styles.text}>{medicationData.frequency}, </Text>
-                  <Text style={styles.text}>{medicationData.time}</Text>
+                  <Text style={styles.text}>{medicationData.dosage}</Text>
+                  {/* <Text style={styles.text}>{medicationData.frequency}, </Text> */}
                 </View>
+              </View>
+              <View style={styles.timeContainer}>
+                <Text style={styles.timeText}>{medicationData.time}</Text>
+                <FontAwesomeIcon icon={faChevronRight} size={15} color="grey" />
               </View>
             </View>
           </View>
@@ -246,18 +254,27 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 6,
     // backgroundColor: "lightgrey",
-    backgroundColor: "#F2f2f2",
+    // backgroundColor: "#F2f2f2",
+    backgroundColor: "#F8F8F8",
     padding: 15,
     borderRadius: 15,
     marginBottom: 20,
   },
   iconContainer: {
-    width: "45%",
+    width: "30%",
     alignItems: "center",
     justifyContent: "center",
   },
   detailsContainer: {
-    width: "55%",
+    justifyContent: "center",
+    width: "40%",
+    // marginLeft: 10,
+  },
+  timeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "right",
+    width: "30%",
   },
   infoBottomContainer: {
     flexDirection: "column",
@@ -267,9 +284,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     // marginBottom: 5,
   },
+  timeText: {
+    fontSize: 26,
+  },
   text: {
     fontSize: 16,
-    // marginBottom: 20,
   },
   reminderContainer: {
     marginTop: 10,

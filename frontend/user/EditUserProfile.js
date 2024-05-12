@@ -5,6 +5,7 @@ import {
   ActivityIndicator,
   Text,
   TextInput,
+  ScrollView,
   Button,
   TouchableOpacity,
 } from "react-native";
@@ -13,9 +14,11 @@ import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { fetchUserData } from "../services/dataService";
 
 const EditUserProfile = () => {
   const navigation = useNavigation();
+  const [userData, setUserData] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -23,6 +26,22 @@ const EditUserProfile = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await fetchUserData();
+        console.log(user);
+        setUserData(user);
+        console.log(userData);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const editProfile = async () => {
     try {
@@ -67,40 +86,118 @@ const EditUserProfile = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={styles.backButton}
-      >
-        <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
-      </TouchableOpacity>
-      <Text style={styles.label}>Name</Text>
-      <TextInput
-        placeholder="Name"
-        value={name}
-        onChangeText={setName}
-        style={styles.input}
-      />
-      <Text style={styles.label}>Email</Text>
-      <TextInput
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        style={styles.input}
-      />
-      <Text style={styles.label}>Password</Text>
+      <ScrollView style={styles.scrollContainer}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.backButton}
+        >
+          <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
+        </TouchableOpacity>
+        <View style={styles.contentContainer}>
+          <View style={styles.personalInfoContainer}>
+            <Text style={styles.title}>Personal Info</Text>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                placeholder={userData?.name || "Name"}
+                value={name}
+                onChangeText={setName}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Email</Text>
+              <TextInput
+                placeholder={userData?.email || "Email"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Date Of Birth (DOB)</Text>
+              <TextInput
+                placeholder={userData?.dob || "DOB"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Age</Text>
+              <TextInput
+                placeholder={userData?.age || "Age"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Sex</Text>
+              <TextInput
+                placeholder={userData?.sex || "Sex"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+          </View>
+          <View style={styles.medicalInfoContainer}>
+            <Text style={styles.title}>Medical Info</Text>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Blood Type</Text>
+              <TextInput
+                placeholder={userData?.bloodType || "Blood Type"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Doctor</Text>
+              <TextInput
+                placeholder={userData?.doctor || "Doctor"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Emergency Contact</Text>
+              <TextInput
+                placeholder={userData?.emergencyContact || "Emergency Contact"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+            <View style={styles.inputTitleContainer}>
+              <Text style={styles.label}>Medical History</Text>
+              <TextInput
+                placeholder={userData?.medicalHistory || "Medical History"}
+                value={email}
+                onChangeText={setEmail}
+                style={styles.input}
+              />
+            </View>
+          </View>
+
+          {/* <Text style={styles.label}>Password</Text>
       <TextInput
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
         style={styles.input}
-      />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={editProfile} style={styles.button}>
-          <Text style={styles.buttonText}>Update</Text>
-        </TouchableOpacity>
-      </View>
-      {error && <Text style={{ color: "red" }}>{error}</Text>}
+      /> */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity onPress={editProfile} style={styles.button}>
+              <Text style={styles.buttonText}>Update Profile</Text>
+            </TouchableOpacity>
+          </View>
+          {error && <Text style={{ color: "red" }}>{error}</Text>}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -108,28 +205,59 @@ const EditUserProfile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 20,
     justifyContent: "center",
     backgroundColor: "white",
+    // paddingHorizontal: 20,
+    paddingBottom: 60, // Keep same number as footer+20
+  },
+  // scrollContainer: {
+  //   width: "100%",
+  // },
+  contentContainer: {
+    width: "100%",
+    marginTop: 50,
+    paddingHorizontal: 20,
+    paddingBottom: 40, // Keep same number as footer+20
+  },
+  personalInfoContainer: {
+    marginBottom: 20,
+  },
+  medicalInfoContainer: {
+    marginBottom: 20,
   },
   backButton: {
     position: "absolute",
     top: 20,
     left: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 5,
+    marginLeft: 10,
+  },
   label: {
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 5,
     alignSelf: "flex-start",
+    marginLeft: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: "gray",
-    borderRadius: 5,
+    borderColor: "lightgrey",
+    borderRadius: 25,
     padding: 10,
     marginBottom: 10,
     width: "100%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
   },
   buttonContainer: {
     width: "100%",
@@ -138,10 +266,17 @@ const styles = StyleSheet.create({
   button: {
     width: "100%",
     backgroundColor: "#4facfe",
-    // backgroundColor: "grey", // Example background color
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 15, // Border radius
+    borderRadius: 15,
+    paddingTop: 5,
+    paddingBottom: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
   },
   buttonText: {
     color: "white",

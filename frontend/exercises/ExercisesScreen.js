@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginBottom: 20,
     // backgroundColor: "lightgrey",
-    backgroundColor: "#F2f2f2",
+    backgroundColor: "#F8F8F8",
     padding: 10,
   },
   iconContainer: {
@@ -180,8 +180,8 @@ const styles = StyleSheet.create({
   },
   detailItem: {
     flexDirection: "row",
-    marginTop: 5,
-    marginBottom: 5,
+    // marginTop: 5,
+    // marginBottom: 5,
   },
   title: {
     fontSize: 18,

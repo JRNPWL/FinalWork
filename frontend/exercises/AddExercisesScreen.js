@@ -126,43 +126,50 @@ const AddMedicationScreen = ({ navigation }) => {
       >
         <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
       </TouchableOpacity>
-      <View style={styles.inputContainer}>
-        <View style={styles.inputTitleContainer}>
-          <Text style={[styles.title, styles.inputTitle]}>Exercise Name</Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="Exercise Name"
-          />
+
+      <View style={styles.contentContainer}>
+        <Text style={styles.title}>Add a new Exercise</Text>
+        <View style={styles.inputContainer}>
+          <View style={styles.inputTitleContainer}>
+            <Text style={styles.inputTitle}>Exercise Name</Text>
+            <TextInput
+              style={styles.input}
+              value={name}
+              onChangeText={setName}
+              placeholder="Exercise Name"
+            />
+          </View>
+          <View style={styles.inputTitleContainer}>
+            <Text style={styles.inputTitle}>Sets</Text>
+            <TextInput
+              style={styles.input}
+              value={sets}
+              onChangeText={setSets}
+              placeholder="Sets"
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={styles.inputTitleContainer}>
+            <Text style={styles.inputTitle}>Repetitions</Text>
+            <TextInput
+              style={styles.input}
+              value={reps}
+              onChangeText={setReps}
+              placeholder="Reps"
+              keyboardType="numeric"
+            />
+          </View>
         </View>
-        <View style={styles.inputTitleContainer}>
-          <Text style={[styles.title, styles.inputTitle]}>Sets</Text>
-          <TextInput
-            style={styles.input}
-            value={sets}
-            onChangeText={setSets}
-            placeholder="Sets"
-            keyboardType="numeric"
-          />
-        </View>
-        <View style={styles.inputTitleContainer}>
-          <Text style={[styles.title, styles.inputTitle]}>Repetitions</Text>
-          <TextInput
-            style={styles.input}
-            value={reps}
-            onChangeText={setReps}
-            placeholder="Reps"
-            keyboardType="numeric"
-          />
-        </View>
+        <CustomDropdown
+          options={options}
+          selectedOption={icon || options[0]} // If no icon is selected, default to first option
+          onSelect={handleIconSelect}
+        />
+        {/* <Button title="Add Exercise" onPress={handleSubmit} disabled={!name} /> */}
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Add Exercise</Text>
+        </TouchableOpacity>
       </View>
-      <CustomDropdown
-        options={options}
-        selectedOption={icon || options[0]} // If no icon is selected, default to first option
-        onSelect={handleIconSelect}
-      />
-      <Button title="Add Exercise" onPress={handleSubmit} disabled={!name} />
     </View>
   );
 };
@@ -170,20 +177,30 @@ const AddMedicationScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
     backgroundColor: "white",
+  },
+  contentContainer: {
+    width: "100%",
+    marginTop: 50,
   },
   backButton: {
     position: "absolute",
     top: 20,
     left: 20,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    marginLeft: 10,
+  },
   inputContainer: {
     width: "100%",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   inputTitleContainer: {
     width: "100%",
@@ -192,16 +209,23 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "gray",
+    borderColor: "lightgrey",
     padding: 10,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
+    borderRadius: 25,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
   },
   inputTitle: {
-    alignSelf: "flex-start",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 5,
+    marginLeft: 10,
   },
   modalTrigger: {
     alignItems: "center",
@@ -213,6 +237,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   modalTitle: {
+    alignSelf: "center",
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 10,
@@ -242,6 +267,28 @@ const styles = StyleSheet.create({
   },
   optionText: {
     fontSize: 16,
+  },
+  button: {
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#4facfe",
+    borderRadius: 15,
+    marginTop: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 

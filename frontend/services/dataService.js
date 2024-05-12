@@ -2,6 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getUserId } from "./authService";
 import axios from "axios";
 
+const DEV_IP = "192.168.0.119:3000";
+
 export const fetchMedicationData = async () => {
   try {
     const userId = await getUserId();
@@ -11,7 +13,7 @@ export const fetchMedicationData = async () => {
       throw new Error("User is not logged in");
     }
 
-    const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
+    const apiUrl = `http://${DEV_IP}/api/medications/${userId}`;
 
     const response = await axios.get(apiUrl);
     if (Array.isArray(response.data)) {
@@ -41,7 +43,7 @@ export const addMedication = async (
   try {
     const userId = await getUserId();
 
-    const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
+    const apiUrl = `http://${DEV_IP}/api/medications/${userId}`;
 
     const formattedTime = selectedTime.toLocaleTimeString([], {
       hour12: false,
@@ -101,7 +103,7 @@ export const addExercise = async (userId, name, sets, reps, iconName) => {
   try {
     const userId = await getUserId();
 
-    const apiUrl = `http://192.168.0.119:3000/api/exercises/${userId}`;
+    const apiUrl = `http://${DEV_IP}/api/exercises/${userId}`;
 
     const postData = {
       name: name,
@@ -128,7 +130,7 @@ export const fetchJournalData = async () => {
       throw new Error("User is not logged in");
     }
 
-    const apiUrl = `http://192.168.0.119:3000/api/journal/${userId}`;
+    const apiUrl = `http://${DEV_IP}/api/journal/${userId}`;
 
     const response = await axios.get(apiUrl);
     return response.data;
@@ -149,7 +151,7 @@ export const fetchUserData = async () => {
       throw new Error("User is not logged in");
     }
 
-    const apiUrl = `http://192.168.0.119:3000/api/users/${userId}`;
+    const apiUrl = `http://${DEV_IP}/api/users/${userId}`;
 
     const response = await axios.get(apiUrl);
     return response.data;
@@ -168,7 +170,7 @@ export const fetchUserProfilePic = async () => {
       throw new Error("User is not logged in");
     }
 
-    const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
+    const photoApiUrl = `http://${DEV_IP}/api/users/${userId}/profilePicture`;
     const response = await axios.get(photoApiUrl);
     return response;
   } catch {
