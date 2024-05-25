@@ -17,6 +17,7 @@ import UserProfile from "./user/UserProfile";
 import EditUserProfile from "./user/EditUserProfile";
 import MenuScreen from "./MenuScreen";
 import MedicationScreen from "./medication/MedicationScreen";
+import MedicationDetailScreen from "./medication/MedicationDetailScreen";
 import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
 import ExercisesScreen from "./exercises/ExercisesScreen";
@@ -198,6 +199,10 @@ const App = () => {
               <Stack.Screen
                 name="MedicationScreen"
                 component={MedicationScreen}
+              />
+              <Stack.Screen
+                name="MedicationDetailScreen"
+                component={MedicationDetailScreen}
               />
               <Stack.Screen
                 name="AddMedicationScreen"

@@ -130,8 +130,16 @@ const AddMedicationScreen = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
+    const iconName = icon.value;
     try {
-      await addMedication(name, dosage, frequency, selectedDate, selectedTime);
+      await addMedication(
+        name,
+        dosage,
+        frequency,
+        selectedDate,
+        selectedTime,
+        iconName
+      );
       navigation.goBack();
     } catch (error) {
       console.error("Error adding medication:", error);

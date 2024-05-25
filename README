@@ -9,3 +9,25 @@ MyHealthManager
 add add medication page
 Fix edit and add layouts layouts
 home page styling
+
+FIX if medication and exercise is zero app breaks
+
+23/05/2024
+Fix Input styling
+Fix Shadow Styling on Homepage, Exercise page
+
+24/05/2024
+Fixed User Updateing Backend CHECK
+Remove Select Time from Add Meds CHECK
+Add Date To Medication List CHECK
+Group Medications by date CHECK
+Create Page For Individual Medication
+Allow user to Add Reminders on this page (Edit other med info?)
+Add Backend Edit for Medication
+
+Fix Medication Snippet Rendering
+Fix Profile Snippet Rendering
+
+TODO
+CHANGE EDIT DATE, TIME TO DateTimePicker,
+CHANGE ADD REMINDER DATE, TIME TO DateTimePicker

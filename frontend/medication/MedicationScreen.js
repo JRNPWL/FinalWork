@@ -1,3 +1,17 @@
+//   const scheduleNotificationsForReminders = (reminders, medicationName) => {
+//     reminders.forEach((reminder, index) => {
+//       const dateTime = new Date(reminder);
+//       const notificationMessage = `Reminder ${
+//         index + 1
+//       }: Take ${medicationName} at ${dateTime.toLocaleString()}`;
+
+//       PushNotification.localNotificationSchedule({
+//         message: notificationMessage,
+//         date: dateTime,
+//       });
+//     });
+//   };
+
 import React, { useState, useEffect } from "react";
 import {
   View,
@@ -14,105 +28,62 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faPlus,
   faPills,
-  faArrowRight,
   faChevronRight,
+  faDumbbell,
+  faRunning,
+  faBicycle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
 
   const [medicationData, setMedicationData] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(null);
   const [loading, setLoading] = useState(true);
-  const defaultProfilePhoto = require("../assets/Default_pfp.png");
 
   const navigateToAddMedication = async () => {
     navigation.navigate("AddMedicationScreen");
   };
 
-  const scheduleNotificationsForReminders = (reminders, medicationName) => {
-    reminders.forEach((reminder, index) => {
-      const dateTime = new Date(reminder);
-      const notificationMessage = `Reminder ${
-        index + 1
-      }: Take ${medicationName} at ${dateTime.toLocaleString()}`;
-
-      PushNotification.localNotificationSchedule({
-        message: notificationMessage,
-        date: dateTime,
-      });
-    });
-  };
-
   useEffect(() => {
-    // const fetchMedicationData = async () => {
-    //   try {
-    //     const userId = await getUserId();
-
-    //     // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-    //     if (!userId) {
-    //       throw new Error("User is not logged in");
-    //     }
-
-    //     const apiUrl = `http://192.168.0.119:3000/api/medications/${userId}`;
-
-    //     const response = await axios.get(apiUrl);
-    //     // console.log(response);
-    //     // setMedicationData(response.data);
-    //     // const data = await response.json();
-    //     if (Array.isArray(response.data)) {
-    //       setMedicationData(response.data); // Set medicationData to the array of medication objects
-    //       console.log(response.data);
-
-    //       response.data.forEach((medication) => {
-    //         console.log(medication);
-    //         scheduleNotificationsForReminders(
-    //           medication.reminders,
-    //           medication.name
-    //         );
-    //       });
-    //     }
-
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching user data:", error);
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchMedicationData();
-
-    // const fetchUserProfilePic = async () => {
-    //   try {
-    //     const userId = await getUserId();
-
-    //     // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-    //     if (!userId) {
-    //       throw new Error("User is not logged in");
-    //     }
-
-    //     const photoApiUrl = `http://localhost:3000/api/users/${userId}/profilePicture`;
-    //     const response = await axios.get(photoApiUrl);
-    //     setProfilePicture(photoApiUrl);
-    //   } catch {
-    //     console.error("Error fetching user profile picture:", error);
-    //   }
-    // };
-
-    // fetchUserProfilePic();
     const fetchMedications = async () => {
       try {
         const meds = await fetchMedicationData();
-        console.log(meds);
         setMedicationData(meds);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching medications:", error);
+        setLoading(false);
       }
     };
 
     fetchMedications();
   }, []);
+
+  const handleMedicationPress = (medication) => {
+    navigation.navigate("MedicationDetailScreen", { medication });
+  };
+
+  const groupMedicationsByDate = (medications) => {
+    return medications.reduce((acc, med) => {
+      const date = new Date(med.date).toLocaleDateString("en-US", {
+        month: "long",
+        day: "numeric",
+      });
+
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(med);
+      return acc;
+    }, {});
+  };
+
+  const groupedMedications = medicationData
+    ? groupMedicationsByDate(medicationData)
+    : {};
+  const sortedDates = Object.keys(groupedMedications).sort(
+    (a, b) => new Date(a) - new Date(b)
+  );
 
   if (loading) {
     return (
@@ -135,72 +106,55 @@ const MedicationScreen = () => {
           <FontAwesomeIcon icon={faPlus} size={11} color="black" />
         </TouchableOpacity>
       </View>
-      {medicationData.length > 0 ? (
-        medicationData.map((medicationData, index) => (
-          <View key={index} style={styles.medicationContainer}>
-            <View style={styles.infoContainer}>
-              <View style={styles.iconContainer}>
-                <FontAwesomeIcon icon={faPills} size={64} color="black" />
-              </View>
-              <View style={styles.detailsContainer}>
-                <Text style={styles.label}>{medicationData.name}</Text>
-                <View style={styles.infoBottomContainer}>
-                  <Text style={styles.text}>{medicationData.dosage}</Text>
-                  {/* <Text style={styles.text}>{medicationData.frequency}, </Text> */}
+      {sortedDates.length > 0 ? (
+        sortedDates.map((date) => (
+          <View key={date} style={styles.dateGroup}>
+            <Text style={styles.dateText}>{date}</Text>
+            {groupedMedications[date].map((medicationData, medIndex) => (
+              <TouchableOpacity
+                key={medIndex}
+                style={styles.medicationContainer}
+                onPress={() => handleMedicationPress(medicationData)}
+              >
+                <View style={styles.medicationContainer}>
+                  <View style={styles.infoContainer}>
+                    <View style={styles.iconContainer}>
+                      <FontAwesomeIcon
+                        icon={
+                          medicationData.icon === "faDumbbell"
+                            ? faDumbbell
+                            : medicationData.icon === "faRunning"
+                            ? faRunning
+                            : faBicycle
+                        }
+                        size={64}
+                        style={styles.icon}
+                      />
+                    </View>
+                    <View style={styles.detailsContainer}>
+                      <Text style={styles.label}>{medicationData.name}</Text>
+                      <View style={styles.infoBottomContainer}>
+                        <Text style={styles.text}>{medicationData.dosage}</Text>
+                      </View>
+                    </View>
+                    <View style={styles.timeContainer}>
+                      <Text style={styles.text}>{medicationData.time}</Text>
+                      <FontAwesomeIcon
+                        icon={faChevronRight}
+                        size={15}
+                        color="grey"
+                      />
+                    </View>
+                  </View>
                 </View>
-              </View>
-              <View style={styles.timeContainer}>
-                <Text style={styles.timeText}>{medicationData.time}</Text>
-                <FontAwesomeIcon icon={faChevronRight} size={15} color="grey" />
-              </View>
-            </View>
+              </TouchableOpacity>
+            ))}
           </View>
         ))
       ) : (
         <Text>No medication data available</Text>
       )}
     </View>
-    // <View style={styles.container}>
-    //   {medicationData.length > 0 ? (
-    //     medicationData.map((medicationData, index) => (
-    //       <View key={index} style={styles.medicationContainer}>
-    //         <View style={styles.medicationContainer}></View>
-
-    //         <View style={styles.infoContainer}>
-    //           {/* <Text style={styles.label}>Name:</Text> */}
-    //           <Text style={styles.text}>{medicationData.name}</Text>
-
-    //           <View style={styles.infoBottomContainer}>
-    //             {/* <Text style={styles.label}>Dosage:</Text> */}
-    //             <Text style={styles.text}>{medicationData.dosage}, </Text>
-
-    //             {/* <Text style={styles.label}>Frequency:</Text> */}
-    //             <Text style={styles.text}>{medicationData.frequency}, </Text>
-
-    //             {/* <Text style={styles.label}>Time:</Text> */}
-    //             <Text style={styles.text}>{medicationData.time}</Text>
-    //           </View>
-
-    //           {/* <Text style={styles.label}>Reminders:</Text>
-    //           <View style={styles.reminderContainer}>
-    //             {medicationData.reminders.map((reminder, index) => (
-    //               <View key={index} style={styles.reminderItem}>
-    //                 <Text>Date: {reminder.date}</Text>
-    //                 <Text>Time: {reminder.time}</Text>
-    //               </View>
-    //             ))}
-    //           </View> */}
-    //         </View>
-    //       </View>
-    //     ))
-    //   ) : (
-    //     <Text>No medication data available</Text>
-    //     // <Text style={styles.error}>Error: Failed to load user data.</Text>
-    //   )}
-    //   <TouchableOpacity onPress={navigateToAddMedication}>
-    //     <Text>Add Medication</Text>
-    //   </TouchableOpacity>
-    // </View>
   );
 };
 
@@ -238,9 +192,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 3,
   },
+  dateGroup: {
+    width: "90%",
+    marginBottom: 20,
+  },
+  dateText: {
+    marginLeft: "4%",
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
   medicationContainer: {
     alignItems: "center",
-    width: "90%",
+    width: "100%",
+    marginBottom: 10,
   },
   infoContainer: {
     width: "100%",
@@ -253,12 +218,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 5,
     elevation: 6,
-    // backgroundColor: "lightgrey",
-    // backgroundColor: "#F2f2f2",
     backgroundColor: "#F8F8F8",
     padding: 15,
     borderRadius: 15,
-    marginBottom: 20,
   },
   iconContainer: {
     width: "30%",
@@ -268,7 +230,6 @@ const styles = StyleSheet.create({
   detailsContainer: {
     justifyContent: "center",
     width: "40%",
-    // marginLeft: 10,
   },
   timeContainer: {
     flexDirection: "row",
@@ -282,19 +243,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 17,
     fontWeight: "bold",
-    // marginBottom: 5,
   },
   timeText: {
     fontSize: 26,
   },
   text: {
     fontSize: 16,
-  },
-  reminderContainer: {
-    marginTop: 10,
-  },
-  reminderItem: {
-    marginBottom: 10,
   },
 });
 

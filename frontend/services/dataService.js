@@ -38,29 +38,33 @@ export const addMedication = async (
   dosage,
   frequency,
   selectedDate,
-  selectedTime
+  selectedTime,
+  icon
 ) => {
   try {
     const userId = await getUserId();
 
     const apiUrl = `http://${DEV_IP}/api/medications/${userId}`;
 
-    const formattedTime = selectedTime.toLocaleTimeString([], {
-      hour12: false,
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    // const formattedTime = selectedTime.toLocaleTimeString([], {
+    //   hour12: false,
+    //   hour: "2-digit",
+    //   minute: "2-digit",
+    // });
 
     const postData = {
       userId: userId,
       name: name,
       dosage: dosage,
       frequency: frequency,
-      time: formattedTime,
+      date: selectedDate,
+      time: selectedTime,
+      icon: icon,
     };
 
     const response = await axios.post(apiUrl, postData);
 
+    console.log(postData);
     console.log(response);
     return true;
   } catch (error) {

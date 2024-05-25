@@ -58,8 +58,16 @@ MongoClient.connect(mongoURI)
       "/api/users",
       upload.single("profilePicture"),
       async (req, res) => {
-        const { name, email, password, age, sex, bloodType, medicalHistory } =
-          req.body;
+        const {
+          name,
+          email,
+          password,
+          dob,
+          age,
+          sex,
+          bloodType,
+          medicalHistory,
+        } = req.body;
 
         try {
           // Check if email already exists in database
@@ -75,6 +83,13 @@ MongoClient.connect(mongoURI)
 
           // Hash the password
           const hashedPassword = await bcrypt.hash(password, 10);
+
+          // Initialize profile picture fields with empty values
+          let dob = "";
+          let sex = "";
+          let bloodType = "";
+          let doctor = "";
+          let emergencyContact = "";
 
           // Initialize profile picture fields with empty values
           let profilePictureId = "";
@@ -98,9 +113,12 @@ MongoClient.connect(mongoURI)
             name: name,
             email: email,
             password: hashedPassword,
-            age: age,
+            dob: dob,
+            // age: age,
             sex: sex,
             bloodType: bloodType,
+            doctor: doctor,
+            emergencyContact: emergencyContact,
             medicalHistory: medicalHistoryArray,
             profilePictureId: profilePictureId,
             profilePicture: profilePicture,
@@ -214,6 +232,7 @@ MongoClient.connect(mongoURI)
       async (req, res) => {
         const userId = req.params.userId;
         const updatedProfile = req.body;
+
         try {
           let profilePictureId = "";
           let profilePicture = "";
@@ -226,20 +245,34 @@ MongoClient.connect(mongoURI)
             profilePictureType = req.file.contentType;
           }
 
-          // Merge existing profile with updated data
+          // Filter out empty fields from updatedProfile
+          const filteredUpdatedProfile = Object.fromEntries(
+            Object.entries(updatedProfile).filter(
+              ([key, value]) =>
+                value !== undefined && value !== null && value !== ""
+            )
+          );
+
+          // if (filteredUpdatedProfile.dob) {
+          //   filteredUpdatedProfile.dob = new Date(filteredUpdatedProfile.dob);
+          // }
+
+          // Merge existing profile with filtered updated data
           const updatedData = {
-            ...updatedProfile,
+            ...filteredUpdatedProfile,
             profilePictureId:
-              profilePictureId || updatedProfile.profilePictureId,
-            profilePicture: profilePicture || updatedProfile.profilePicture,
+              profilePictureId || filteredUpdatedProfile.profilePictureId,
+            profilePicture:
+              profilePicture || filteredUpdatedProfile.profilePicture,
             profilePictureType:
-              profilePictureType || updatedProfile.profilePictureType,
+              profilePictureType || filteredUpdatedProfile.profilePictureType,
           };
 
           const result = await usersCollection.updateOne(
             { userId: userId },
             { $set: updatedData }
           );
+
           res.json({ message: "User profile updated successfully" });
         } catch (error) {
           console.error("Error updating user profile:", error);
@@ -307,7 +340,7 @@ MongoClient.connect(mongoURI)
     // Route to add a new medication with reminders
     app.post("/api/medications/:userId", async (req, res) => {
       const userId = req.params.userId;
-      const { name, dosage, frequency, time, reminders } = req.body; // Extract medication details and reminders from request body
+      const { name, dosage, frequency, date, time, reminders, icon } = req.body; // Extract medication details and reminders from request body
 
       // Generate unique ID for medication
       const medicationId = uuidv4();
@@ -318,9 +351,11 @@ MongoClient.connect(mongoURI)
         medicationId: medicationId,
         name: name,
         dosage: dosage,
-        frequency: frequency,
+        // frequency: frequency,
+        date: date,
         time: time,
         reminders: [], // Initialize reminders array
+        icon: icon,
       };
 
       try {
@@ -339,6 +374,58 @@ MongoClient.connect(mongoURI)
         res.status(201).json(result);
       } catch (error) {
         console.error("Error adding new medication:", error);
+        res.status(500).json({ error: "Internal server error" });
+      }
+    });
+
+    // Route to edit a medication
+    app.put("/api/medications/:userId/:medicationId", async (req, res) => {
+      const userId = req.params.userId;
+      const medicationId = req.params.medicationId;
+      const { name, dosage, frequency, date, time, reminders, icon } = req.body; // Extract medication details and reminders from request body
+
+      try {
+        // Find the medication by userId and medicationId
+        const medication = await medicationsCollection.findOne({
+          userId: userId,
+          medicationId: medicationId,
+        });
+
+        if (!medication) {
+          return res.status(404).json({ error: "Medication not found" });
+        }
+
+        // Update medication object with new details
+        let updatedMedication = {
+          ...medication,
+          name: name || medication.name,
+          dosage: dosage || medication.dosage,
+          // frequency: frequency || medication.frequency,
+          date: date || medication.date,
+          time: time || medication.time,
+          icon: icon || medication.icon,
+        };
+
+        // If reminders are provided, convert date and time strings to Date objects and update the reminders array
+        if (reminders && reminders.length > 0) {
+          updatedMedication.reminders = reminders.map((reminder) => {
+            return new Date(reminder.date + "T" + reminder.time);
+          });
+        }
+
+        // Update medication in medications collection
+        const result = await medicationsCollection.updateOne(
+          { userId: userId, medicationId: medicationId },
+          { $set: updatedMedication }
+        );
+
+        if (result.modifiedCount === 0) {
+          return res.status(404).json({ error: "Medication not updated" });
+        }
+
+        res.status(200).json({ message: "Medication updated successfully" });
+      } catch (error) {
+        console.error("Error updating medication:", error);
         res.status(500).json({ error: "Internal server error" });
       }
     });

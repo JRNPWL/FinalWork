@@ -5,17 +5,13 @@ import {
   StyleSheet,
   ActivityIndicator,
   Text,
-  TextInput,
   TouchableOpacity,
-  Button,
   Image,
 } from "react-native";
 import { getUserId } from "../services/authService";
 import { logout } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import CustomHeader from "../snippets/CustomHeader";
-import CustomFooter from "../snippets/CustomFooter";
 
 const UserProfile = ({ onLogoutSuccess }) => {
   const navigation = useNavigation();
@@ -78,6 +74,32 @@ const UserProfile = ({ onLogoutSuccess }) => {
     // fetchUserProfilePic();
   }, []);
 
+  const formatDob = (dob) => {
+    const dateParts = dob.split("-");
+    const year = dateParts[0];
+    const month = dateParts[1];
+    const day = dateParts[2];
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const calculateAge = (dob) => {
+    const dobDate = new Date(dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < dobDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
+
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -104,8 +126,6 @@ const UserProfile = ({ onLogoutSuccess }) => {
                 source={
                   profilePicture ? { uri: profilePicture } : defaultProfilePhoto
                 }
-                // source={defaultProfilePhoto}
-                // source={profilePicture}
               />
             </View>
             <View style={styles.gridContainer}>
@@ -117,11 +137,11 @@ const UserProfile = ({ onLogoutSuccess }) => {
                 </View>
                 <View style={styles.infoGridItem}>
                   <Text style={styles.label}>DOB:</Text>
-                  <Text style={styles.text}>11/09/2001</Text>
+                  <Text style={styles.text}>{formatDob(userData.dob)}</Text>
                 </View>
                 <View style={styles.infoGridItem}>
                   <Text style={styles.label}>Age:</Text>
-                  <Text style={styles.text}>{userData.age}</Text>
+                  <Text style={styles.text}>{calculateAge(userData.dob)}</Text>
                 </View>
                 <View style={styles.infoGridItem}>
                   <Text style={styles.label}>Sex:</Text>
@@ -136,19 +156,17 @@ const UserProfile = ({ onLogoutSuccess }) => {
                 </View>
                 <View style={styles.medGridItemRow}>
                   <Text style={styles.label}>Doctor:</Text>
-                  <Text style={styles.text}>Dr. {userData.name}</Text>
+                  <Text style={styles.text}>Dr. {userData.doctor}</Text>
                 </View>
                 <View style={styles.medicalSubInfo}>
                   <View style={styles.medGridItem}>
                     <Text style={styles.medGridItemLabel}>
                       Emergency Contact:
                     </Text>
-                    <Text style={styles.text}>+32 425 94 78 30</Text>
+                    <Text style={styles.text}>
+                      +32 {userData.emergencyContact}
+                    </Text>
                   </View>
-                  {/* <View style={styles.gridItem}>
-                  <Text style={styles.label}>Blood Type:</Text>
-                  <Text style={styles.text}>{userData.bloodType}</Text>
-                </View> */}
                   <View style={styles.medGridItem}>
                     <Text style={styles.medGridItemLabel}>
                       Medical History:
@@ -171,7 +189,6 @@ const UserProfile = ({ onLogoutSuccess }) => {
             <TouchableOpacity onPress={handleLogout} style={styles.text}>
               <Text style={styles.editProfile}>logout</Text>
             </TouchableOpacity>
-            {/* <Button title="Edit Profile" onPress={navigateToEditProfile} /> */}
           </>
         ) : (
           <Text style={styles.error}>Error: Failed to load user data.</Text>
@@ -226,10 +243,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 20,
     color: "black",
-    // color: "white",
-    // textShadowColor: "black",
-    // textShadowOffset: { width: 1, height: 1 },
-    // textShadowRadius: 1,
   },
   medTitle: {
     fontSize: 22,
@@ -237,10 +250,6 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingLeft: 20,
     color: "black",
-    // color: "white",
-    // textShadowColor: "black",
-    // textShadowOffset: { width: 1, height: 1 },
-    // textShadowRadius: 1,
   },
   personlInfo: {
     flexDirection: "row",
@@ -258,13 +267,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 40,
     marginBottom: 20,
-    // backgroundColor: "lightgrey",
-    // backgroundColor: "#F2f2f2",
     backgroundColor: "#F8f8f8",
   },
   medicalInfo: {
     flexDirection: "column",
-    // flexWrap: "wrap",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -278,13 +284,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     paddingLeft: 40,
     marginBottom: 30,
-    // backgroundColor: "lightgrey",
-    // backgroundColor: "#F2f2f2",
     backgroundColor: "#F8f8f8",
   },
   medicalSubInfo: {
     flexDirection: "column",
-    // margin: "auto",
     width: "100%",
     marginBottom: 10,
   },
@@ -302,10 +305,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     marginBottom: 15,
   },
-  // medHistory: {
-  //   flexDirection: "column",
-  //   marginBottom: 15,
-  // },
   label: {
     fontSize: 16,
     fontWeight: "bold",
@@ -324,4 +323,5 @@ const styles = StyleSheet.create({
     color: "red",
   },
 });
+
 export default UserProfile;

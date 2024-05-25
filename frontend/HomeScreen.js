@@ -29,13 +29,13 @@ const HomeScreen = ({
 
   useEffect(() => {
     // Check if medications and journalEntries are available
-    if (
-      medications.length > 0 &&
-      journalEntries.length > 0
-      // && userData.length > 0
-    ) {
-      setIsLoading(false); // Set loading state to false once data is available
-    }
+    // if (
+    //   medications.length > 0 &&
+    //   journalEntries.length > 0
+    //   // && userData.length > 0
+    // ) {
+    setIsLoading(false); // Set loading state to false once data is available
+    // }
   }, [medications, journalEntries, userData]);
 
   // const handleLogout = async () => {
