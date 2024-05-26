@@ -18,6 +18,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Text,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { getUserId } from "../services/authService";
@@ -106,54 +107,69 @@ const MedicationScreen = () => {
           <FontAwesomeIcon icon={faPlus} size={11} color="black" />
         </TouchableOpacity>
       </View>
-      {sortedDates.length > 0 ? (
-        sortedDates.map((date) => (
-          <View key={date} style={styles.dateGroup}>
-            <Text style={styles.dateText}>{date}</Text>
-            {groupedMedications[date].map((medicationData, medIndex) => (
-              <TouchableOpacity
-                key={medIndex}
-                style={styles.medicationContainer}
-                onPress={() => handleMedicationPress(medicationData)}
-              >
-                <View style={styles.medicationContainer}>
-                  <View style={styles.infoContainer}>
-                    <View style={styles.iconContainer}>
-                      <FontAwesomeIcon
-                        icon={
-                          medicationData.icon === "faDumbbell"
-                            ? faDumbbell
-                            : medicationData.icon === "faRunning"
-                            ? faRunning
-                            : faBicycle
-                        }
-                        size={64}
-                        style={styles.icon}
-                      />
-                    </View>
-                    <View style={styles.detailsContainer}>
-                      <Text style={styles.label}>{medicationData.name}</Text>
-                      <View style={styles.infoBottomContainer}>
-                        <Text style={styles.text}>{medicationData.dosage}</Text>
+      {/* <View style={styles.alignContainer}> */}
+      <ScrollView
+        contentContainerStyle={{
+          justifyContent: "center",
+          width: "100%",
+          paddingLeft: 10,
+          paddingRight: 10,
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {sortedDates.length > 0 ? (
+          sortedDates.map((date) => (
+            <View key={date} style={styles.dateGroup}>
+              <Text style={styles.dateText}>{date}</Text>
+              {groupedMedications[date].map((medicationData, medIndex) => (
+                <TouchableOpacity
+                  key={medIndex}
+                  style={styles.medicationContainerButton}
+                  onPress={() => handleMedicationPress(medicationData)}
+                >
+                  <View style={styles.medicationContainer}>
+                    <View style={styles.infoContainer}>
+                      <View style={styles.iconContainer}>
+                        <FontAwesomeIcon
+                          icon={
+                            medicationData.icon === "faDumbbell"
+                              ? faDumbbell
+                              : medicationData.icon === "faRunning"
+                              ? faRunning
+                              : faBicycle
+                          }
+                          size={64}
+                          style={styles.icon}
+                        />
+                      </View>
+                      <View style={styles.detailsContainer}>
+                        <Text style={styles.label}>{medicationData.name}</Text>
+                        <View style={styles.infoBottomContainer}>
+                          <Text style={styles.text}>
+                            {medicationData.dosage}
+                          </Text>
+                        </View>
+                      </View>
+                      <View style={styles.timeContainer}>
+                        <Text style={styles.text}>{medicationData.time}</Text>
+                        <FontAwesomeIcon
+                          icon={faChevronRight}
+                          size={15}
+                          color="grey"
+                        />
                       </View>
                     </View>
-                    <View style={styles.timeContainer}>
-                      <Text style={styles.text}>{medicationData.time}</Text>
-                      <FontAwesomeIcon
-                        icon={faChevronRight}
-                        size={15}
-                        color="grey"
-                      />
-                    </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))
-      ) : (
-        <Text>No medication data available</Text>
-      )}
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))
+        ) : (
+          <Text>No medication data available</Text>
+        )}
+      </ScrollView>
+      {/* </View> */}
     </View>
   );
 };
@@ -163,7 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     alignItems: "center",
-    paddingBottom: 80, // Keep same number as footer+20
+    paddingBottom: 65, // Keep same number as footer+20
     paddingTop: 10, // Keep same number as header+20
     backgroundColor: "white",
     paddingLeft: 0,
@@ -192,9 +208,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 3,
   },
+  // alignContainer: {
+  //   // width: "100%",
+  //   alignItems: "center",
+  //   // marginBottom: 20,
+  // },
   dateGroup: {
-    width: "90%",
-    marginBottom: 20,
+    width: "95%",
+    // marginBottom: 20,
   },
   dateText: {
     marginLeft: "4%",
@@ -202,14 +223,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  medicationContainer: {
+  medicationContainerButton: {
     alignItems: "center",
     width: "100%",
     marginBottom: 10,
-  },
-  infoContainer: {
-    width: "100%",
-    flexDirection: "row",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -219,8 +236,19 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 6,
     backgroundColor: "#F8F8F8",
-    padding: 15,
     borderRadius: 15,
+  },
+  medicationContainer: {
+    alignItems: "center",
+    width: "100%",
+    marginBottom: 10,
+  },
+  infoContainer: {
+    width: "100%",
+    flexDirection: "row",
+    // backgroundColor: "#F8F8F8",
+    padding: 15,
+    // borderRadius: 15,
   },
   iconContainer: {
     width: "30%",
