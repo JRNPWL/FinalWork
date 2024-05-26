@@ -148,7 +148,7 @@ const MedicationDetailScreen = () => {
             <Text style={styles.text}>{time}</Text>
           )}
         </View>
-        <View style={styles.reminderContainer}>
+        {/* <View style={styles.reminderContainer}>
           <TextInput
             style={styles.input}
             value={newReminderDate}
@@ -176,7 +176,7 @@ const MedicationDetailScreen = () => {
               minute: "2-digit",
             })}`}</Text>
           ))}
-        </View>
+        </View> */}
         <View style={styles.buttonContainer}>
           {isEditing ? (
             <TouchableOpacity
