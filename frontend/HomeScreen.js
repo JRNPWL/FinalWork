@@ -95,6 +95,8 @@ const HomeScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: "100%",
+    alignItems: "center",
     backgroundColor: "white",
     paddingBottom: 40, // Keep same number as footer+20
   },
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollContainer: {
-    padding: 20,
+    // padding: 20,
     paddingTop: 15,
   },
   contentContainer: {
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: "60%",
     alignItems: "flex-end",
-    paddingRight: 10,
+    paddingRight: 20,
   },
   dateContainer: {
     width: "40%",
