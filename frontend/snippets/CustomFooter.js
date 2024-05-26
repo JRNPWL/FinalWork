@@ -181,6 +181,7 @@ const CustomFooter = () => {
     homeScreen: useSharedValue(1),
     journalScreen: useSharedValue(1),
     exercisesScreen: useSharedValue(1),
+    statisticsScreen: useSharedValue(1),
   };
 
   const navigateToScreen = (screenName, springValue) => {
@@ -214,17 +215,17 @@ const CustomFooter = () => {
     // isFooterVisible && (
     <View style={styles.container}>
       <View style={styles.gridContainer}>
-        {/* User Profile */}
+        {/* Stats Profile */}
         <TouchableOpacity
           style={styles.menuItem}
           onPress={() =>
-            navigateToScreen("UserProfile", springValues.userProfile)
+            navigateToScreen("StatisticsScreen", springValues.statisticsScreen)
           }
         >
           <Animated.View
             style={[
               styles.menuItemIcon,
-              animatedStyle(springValues.userProfile),
+              animatedStyle(springValues.statisticsScreen),
             ]}
           >
             <FontAwesomeIcon
