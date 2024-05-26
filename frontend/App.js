@@ -4,9 +4,10 @@ import {
   ActivityIndicator,
   Text,
   SafeAreaView,
-  StatusBar,
+  // StatusBar,
   Platform,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { isLoggedIn } from "./services/authService";
@@ -22,6 +23,7 @@ import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
 import ExercisesScreen from "./exercises/ExercisesScreen";
 import AddExercisesScreen from "./exercises/AddExercisesScreen";
+import StatisticsScreen from "./stats/StatisticsScreen";
 import AboutScreen from "./AboutScreen";
 import CustomFooter from "./snippets/CustomFooter";
 import CustomHeader from "./snippets/CustomHeader";
@@ -162,11 +164,12 @@ const App = () => {
           <SafeAreaView
             style={{
               flex: 1,
-              // paddingTop: 0,
-              paddingTop:
-                Platform.OS === "android" ? StatusBar.currentHeight : 0,
+              paddingTop: 0,
+              // paddingTop:
+              //   Platform.OS === "android" ? StatusBar.currentHeight : 0,
             }}
           >
+            <StatusBar style="dark" translucent={false} hidden={false} />
             <CustomHeader />
 
             <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -215,6 +218,10 @@ const App = () => {
               <Stack.Screen
                 name="AddExercisesScreen"
                 component={AddExercisesScreen}
+              />
+              <Stack.Screen
+                name="StatisticsScreen"
+                component={StatisticsScreen}
               />
             </Stack.Navigator>
             <CustomFooter />
