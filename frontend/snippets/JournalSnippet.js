@@ -11,24 +11,26 @@ const JournalSnippet = ({ navigation, journalEntries }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Journal</Text>
-      <TouchableOpacity
-        onPress={navigateToJournalScreen}
-        style={styles.medicationContainer}
-      >
-        {/* <View style={styles.medicationContainer}> */}
-        {journalEntries.slice(0, 3).map((entry, index) => (
-          <View key={index} style={styles.entryContainer}>
-            <Text style={styles.label}>
-              {new Date(entry.journalDate).toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-              })}
-            </Text>
-            <Text>{entry.journalMessage}</Text>
-          </View>
-        ))}
-        {/* </View> */}
-      </TouchableOpacity>
+      <View style={styles.alignContainer}>
+        <TouchableOpacity
+          onPress={navigateToJournalScreen}
+          style={styles.medicationContainer}
+        >
+          {/* <View style={styles.medicationContainer}> */}
+          {journalEntries.slice(0, 3).map((entry, index) => (
+            <View key={index} style={styles.entryContainer}>
+              <Text style={styles.label}>
+                {new Date(entry.journalDate).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+              <Text>{entry.journalMessage}</Text>
+            </View>
+          ))}
+          {/* </View> */}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -42,8 +44,11 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     width: "100%",
   },
+  alignContainer: {
+    alignItems: "center",
+  },
   medicationContainer: {
-    // marginBottom: 10,
+    width: "90%",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,

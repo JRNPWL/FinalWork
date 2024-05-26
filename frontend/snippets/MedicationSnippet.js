@@ -14,29 +14,31 @@ const MedicationSnippet = ({ navigation, medications }) => {
     <View style={styles.container}>
       <Text style={styles.title}>Medication</Text>
       {/* <View style={styles.medicationContainer}> */}
-      <TouchableOpacity
-        onPress={navigateToMedicationScreen}
-        style={styles.medicationContainer}
-      >
-        {medications.slice(0, 3).map((medicationData, index) => (
-          <View key={index} style={styles.medicationItem}>
-            <View style={styles.infoContainer}>
-              <View style={styles.iconContainer}>
-                <FontAwesomeIcon icon={faPills} size={64} color="black" />
-              </View>
-              <View style={styles.detailsContainer}>
-                <Text style={styles.medName}>{medicationData.name}</Text>
-                <View style={styles.infoBottomContainer}>
-                  <Text style={styles.text}>{medicationData.dosage}, </Text>
-                  <Text style={styles.text}>{medicationData.frequency}, </Text>
-                  <Text style={styles.text}>{medicationData.time}</Text>
+      <View style={styles.alignContainer}>
+        <TouchableOpacity
+          onPress={navigateToMedicationScreen}
+          style={styles.medicationContainer}
+        >
+          {medications.slice(0, 3).map((medicationData, index) => (
+            <View key={index} style={styles.medicationItem}>
+              <View style={styles.infoContainer}>
+                <View style={styles.iconContainer}>
+                  <FontAwesomeIcon icon={faPills} size={64} color="black" />
+                </View>
+                <View style={styles.detailsContainer}>
+                  <Text style={styles.medName}>{medicationData.name}</Text>
+                  <View style={styles.infoBottomContainer}>
+                    <Text style={styles.text}>{medicationData.dosage}, </Text>
+                    {/* <Text style={styles.text}>{medicationData.frequency}, </Text> */}
+                    <Text style={styles.text}>{medicationData.time}</Text>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        ))}
-        {/* </View> */}
-      </TouchableOpacity>
+          ))}
+          {/* </View> */}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -49,8 +51,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
   },
+  alignContainer: {
+    alignItems: "center",
+  },
   medicationContainer: {
-    // marginBottom: 10,
+    width: "90%",
     shadowColor: "#000",
     shadowOffset: {
       width: 2,

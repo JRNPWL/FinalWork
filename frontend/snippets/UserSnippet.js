@@ -35,39 +35,41 @@ const UserSnippet = ({ navigation, userData }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Profile</Text>
-      <TouchableOpacity
-        onPress={navigateToJournalScreen}
-        style={styles.gridContainer}
-      >
-        {/* <View style={styles.gridContainer}> */}
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={
-              profilePicture ? { uri: profilePicture } : defaultProfilePhoto
-            }
-          />
-        </View>
-        <View style={styles.personlInfo}>
-          <View style={styles.gridItem}>
-            <Text style={styles.label}>Name:</Text>
-            <Text style={styles.text}>{userData.name}</Text>
+      <View style={styles.alignContainer}>
+        <TouchableOpacity
+          onPress={navigateToJournalScreen}
+          style={styles.gridContainer}
+        >
+          {/* <View style={styles.gridContainer}> */}
+          <View style={styles.imageContainer}>
+            <Image
+              style={styles.image}
+              source={
+                profilePicture ? { uri: profilePicture } : defaultProfilePhoto
+              }
+            />
           </View>
-          <View style={styles.gridItem}>
-            <Text style={styles.label}>DOB:</Text>
-            <Text style={styles.text}>11/09/2001</Text>
+          <View style={styles.personlInfo}>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Name:</Text>
+              <Text style={styles.text}>{userData.name}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>DOB:</Text>
+              <Text style={styles.text}>11/09/2001</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Age:</Text>
+              <Text style={styles.text}>{userData.age}</Text>
+            </View>
+            <View style={styles.gridItem}>
+              <Text style={styles.label}>Sex:</Text>
+              <Text style={styles.text}>{userData.sex}</Text>
+            </View>
           </View>
-          <View style={styles.gridItem}>
-            <Text style={styles.label}>Age:</Text>
-            <Text style={styles.text}>{userData.age}</Text>
-          </View>
-          <View style={styles.gridItem}>
-            <Text style={styles.label}>Sex:</Text>
-            <Text style={styles.text}>{userData.sex}</Text>
-          </View>
-        </View>
-        {/* </View> */}
-      </TouchableOpacity>
+          {/* </View> */}
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -87,7 +89,11 @@ const styles = StyleSheet.create({
     borderRadius: 50, // Half of width and height
     backgroundColor: "lightgrey",
   },
+  alignContainer: {
+    alignItems: "center",
+  },
   gridContainer: {
+    width: "90%",
     flexDirection: "row",
     flexWrap: "wrap",
     shadowColor: "#000",
