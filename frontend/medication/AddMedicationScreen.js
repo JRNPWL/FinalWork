@@ -288,14 +288,14 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     marginBottom: 5,
     padding: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 6,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 2,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 5,
+    // elevation: 6,
   },
   dateTimePicker: {
     alignItems: "center",
