@@ -144,7 +144,7 @@ const EditUserProfile = () => {
           <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
         </TouchableOpacity>
         <View style={styles.contentContainer}>
-          <Text style={styles.title}>Add new Medication</Text>
+          <Text style={styles.title}>Update Profile</Text>
 
           <View style={styles.personalInfoContainer}>
             <Text style={styles.subTitle}>Personal Info</Text>
