@@ -1,120 +1,60 @@
 import React, { useState, useEffect } from "react";
 import {
   View,
-  TextInput,
-  Button,
-  TouchableOpacity,
   Text,
-  Modal,
   FlatList,
   StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
-  faArrowLeft,
   faDumbbell,
   faRunning,
   faBicycle,
-} from "@fortawesome/free-solid-svg-icons"; // Import Font Awesome icons
-import { getUserId } from "../services/authService";
+  faPlus,
+  faArrowLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import exercisesData from "./exercises.json";
 import { addExercise } from "../services/dataService";
+import { getUserId } from "../services/authService";
 
-const CustomDropdown = ({ options, selectedOption, onSelect }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
-  const handleSelect = (option) => {
-    onSelect(option);
-    setModalVisible(false);
-  };
-
-  return (
-    <View>
-      <Text style={styles.modalTitle}>Select an icon</Text>
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        style={[styles.modalTrigger, { alignSelf: "center" }]}
-      >
-        <FontAwesomeIcon
-          icon={selectedOption.icon}
-          size={40}
-          style={styles.modalIcon}
-        />
-      </TouchableOpacity>
-      <Modal
-        visible={modalVisible}
-        animationType="fade"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <TouchableOpacity
-          style={styles.modalBackground}
-          onPress={() => setModalVisible(false)}
-        >
-          <View style={styles.modalContainer}>
-            <Text style={styles.title}>Select an icon</Text>
-            <FlatList
-              data={options}
-              keyExtractor={(item) => item.value}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  onPress={() => handleSelect(item)}
-                  style={styles.optionItem}
-                >
-                  <FontAwesomeIcon
-                    icon={item.icon}
-                    size={20}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.optionText}>{item.label}</Text>
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </TouchableOpacity>
-      </Modal>
-    </View>
-  );
+const iconMap = {
+  faDumbbell: faDumbbell,
+  faRunning: faRunning,
+  faBicycle: faBicycle,
 };
 
-const AddMedicationScreen = ({ navigation }) => {
-  const [name, setName] = useState("");
-  const [reps, setReps] = useState("");
-  const [sets, setSets] = useState("");
-  const [icon, setIcon] = useState(null); // State to hold the selected icon
-
-  const options = [
-    { value: "faDumbbell", label: "Dumbbell", icon: faDumbbell },
-    { value: "faRunning", label: "Running", icon: faRunning },
-    { value: "faBicycle", label: "Bicycle", icon: faBicycle },
-    /* Add more options as needed */
-  ];
+const AddExerciseScreen = ({ navigation }) => {
+  const [exerciseOptions, setExerciseOptions] = useState([]);
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Set the default selected option to the first option in the list if icon is null
-    if (!icon) {
-      setIcon(options[0]);
-    }
+    setExerciseOptions(exercisesData);
+    setLoading(false);
   }, []);
 
-  const handleIconSelect = (selectedOption) => {
-    setIcon(selectedOption);
+  const handleSelectExercise = (exercise) => {
+    setSelectedExercise(exercise);
   };
 
   const handleSubmit = async () => {
     try {
-      // if (!icon) {
-      //   // If no icon is selected, display an error message or handle it appropriately
-      //   console.error("Please select an icon.");
-      //   return;
-      // }
       const userId = await getUserId();
-      const iconName = icon.value;
-      const response = await addExercise(userId, name, sets, reps, iconName);
+      const { name, sets, reps, description, icon } = selectedExercise;
+      const response = await addExercise(
+        userId,
+        name,
+        sets,
+        reps,
+        description,
+        icon
+      );
       console.log("Exercise added successfully:", response.data);
-      // Handle success, maybe redirect or show a success message
+      navigation.goBack();
     } catch (error) {
       console.error("Error adding exercise:", error);
-      // Handle error, show error message to user
     }
   };
 
@@ -128,45 +68,38 @@ const AddMedicationScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Add a new Exercise</Text>
-        <View style={styles.inputContainer}>
-          <View style={styles.inputTitleContainer}>
-            <Text style={styles.inputTitle}>Exercise Name</Text>
-            <TextInput
-              style={styles.input}
-              value={name}
-              onChangeText={setName}
-              placeholder="Exercise Name"
-            />
-          </View>
-          <View style={styles.inputTitleContainer}>
-            <Text style={styles.inputTitle}>Sets</Text>
-            <TextInput
-              style={styles.input}
-              value={sets}
-              onChangeText={setSets}
-              placeholder="Sets"
-              keyboardType="numeric"
-            />
-          </View>
-          <View style={styles.inputTitleContainer}>
-            <Text style={styles.inputTitle}>Repetitions</Text>
-            <TextInput
-              style={styles.input}
-              value={reps}
-              onChangeText={setReps}
-              placeholder="Reps"
-              keyboardType="numeric"
-            />
-          </View>
-        </View>
-        <CustomDropdown
-          options={options}
-          selectedOption={icon || options[0]} // If no icon is selected, default to first option
-          onSelect={handleIconSelect}
-        />
-        {/* <Button title="Add Exercise" onPress={handleSubmit} disabled={!name} /> */}
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.title}>Select an Exercise to Add</Text>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <FlatList
+            data={exerciseOptions}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={[
+                  styles.exerciseItem,
+                  selectedExercise?.id === item.id &&
+                    styles.selectedExerciseItem,
+                ]}
+                onPress={() => handleSelectExercise(item)}
+              >
+                <FontAwesomeIcon icon={iconMap[item.icon]} size={40} />
+                <View style={styles.exerciseDetails}>
+                  <Text style={styles.exerciseText}>{item.name}</Text>
+                  <Text style={styles.exerciseDescription}>
+                    {item.description}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
+        )}
+        <TouchableOpacity
+          style={styles.button}
+          onPress={handleSubmit}
+          disabled={!selectedExercise}
+        >
           <Text style={styles.buttonText}>Add Exercise</Text>
         </TouchableOpacity>
       </View>
@@ -177,119 +110,56 @@ const AddMedicationScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 20,
+    width: "100%",
+    paddingBottom: 150,
+    paddingTop: 10,
     backgroundColor: "white",
   },
   contentContainer: {
-    width: "100%",
-    marginTop: 50,
+    width: "90%",
   },
   backButton: {
-    position: "absolute",
-    top: 20,
-    left: 20,
+    alignSelf: "flex-start",
+    marginLeft: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 10,
   },
-  inputContainer: {
-    width: "100%",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  inputTitleContainer: {
-    width: "100%",
-    alignSelf: "flex-start",
-    marginBottom: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "lightgrey",
-    padding: 10,
-    borderRadius: 25,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 6,
-  },
-  inputTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-    marginLeft: 10,
-  },
-  modalTrigger: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "lightgray",
-    marginBottom: 20,
-  },
-  modalTitle: {
-    alignSelf: "center",
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  modalIcon: {
-    color: "black",
-  },
-  modalBackground: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContainer: {
-    alignItems: "center",
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    margin: 20,
-  },
-  optionItem: {
+  exerciseItem: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 10,
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ccc",
   },
-  icon: {
-    marginRight: 10,
+  selectedExerciseItem: {
+    backgroundColor: "#e0e0e0",
   },
-  optionText: {
-    fontSize: 16,
+  exerciseDetails: {
+    marginLeft: 10,
+  },
+  exerciseText: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  exerciseDescription: {
+    fontSize: 14,
+    color: "#666",
   },
   button: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 10,
     alignItems: "center",
-    width: "100%",
-    backgroundColor: "#4facfe",
-    borderRadius: 15,
-    marginTop: 10,
-    paddingTop: 5,
-    paddingBottom: 5,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 2,
-      height: 3,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 5,
-    elevation: 6,
+    marginTop: 20,
   },
   buttonText: {
     color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 16,
   },
 });
 
-export default AddMedicationScreen;
+export default AddExerciseScreen;
