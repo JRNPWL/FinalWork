@@ -16,17 +16,19 @@ export const fetchMedicationData = async () => {
     const apiUrl = `http://${DEV_IP}/api/medications/${userId}`;
 
     const response = await axios.get(apiUrl);
-    if (Array.isArray(response.data)) {
-      const formattedData = response.data.map((medication) => ({
-        ...medication,
-        time: new Date(medication.time).toLocaleTimeString([], {
-          hour12: false,
-          hour: "2-digit",
-          minute: "2-digit",
-        }),
-      }));
-      return formattedData;
-    }
+    return response.data;
+
+    // if (Array.isArray(response.data)) {
+    //   const formattedData = response.data.map((medication) => ({
+    //     ...medication,
+    //     time: new Date(medication.time).toLocaleTimeString([], {
+    //       hour12: false,
+    //       hour: "2-digit",
+    //       minute: "2-digit",
+    //     }),
+    //   }));
+    //   return formattedData;
+    // }
   } catch (error) {
     console.error("Error fetching user data:", error);
     setLoading(false);
@@ -103,7 +105,14 @@ export const fetchExercisesData = async () => {
   }
 };
 
-export const addExercise = async (userId, name, sets, reps, iconName) => {
+export const addExercise = async (
+  userId,
+  name,
+  sets,
+  reps,
+  description,
+  iconName
+) => {
   try {
     const userId = await getUserId();
 
@@ -113,6 +122,7 @@ export const addExercise = async (userId, name, sets, reps, iconName) => {
       name: name,
       sets: sets,
       reps: reps,
+      description: description,
       icon: iconName,
     };
 
