@@ -23,6 +23,7 @@ import AddMedicationScreen from "./medication/AddMedicationScreen";
 import JournalScreen from "./journal/JournalScreen";
 import ExercisesScreen from "./exercises/ExercisesScreen";
 import AddExercisesScreen from "./exercises/AddExercisesScreen";
+import ExerciseDetailScreen from "./exercises/ExerciseDetailScreen";
 import StatisticsScreen from "./stats/StatisticsScreen";
 import AboutScreen from "./AboutScreen";
 import CustomFooter from "./snippets/CustomFooter";
@@ -218,6 +219,10 @@ const App = () => {
               <Stack.Screen
                 name="AddExercisesScreen"
                 component={AddExercisesScreen}
+              />
+              <Stack.Screen
+                name="ExerciseDetailScreen"
+                component={ExerciseDetailScreen}
               />
               <Stack.Screen
                 name="StatisticsScreen"
