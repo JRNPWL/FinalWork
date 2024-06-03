@@ -354,20 +354,20 @@ MongoClient.connect(mongoURI)
         // frequency: frequency,
         date: date,
         time: time,
-        reminders: [], // Initialize reminders array
+        // reminders: [], // Initialize reminders array
         icon: icon,
       };
 
       try {
         // If reminders are provided, convert date and time strings to Date objects and add them to the reminders array
-        if (reminders && reminders.length > 0) {
-          for (const reminder of reminders) {
-            const reminderDateTime = new Date(
-              reminder.date + "T" + reminder.time
-            );
-            newMedication.reminders.push(reminderDateTime);
-          }
-        }
+        // if (reminders && reminders.length > 0) {
+        //   for (const reminder of reminders) {
+        //     const reminderDateTime = new Date(
+        //       reminder.date + "T" + reminder.time
+        //     );
+        //     newMedication.reminders.push(reminderDateTime);
+        //   }
+        // }
 
         // Insert medication into medications collection
         const result = await medicationsCollection.insertOne(newMedication);
@@ -407,11 +407,11 @@ MongoClient.connect(mongoURI)
         };
 
         // If reminders are provided, convert date and time strings to Date objects and update the reminders array
-        if (reminders && reminders.length > 0) {
-          updatedMedication.reminders = reminders.map((reminder) => {
-            return new Date(reminder.date + "T" + reminder.time);
-          });
-        }
+        // if (reminders && reminders.length > 0) {
+        //   updatedMedication.reminders = reminders.map((reminder) => {
+        //     return new Date(reminder.date + "T" + reminder.time);
+        //   });
+        // }
 
         // Update medication in medications collection
         const result = await medicationsCollection.updateOne(
@@ -460,23 +460,24 @@ MongoClient.connect(mongoURI)
     // Route to add a new exercises with reminders
     app.post("/api/exercises/:userId", async (req, res) => {
       const userId = req.params.userId;
-      const { name, reps, sets, icon } = req.body; // Extract medication details and reminders from request body
+      const { name, reps, sets, description, icon } = req.body;
 
-      // Generate unique ID for medication
+      // Generate unique ID for exercise
       const exercisesId = uuidv4();
 
-      // Create medication object with basic details
+      // Create exercise object with basic details
       let newExercise = {
         userId: userId,
         medicationId: exercisesId,
         name: name,
         sets: sets,
         reps: reps,
+        description: description,
         icon: icon,
       };
 
       try {
-        // Insert exercises into medications collection
+        // Insert exercises into exercises collection
         const result = await exercisesCollection.insertOne(newExercise);
         res.status(201).json(result);
       } catch (error) {
