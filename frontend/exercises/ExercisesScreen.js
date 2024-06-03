@@ -41,8 +41,8 @@ const ExercisesScreen = () => {
     navigation.navigate("AddExercisesScreen");
   };
 
-  const handleMenuPress = () => {
-    navigation.push("MenuScreen");
+  const handleExercisePress = (exercise) => {
+    navigation.navigate("ExerciseDetailScreen", { exercise });
   };
 
   return (
@@ -71,36 +71,41 @@ const ExercisesScreen = () => {
             data={exerciseData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
-              <View style={styles.centerBottomContainer}>
-                <View style={styles.bottomContainer}>
-                  <View style={styles.iconContainer}>
-                    <FontAwesomeIcon
-                      icon={
-                        item.icon === "faDumbbell"
-                          ? faDumbbell
-                          : item.icon === "faRunning"
-                          ? faRunning
-                          : faBicycle
-                      }
-                      size={64}
-                      style={styles.icon}
-                    />
-                  </View>
-
-                  <View style={styles.detailsContainer}>
-                    <Text style={styles.title}>{item.name}</Text>
-
-                    <View style={styles.detailItem}>
-                      <Text style={styles.label}>Sets:</Text>
-                      <Text style={styles.text}>{item.sets}</Text>
+              <TouchableOpacity
+                style={styles.medicationContainerButton}
+                onPress={() => handleExercisePress(item)}
+              >
+                <View style={styles.centerBottomContainer}>
+                  <View style={styles.bottomContainer}>
+                    <View style={styles.iconContainer}>
+                      <FontAwesomeIcon
+                        icon={
+                          item.icon === "faDumbbell"
+                            ? faDumbbell
+                            : item.icon === "faRunning"
+                            ? faRunning
+                            : faBicycle
+                        }
+                        size={64}
+                        style={styles.icon}
+                      />
                     </View>
-                    <View style={styles.detailItem}>
-                      <Text style={styles.label}>Reps:</Text>
-                      <Text style={styles.text}>{item.reps}</Text>
+
+                    <View style={styles.detailsContainer}>
+                      <Text style={styles.title}>{item.name}</Text>
+
+                      <View style={styles.detailItem}>
+                        <Text style={styles.label}>Sets:</Text>
+                        <Text style={styles.text}>{item.sets}</Text>
+                      </View>
+                      <View style={styles.detailItem}>
+                        <Text style={styles.label}>Reps:</Text>
+                        <Text style={styles.text}>{item.reps}</Text>
+                      </View>
                     </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
         </View>
