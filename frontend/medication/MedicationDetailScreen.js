@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -23,28 +24,53 @@ const MedicationDetailScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(medication.name);
   const [dosage, setDosage] = useState(medication.dosage);
-  //   const [frequency, setFrequency] = useState(medication.frequency);
-  const [date, setDate] = useState(medication.date);
-  const [time, setTime] = useState(medication.time);
-  const [reminders, setReminders] = useState(medication.reminders || []);
-  const [newReminderDate, setNewReminderDate] = useState("");
-  const [newReminderTime, setNewReminderTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
-  const handleAddReminder = () => {
-    if (newReminderDate && newReminderTime) {
-      setReminders([
-        ...reminders,
-        { date: newReminderDate, time: newReminderTime },
-      ]);
-      setNewReminderDate("");
-      setNewReminderTime("");
-    }
+  // const handleAddReminder = () => {
+  //   if (newReminderDate && newReminderTime) {
+  //     setReminders([
+  //       ...reminders,
+  //       { date: newReminderDate, time: newReminderTime },
+  //     ]);
+  //     setNewReminderDate("");
+  //     setNewReminderTime("");
+  //   }
+  // };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirmDate = (date) => {
+    setSelectedDate(date);
+    hideDatePicker();
+  };
+
+  const handleConfirmTime = (time) => {
+    setSelectedTime(time);
+    hideTimePicker();
+  };
+
+  const showTimePicker = () => {
+    setTimePickerVisibility(true);
+  };
+
+  const hideTimePicker = () => {
+    setTimePickerVisibility(false);
   };
 
   const handleUpdateMedication = async () => {
     try {
+      console.log(selectedDate);
       const response = await fetch(
-        `http://localhost:3000/api/medications/${medication.userId}/${medication.medicationId}`,
+        `http://192.168.0.119:3000/api/medications/${medication.userId}/${medication.medicationId}`,
         {
           method: "PUT",
           headers: {
@@ -53,10 +79,8 @@ const MedicationDetailScreen = () => {
           body: JSON.stringify({
             name,
             dosage,
-            // frequency,
-            date,
-            time,
-            reminders,
+            date: selectedDate,
+            time: selectedTime,
             icon: medication.icon,
           }),
         }
@@ -64,7 +88,7 @@ const MedicationDetailScreen = () => {
 
       if (response.ok) {
         alert("Medication updated successfully");
-        navigation.goBack(); // Navigate back to the previous screen
+        navigation.goBack();
       } else {
         alert("Failed to update medication");
       }
@@ -107,29 +131,21 @@ const MedicationDetailScreen = () => {
             <Text style={styles.text}>{dosage}</Text>
           )}
         </View>
-        {/* <View style={styles.detailContainer}>
-        <Text style={styles.label}>Frequency:</Text>
-        {isEditing ? (
-          <TextInput
-            style={styles.input}
-            value={frequency}
-            onChangeText={setFrequency}
-          />
-        ) : (
-          <Text style={styles.text}>{frequency}</Text>
-        )}
-      </View> */}
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Date:</Text>
           {isEditing ? (
-            <TextInput
-              style={styles.input}
-              value={date}
-              onChangeText={setDate}
-            />
+            <View>
+              <TouchableOpacity
+                style={styles.dateTimePicker}
+                onPress={showDatePicker}
+              >
+                <Text style={styles.dateTimePickerText}>Open Date Picker</Text>
+              </TouchableOpacity>
+              {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
+            </View>
           ) : (
             <Text style={styles.text}>
-              {new Date(date).toLocaleDateString("en-US", {
+              {new Date(medication.date).toLocaleDateString("en-US", {
                 month: "long",
                 day: "numeric",
               })}
@@ -139,44 +155,28 @@ const MedicationDetailScreen = () => {
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Time:</Text>
           {isEditing ? (
-            <TextInput
-              style={styles.input}
-              value={time}
-              onChangeText={setTime}
-            />
+            <View>
+              <TouchableOpacity
+                style={styles.dateTimePicker}
+                onPress={showTimePicker}
+              >
+                <Text style={styles.dateTimePickerText}>Open Time Picker</Text>
+              </TouchableOpacity>
+
+              {selectedTime && (
+                <Text>Time: {selectedTime.toLocaleTimeString()}</Text>
+              )}
+            </View>
           ) : (
-            <Text style={styles.text}>{time}</Text>
+            <Text style={styles.text}>
+              {new Date(medication.time).toLocaleTimeString("en-US", {
+                hour12: false,
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </Text>
           )}
         </View>
-        {/* <View style={styles.reminderContainer}>
-          <TextInput
-            style={styles.input}
-            value={newReminderDate}
-            onChangeText={setNewReminderDate}
-            placeholder="Reminder Date"
-          />
-          <TextInput
-            style={styles.input}
-            value={newReminderTime}
-            onChangeText={setNewReminderTime}
-            placeholder="Reminder Time"
-          />
-          <Button title="Add Reminder" onPress={handleAddReminder} />
-        </View>
-        <View style={styles.reminderList}>
-          <Text style={styles.label}>Reminders:</Text>
-          {reminders.map((reminder, index) => (
-            <Text key={index} style={styles.text}>{`${new Date(
-              reminder
-            ).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-            })} ${new Date(reminder).toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}`}</Text>
-          ))}
-        </View> */}
         <View style={styles.buttonContainer}>
           {isEditing ? (
             <TouchableOpacity
@@ -197,6 +197,20 @@ const MedicationDetailScreen = () => {
             </TouchableOpacity>
           )}
         </View>
+
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirmDate}
+          onCancel={hideDatePicker}
+        />
+
+        <DateTimePickerModal
+          isVisible={isTimePickerVisible}
+          mode="time"
+          onConfirm={handleConfirmTime}
+          onCancel={hideTimePicker}
+        />
       </View>
     </View>
   );
@@ -258,6 +272,31 @@ const styles = StyleSheet.create({
     backgroundColor: "#007BFF",
     padding: 10,
     borderRadius: 5,
+  },
+  dateTimePicker: {
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#F8F8F8",
+    borderWidth: 1,
+    borderColor: "lightgrey",
+    borderRadius: 15,
+    paddingTop: 6,
+    paddingBottom: 6,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+    marginBottom: 10,
+  },
+  dateTimePickerText: {
+    color: "black",
+    fontSize: 17,
+    // fontWeight: "bold",
+    fontWeight: "500",
   },
 });
 
