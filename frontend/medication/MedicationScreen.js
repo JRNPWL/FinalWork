@@ -66,10 +66,7 @@ const MedicationScreen = () => {
 
   const groupMedicationsByDate = (medications) => {
     return medications.reduce((acc, med) => {
-      const date = new Date(med.date).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-      });
+      const date = new Date(med.date).toISOString().slice(0, 10);
 
       if (!acc[date]) {
         acc[date] = [];
@@ -82,9 +79,23 @@ const MedicationScreen = () => {
   const groupedMedications = medicationData
     ? groupMedicationsByDate(medicationData)
     : {};
-  const sortedDates = Object.keys(groupedMedications).sort(
-    (a, b) => new Date(a) - new Date(b)
-  );
+
+  const sortedDates = Object.keys(groupedMedications).sort((a, b) => {
+    const dateA = new Date(a);
+    const dateB = new Date(b);
+    // Compare years
+    if (dateA.getFullYear() !== dateB.getFullYear()) {
+      return dateB.getFullYear() - dateA.getFullYear();
+    }
+    // Compare months
+    if (dateA.getMonth() !== dateB.getMonth()) {
+      return dateB.getMonth() - dateA.getMonth();
+    }
+    // Compare days
+    return dateB.getDate() - dateA.getDate();
+  });
+
+  console.log(sortedDates);
 
   if (loading) {
     return (
@@ -121,7 +132,12 @@ const MedicationScreen = () => {
         {sortedDates.length > 0 ? (
           sortedDates.map((date) => (
             <View key={date} style={styles.dateGroup}>
-              <Text style={styles.dateText}>{date}</Text>
+              <Text style={styles.dateText}>
+                {new Date(date).toLocaleDateString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
               {groupedMedications[date].map((medicationData, medIndex) => (
                 <TouchableOpacity
                   key={medIndex}
@@ -152,7 +168,17 @@ const MedicationScreen = () => {
                         </View>
                       </View>
                       <View style={styles.timeContainer}>
-                        <Text style={styles.text}>{medicationData.time}</Text>
+                        <Text style={styles.text}>
+                          {/* {medicationData.time} */}
+                          {new Date(medicationData.time).toLocaleTimeString(
+                            "en-US",
+                            {
+                              hour12: false,
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </Text>
                         <FontAwesomeIcon
                           icon={faChevronRight}
                           size={15}
