@@ -29,9 +29,15 @@
       "package": "com.healthapp",
       "runtimeVersion": "1.0.0",
       "permissions": [
+        "android.permission.health.READ_ACTIVE_CALORIES_BURNED",
         "android.permission.health.READ_STEPS",
-        "android.permission.health.WRITE_STEPS",
-        "android.permission.health.READ_ACTIVE_CALORIES_BURNED"
+        "android.permission.health.READ_TOTAL_CALORIES_BURNED",
+        "android.permission.health.READ_WEIGHT",
+        "android.permission.health.READ_NUTRITION",
+        "android.permission.health.READ_HEART_RATE",
+        "android.permission.health.READ_BLOOD_GLUCOSE",
+        "android.permission.health.READ_BLOOD_PRESSURE",
+        "android.permission.health.READ_OXYGEN_SATURATION"
       ]
     },
     "web": {
