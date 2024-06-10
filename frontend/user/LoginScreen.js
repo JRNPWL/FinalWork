@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { login } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
 
 const LoginScreen = ({ onLoginSuccess }) => {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       <View style={styles.loginContainer}>
         <View style={styles.inputContainer}>
           {/* <Text style={styles.inputText}>Email</Text> */}
