@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   ScrollView,
   View,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { getUserId } from "../services/authService";
 import { logout } from "../services/authService";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
 const UserProfile = ({ onLogoutSuccess }) => {
@@ -30,30 +30,29 @@ const UserProfile = ({ onLogoutSuccess }) => {
     navigation.navigate("EditUserProfile");
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userId = await getUserId();
+  const fetchUserData = async () => {
+    try {
+      const userId = await getUserId();
 
-        // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-        if (!userId) {
-          throw new Error("User is not logged in");
-        }
-
-        const apiUrl = `http://192.168.0.119:3000/api/users/${userId}`;
-
-        const response = await axios.get(apiUrl);
-        // console.log(response);
-        setUserData(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        setLoading(false);
+      // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
+      if (!userId) {
+        throw new Error("User is not logged in");
       }
-    };
 
+      const apiUrl = `http://192.168.0.119:3000/api/users/${userId}`;
+
+      const response = await axios.get(apiUrl);
+      // console.log(response);
+      setUserData(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchUserData();
-
     // const fetchUserProfilePic = async () => {
     //   try {
     //     const userId = await getUserId();
@@ -74,7 +73,14 @@ const UserProfile = ({ onLogoutSuccess }) => {
     // fetchUserProfilePic();
   }, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
   const formatDob = (dob) => {
+    if (!dob) return "";
+
     const dateParts = dob.split("-");
     const year = dateParts[0];
     const month = dateParts[1];
@@ -84,6 +90,8 @@ const UserProfile = ({ onLogoutSuccess }) => {
   };
 
   const calculateAge = (dob) => {
+    if (!dob) return "";
+
     const dobDate = new Date(dob);
     const today = new Date();
 
