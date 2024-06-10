@@ -1,41 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   FlatList,
   StyleSheet,
   ActivityIndicator,
   Text,
-  Button,
+  Image,
   TouchableOpacity,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { fetchExercisesData } from "../services/dataService";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faDumbbell,
-  faRunning,
-  faBicycle,
-  faPlus,
-} from "@fortawesome/free-solid-svg-icons"; // Import Font Awesome icons
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useFocusEffect } from "@react-navigation/native";
 
 const ExercisesScreen = () => {
   const navigation = useNavigation();
   const [exerciseData, setExerciseData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const Icon = {
+    chest: require("../assets/chest.png"),
+    back: require("../assets/back.png"),
+    arm: require("../assets/arm.png"),
+    leg: require("../assets/leg.png"),
+  };
+
+  const fetchExercises = async () => {
+    try {
+      const exercises = await fetchExercisesData();
+      setExerciseData(exercises);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching exercises:", error);
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchExercises = async () => {
-      try {
-        const exercises = await fetchExercisesData();
-        setExerciseData(exercises);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching exercises:", error);
-        setLoading(false);
-      }
-    };
     fetchExercises();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchExercises();
+    }, [])
+  );
 
   const navigateToAddExercise = () => {
     navigation.navigate("AddExercisesScreen");
@@ -78,7 +88,8 @@ const ExercisesScreen = () => {
                 <View style={styles.centerBottomContainer}>
                   <View style={styles.bottomContainer}>
                     <View style={styles.iconContainer}>
-                      <FontAwesomeIcon
+                      <Image source={Icon[item.icon]} style={styles.icon} />
+                      {/* <FontAwesomeIcon
                         icon={
                           item.icon === "faDumbbell"
                             ? faDumbbell
@@ -88,7 +99,7 @@ const ExercisesScreen = () => {
                         }
                         size={64}
                         style={styles.icon}
-                      />
+                      /> */}
                     </View>
 
                     <View style={styles.detailsContainer}>
@@ -169,7 +180,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 5,
     elevation: 6,
-    marginBottom: 20,
+    marginBottom: 5,
+    marginTop: 5,
     // backgroundColor: "lightgrey",
     backgroundColor: "#F8F8F8",
     padding: 10,
@@ -178,6 +190,10 @@ const styles = StyleSheet.create({
     width: "50%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  icon: {
+    width: 64,
+    height: 64,
   },
   detailsContainer: {
     width: "50%",
