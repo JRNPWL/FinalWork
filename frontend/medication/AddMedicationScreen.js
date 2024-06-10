@@ -7,15 +7,11 @@ import {
   Modal,
   TouchableOpacity,
   FlatList,
+  Image,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import {
-  faArrowLeft,
-  faDumbbell,
-  faRunning,
-  faBicycle,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { addMedication } from "../services/dataService";
 
 const CustomDropdown = ({ options, selectedOption, onSelect }) => {
@@ -33,11 +29,7 @@ const CustomDropdown = ({ options, selectedOption, onSelect }) => {
         onPress={() => setModalVisible(true)}
         style={[styles.modalTrigger, { alignSelf: "center" }]}
       >
-        <FontAwesomeIcon
-          icon={selectedOption.icon}
-          size={40}
-          style={styles.modalIcon}
-        />
+        <Image source={options[selectedOption]} style={styles.modalIcon} />
       </TouchableOpacity>
       <Modal
         visible={modalVisible}
@@ -52,19 +44,15 @@ const CustomDropdown = ({ options, selectedOption, onSelect }) => {
           <View style={styles.modalContainer}>
             <Text style={styles.title}>Select an icon</Text>
             <FlatList
-              data={options}
-              keyExtractor={(item) => item.value}
+              data={Object.keys(options)}
+              keyExtractor={(item) => item}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => handleSelect(item)}
                   style={styles.optionItem}
                 >
-                  <FontAwesomeIcon
-                    icon={item.icon}
-                    size={20}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.optionText}>{item.label}</Text>
+                  <Image source={options[item]} style={styles.icon} />
+                  {/* <Text style={styles.optionText}>{item}</Text> */}
                 </TouchableOpacity>
               )}
             />
@@ -85,17 +73,19 @@ const AddMedicationScreen = ({ navigation }) => {
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [icon, setIcon] = useState(null); // State to hold the selected icon
 
-  const options = [
-    { value: "faDumbbell", label: "Dumbbell", icon: faDumbbell },
-    { value: "faRunning", label: "Running", icon: faRunning },
-    { value: "faBicycle", label: "Bicycle", icon: faBicycle },
-    /* Add more options as needed */
-  ];
+  const Icon = {
+    Pill1: require("../assets/Pill1.png"),
+    Pill2: require("../assets/Pill2.png"),
+    Pill3: require("../assets/Pill3.png"),
+    Pill4: require("../assets/Pill4.png"),
+    Pill5: require("../assets/Pill5.png"),
+    Pill6: require("../assets/Pill6.png"),
+  };
 
   useEffect(() => {
     // Set the default selected option to the first option in the list if icon is null
     if (!icon) {
-      setIcon(options[0]);
+      setIcon(Object.keys(Icon)[0]);
     }
   }, []);
 
@@ -130,7 +120,6 @@ const AddMedicationScreen = ({ navigation }) => {
   };
 
   const handleSubmit = async () => {
-    const iconName = icon.value;
     try {
       await addMedication(
         name,
@@ -138,7 +127,7 @@ const AddMedicationScreen = ({ navigation }) => {
         frequency,
         selectedDate,
         selectedTime,
-        iconName
+        icon
       );
       navigation.goBack();
     } catch (error) {
@@ -178,19 +167,8 @@ const AddMedicationScreen = ({ navigation }) => {
             />
           </View>
 
-          {/* <View style={styles.inputTitleContainer}>
-            <Text style={styles.inputTitle}>Frequency</Text>
-            <TextInput
-              style={styles.input}
-              value={frequency}
-              onChangeText={setFrequency}
-              placeholder="Enter frequency"
-            />
-          </View> */}
-
           <View style={styles.inputTitleContainer}>
             <Text style={styles.inputTitle}>Select Date</Text>
-            {/* <Button title="Select Date" onPress={showDatePicker} /> */}
             <TouchableOpacity
               style={styles.dateTimePicker}
               onPress={showDatePicker}
@@ -215,8 +193,8 @@ const AddMedicationScreen = ({ navigation }) => {
           </View>
 
           <CustomDropdown
-            options={options}
-            selectedOption={icon || options[0]} // If no icon is selected, default to first option
+            options={Icon}
+            selectedOption={icon || Object.keys(Icon)[0]} // If no icon is selected, default to first option
             onSelect={handleIconSelect}
           />
 
@@ -361,6 +339,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalIcon: {
+    width: 70,
+    height: 70,
     color: "black",
   },
   modalBackground: {
@@ -370,9 +350,11 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     alignItems: "center",
-    backgroundColor: "white",
+    // backgroundColor: "white",
+    backgroundColor: "#F8F8F8",
+    // backgroundColor: "red",
     padding: 20,
-    borderRadius: 10,
+    borderRadius: 20,
     margin: 20,
   },
   optionItem: {
@@ -381,6 +363,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   icon: {
+    width: 80,
+    height: 80,
     marginRight: 10,
   },
   optionText: {
