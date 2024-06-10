@@ -12,7 +12,7 @@
 //     });
 //   };
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   StyleSheet,
@@ -20,10 +20,11 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
-import { getUserId } from "../services/authService";
+// import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
-import * as Notifications from "expo-notifications";
+// import * as Notifications from "expo-notifications";
 import { fetchMedicationData } from "../services/dataService";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -34,6 +35,7 @@ import {
   faRunning,
   faBicycle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useFocusEffect } from "@react-navigation/native";
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
@@ -41,24 +43,39 @@ const MedicationScreen = () => {
   const [medicationData, setMedicationData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const navigateToAddMedication = async () => {
-    navigation.navigate("AddMedicationScreen");
+  const Icon = {
+    Pill1: require("../assets/Pill1.png"),
+    Pill2: require("../assets/Pill2.png"),
+    Pill3: require("../assets/Pill3.png"),
+    Pill4: require("../assets/Pill4.png"),
+    Pill5: require("../assets/Pill5.png"),
+    Pill6: require("../assets/Pill6.png"),
+  };
+
+  const fetchMedications = async () => {
+    try {
+      const meds = await fetchMedicationData();
+      setMedicationData(meds);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching medications:", error);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchMedications = async () => {
-      try {
-        const meds = await fetchMedicationData();
-        setMedicationData(meds);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching medications:", error);
-        setLoading(false);
-      }
-    };
-
     fetchMedications();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchMedications();
+    }, [])
+  );
+
+  const navigateToAddMedication = async () => {
+    navigation.navigate("AddMedicationScreen");
+  };
 
   const handleMedicationPress = (medication) => {
     navigation.navigate("MedicationDetailScreen", { medication });
@@ -147,6 +164,11 @@ const MedicationScreen = () => {
                   <View style={styles.medicationContainer}>
                     <View style={styles.infoContainer}>
                       <View style={styles.iconContainer}>
+                        <Image
+                          source={Icon[medicationData.icon]}
+                          style={styles.icon}
+                        />
+                        {/* 
                         <FontAwesomeIcon
                           icon={
                             medicationData.icon === "faDumbbell"
@@ -157,7 +179,7 @@ const MedicationScreen = () => {
                           }
                           size={64}
                           style={styles.icon}
-                        />
+                        /> */}
                       </View>
                       <View style={styles.detailsContainer}>
                         <Text style={styles.label}>{medicationData.name}</Text>
@@ -280,6 +302,10 @@ const styles = StyleSheet.create({
     width: "30%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  icon: {
+    width: 64,
+    height: 64,
   },
   detailsContainer: {
     justifyContent: "center",
