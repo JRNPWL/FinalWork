@@ -15,7 +15,6 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { fetchUserData } from "../services/dataService";
-// import DatePicker from "@react-native-community/datetimepicker";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Picker } from "@react-native-picker/picker";
 
@@ -118,7 +117,9 @@ const EditUserProfile = () => {
 
       setLoading(true);
       const response = await axios.put(apiUrl, putData);
+      console.log("User Updated successfully:", response.data);
       setLoading(false);
+      navigation.goBack();
     } catch (error) {
       console.error("Error updating profile:", error);
       setLoading(false);
