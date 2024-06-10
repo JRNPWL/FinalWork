@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "name": "Exercise 1",
+    "sets": 3,
+    "reps": 10,
+    "description": "A strength exercise involving lifting dumbbells.",
+    "icon": "chest"
+  },
+  {
+    "id": "2",
+    "name": "Exercise 2",
+    "sets": 1,
+    "reps": 30,
+    "description": "A cardiovascular exercise involving running.",
+    "icon": "back"
+  },
+  {
+    "id": "3",
+    "name": "Exercise 3",
+    "sets": 1,
+    "reps": 15,
+    "description": "A cardiovascular exercise involving cycling.",
+    "icon": "arm"
+  },
+  {
+    "id": "4",
+    "name": "Exercise 4",
+    "sets": 1,
+    "reps": 15,
+    "description": "A cardiovascular exercise involving cycling.",
+    "icon": "leg"
+  }
+]
