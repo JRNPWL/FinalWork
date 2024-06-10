@@ -8,6 +8,7 @@ const UserSnippet = ({ navigation, userData }) => {
   const defaultProfilePhoto = require("../assets/Default_pfp.png");
 
   useEffect(() => {
+    console.log(userData);
     const fetchUserProfilePic = async () => {
       try {
         const userId = await getUserId();
@@ -27,6 +28,36 @@ const UserSnippet = ({ navigation, userData }) => {
 
     fetchUserProfilePic();
   }, []);
+
+  const formatDob = (dob) => {
+    if (!dob) return "";
+
+    const dateParts = dob.split("-");
+    const year = dateParts[0];
+    const month = dateParts[1];
+    const day = dateParts[2];
+
+    return `${day}/${month}/${year}`;
+  };
+
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+
+    const dobDate = new Date(dob);
+    const today = new Date();
+
+    let age = today.getFullYear() - dobDate.getFullYear();
+    const monthDiff = today.getMonth() - dobDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < dobDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
+  };
 
   const navigateToJournalScreen = () => {
     navigation.navigate("UserProfile");
@@ -56,11 +87,13 @@ const UserSnippet = ({ navigation, userData }) => {
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.label}>DOB:</Text>
-              <Text style={styles.text}>11/09/2001</Text>
+              <Text style={styles.text}>{formatDob(userData.dob)}</Text>
+              {/* <Text style={styles.text}>{userData.dob}</Text> */}
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.label}>Age:</Text>
-              <Text style={styles.text}>{userData.age}</Text>
+              <Text style={styles.text}>{calculateAge(userData.dob)}</Text>
+              {/* <Text style={styles.text}>{userData.dob}</Text> */}
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.label}>Sex:</Text>
