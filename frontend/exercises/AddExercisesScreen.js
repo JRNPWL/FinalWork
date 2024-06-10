@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
@@ -19,16 +20,17 @@ import exercisesData from "./exercises.json";
 import { addExercise } from "../services/dataService";
 import { getUserId } from "../services/authService";
 
-const iconMap = {
-  faDumbbell: faDumbbell,
-  faRunning: faRunning,
-  faBicycle: faBicycle,
-};
-
 const AddExerciseScreen = ({ navigation }) => {
   const [exerciseOptions, setExerciseOptions] = useState([]);
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const Icon = {
+    chest: require("../assets/chest.png"),
+    back: require("../assets/back.png"),
+    arm: require("../assets/arm.png"),
+    leg: require("../assets/leg.png"),
+  };
 
   useEffect(() => {
     setExerciseOptions(exercisesData);
@@ -84,7 +86,7 @@ const AddExerciseScreen = ({ navigation }) => {
                 ]}
                 onPress={() => handleSelectExercise(item)}
               >
-                <FontAwesomeIcon icon={iconMap[item.icon]} size={40} />
+                <Image source={Icon[item.icon]} style={styles.icon} />
                 <View style={styles.exerciseDetails}>
                   <Text style={styles.exerciseText}>{item.name}</Text>
                   <Text style={styles.exerciseDescription}>
@@ -127,6 +129,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+  },
+  icon: {
+    width: 40,
+    height: 40,
   },
   exerciseItem: {
     flexDirection: "row",
