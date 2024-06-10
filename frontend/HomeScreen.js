@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   ScrollView,
   View,
@@ -6,8 +6,12 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import { logout } from "./services/authService";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
+import {
+  fetchMedicationData,
+  fetchJournalData,
+  fetchUserData,
+} from "./services/dataService";
 import MedicationSnippet from "./snippets/MedicationSnippet";
 import JournalSnippet from "./snippets/JournalSnippet";
 import UserSnippet from "./snippets/UserSnippet";
@@ -15,11 +19,15 @@ import UserSnippet from "./snippets/UserSnippet";
 const HomeScreen = ({
   // onLogoutSuccess,
   navigation,
-  medications,
-  journalEntries,
-  userData,
+  // medications,
+  // journalEntries,
+  // userData,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [medications, setMedications] = useState([]);
+  const [journalEntries, setJournalEntries] = useState([]);
+  const [userData, setUserData] = useState([]);
+
   const currentDate = new Date();
   // Format the date as "Month Day" (e.g., "January 8")
   const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -27,25 +35,25 @@ const HomeScreen = ({
     day: "numeric",
   });
 
+  const fetchData = async () => {
+    const meds = await fetchMedicationData();
+    const entries = await fetchJournalData();
+    const user = await fetchUserData();
+    setMedications(meds);
+    setJournalEntries(entries);
+    setUserData(user);
+  };
+
   useEffect(() => {
-    // Check if medications and journalEntries are available
-    // if (
-    //   medications.length > 0 &&
-    //   journalEntries.length > 0
-    //   // && userData.length > 0
-    // ) {
-    setIsLoading(false); // Set loading state to false once data is available
-    // }
-  }, [medications, journalEntries, userData]);
+    fetchData();
+    setIsLoading(false); //
+  }, []);
 
-  // const handleLogout = async () => {
-  //   logout();
-  //   onLogoutSuccess();
-  // };
-
-  // const handleMenuPress = () => {
-  //   navigation.navigate("MenuScreen");
-  // };
+  useFocusEffect(
+    useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   if (isLoading) {
     return (
@@ -58,10 +66,6 @@ const HomeScreen = ({
 
   return (
     <View style={styles.container}>
-      {/* <Button title="Logout" onPress={handleLogout} /> */}
-      {/* {isLoading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : ( */}
       <ScrollView
         style={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
