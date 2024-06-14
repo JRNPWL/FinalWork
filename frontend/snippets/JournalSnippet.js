@@ -85,12 +85,16 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   label: {
-    // fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
     // marginRight: 10,
   },
   entryContainer: {
-    marginBottom: 10,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 20,
+    borderBottomWidth: 1,
+    borderColor: "lightgrey",
   },
   noJournalDetailsContainer: {
     justifyContent: "center",

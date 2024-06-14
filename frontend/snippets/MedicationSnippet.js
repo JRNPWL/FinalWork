@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   timeText: {
-    fontSize: 16,
+    fontSize: 26,
+    paddingRight: 20,
   },
   text: {
     fontSize: 16,
