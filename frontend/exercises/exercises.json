@@ -1,34 +1,427 @@
 [
   {
     "id": "1",
-    "name": "Exercise 1",
+    "name": "Enkelpomp oefening",
     "sets": 3,
     "reps": 10,
-    "description": "A strength exercise involving lifting dumbbells.",
-    "icon": "chest"
+    "description": "Leg de benen recht en plat op het bed. Beweeg de voeten in een vloeiende beweging naar je toe en van je weg.",
+    "icon": "leg"
   },
   {
     "id": "2",
-    "name": "Exercise 2",
-    "sets": 1,
-    "reps": 30,
-    "description": "A cardiovascular exercise involving running.",
-    "icon": "back"
+    "name": "Hielglijden",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op het bed. Trek 1 knie op, door met je hiel over de lakens te glijden. Doe dit vervolgens met je andere knie.",
+    "icon": "leg"
   },
   {
     "id": "3",
-    "name": "Exercise 3",
-    "sets": 1,
-    "reps": 15,
-    "description": "A cardiovascular exercise involving cycling.",
-    "icon": "arm"
+    "name": "Quadriceps setting",
+    "sets": 3,
+    "reps": 10,
+    "description": "Leg een rolletje onder je knie. Je kan hiervoor een opgerolde handdoek gebruiken. Duw je knieën naar beneden in het rolletje. Hierdoor hef je je voet van het bed. Trek vervolgens je tenen naar je toe en houd 6 seconden aan.",
+    "icon": "leg"
   },
   {
     "id": "4",
-    "name": "Exercise 4",
-    "sets": 1,
-    "reps": 15,
-    "description": "A cardiovascular exercise involving cycling.",
+    "name": "Hamstring setting",
+    "sets": 3,
+    "reps": 10,
+    "description": "Leg een rolletje onder je knie. Je kan hiervoor een opgerolde handdoek gebruiken. Duw je hiel in het bed houd 6 seconden aan.",
     "icon": "leg"
+  },
+  {
+    "id": "5",
+    "name": "Been zijwaarts bewegen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op bed. Beweeg langzaam je rechterbeen naar buiten. Beweeg vervolgens je been terug naar binnen. Herhaal dit met je linkerbeen.",
+    "icon": "leg"
+  },
+  {
+    "id": "6",
+    "name": "Buigen in de heupen en de knieën",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op bed. Beweeg langzaam je rechterbeen omhoog en buig het been tot 90°. Laat je been weer langzaam zakken. Herhaal dit met je linkerbeen.",
+    "icon": "leg"
+  },
+  {
+    "id": "7",
+    "name": "Been heffen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op bed. Hef je rechterbeen gestrekt omhoog, terwijl je linkerbeen geplooid erlangs staat. Laat langzaam zakken. Wissel nu van kant: je linkerbeen gestrekt heffen, terwijl je rechterbeen geplooid erlangs staat.",
+    "icon": "leg"
+  },
+  {
+    "id": "8",
+    "name": "In de lucht fietsen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op bed. Leg de armen naast je neer. Span je buikspieren aan (druk je onderrug tegen het bed), zodat je geen holle rug maakt. Begin met hoog in de lucht te fietsen: dit doe je door je ene been te strekken, terwijl je het andere naar je toe trekt. Wissel vervolgens van kant.",
+    "icon": "leg"
+  },
+  {
+    "id": "9",
+    "name": "Bridge (bruggetje)",
+    "sets": 3,
+    "reps": 10,
+    "description": "Start met je benen plat op bed. Leg de armen naast je neer. Span je buikspieren aan en hef je zitvlak van het bed (tot je buik en bovenbenen op één lijn zijn). Laat vervolgens je zitvlak rustig terug zakken tot op het bed.",
+    "icon": "leg"
+  },
+  {
+    "id": "10",
+    "name": "Op tenen en hielen staan",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je op een stoel met je voeten op de grond. Ga nu afwisselend op je tenen en op je hielen staan.",
+    "icon": "leg"
+  },
+  {
+    "id": "11",
+    "name": "Knieën strekken",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond. Strek je rechterknie en beweeg je tenen naar je toe. Probeer dit 5 seconden vol te houden. Doe nu hetzelfde met je linkerbeen.",
+    "icon": "leg"
+  },
+  {
+    "id": "12",
+    "name": "Enkelbewegingen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond. Strek je rechterbeen, trek je tenen naar je toe en duw ze terug weg. Doe dit 5 keer en zet je voet neer. Herhaal dit vervolgens voor je linkerbeen.",
+    "icon": "leg"
+  },
+  {
+    "id": "13",
+    "name": "Stappen ter plaatse",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond. Stap ter plaatse door je knieën één voor één te heffen tot een comfortabele hoogte.",
+    "icon": "leg"
+  },
+  {
+    "id": "14",
+    "name": "Krachtoefening zijkant heup",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond. Verplaats je rechterbeen naar buiten en weer terug. Herhaal dit met je andere linkerbeen.",
+    "icon": "leg"
+  },
+  {
+    "id": "15",
+    "name": "Afwisselend de linker- en rechterarm heffen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond en je rug tegen de leuning. Breng nu gestrekt je rechterarm omhoog en vervolgens terug naar beneden. Herhaal dit met je linkerarm.",
+    "icon": "faDumbbell"
+  },
+  {
+    "id": "16",
+    "name": "Strek en buig de armen naar voren",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond en je rug tegen de leuning. Strek beide armen voor je uit en breng ze vervolgens naar je schouders (schouders tikken).",
+    "icon": "faDumbbell"
+  },
+  {
+    "id": "17",
+    "name": "Boksen",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zet je recht op een stoel met je voeten op de grond en je rug tegen de leuning. Breng je armen afwisselend naar voor, zodat je een boksbeweging uitvoert.",
+    "icon": "faDumbbell"
+  },
+  {
+    "id": "18",
+    "name": "Krachtoefening kuiten",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met je 2 handen op een stoel of tafel. Ga op je tenen staan en zak vervolgens terug naar de grond.",
+    "icon": "leg"
+  },
+  {
+    "id": "19",
+    "name": "Op één been staan",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met je 2 handen op een stoel of tafel. Ga vervolgens op 1 been staan. Probeer deze positie 5 seconden vast te houden. Doe dit hierna met je andere been.",
+    "icon": "leg"
+  },
+  {
+    "id": "20",
+    "name": "Krachtoefening achterkant knie",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met je 2 handen op een stoel of tafel. Breng je rechtervoet omhoog en zet hem vervolgens terug neer. Doe dit hierna met je linkervoet.",
+    "icon": "leg"
+  },
+  {
+    "id": "21",
+    "name": "Krachtoefening zijkant heup",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met 1 hand op een stoel of tafel. Til je been zijwaarts op en breng het terug. Wissel van kant en doe hetzelfde met je andere been.",
+    "icon": "leg"
+  },
+  {
+    "id": "22",
+    "name": "Stappen ter plaatse",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met je handen op een stoel of tafel. Stap ter plaatse door je knieën één voor één te heffen tot een comfortabele hoogte.",
+    "icon": "leg"
+  },
+  {
+    "id": "23",
+    "name": "Marcheren",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga rechtop staan en steun met je handen op een stoel of tafel. Breng afwisselend je linkerarm en rechterknie omhoog en andersom (soort mars beweging).",
+    "icon": "leg"
+  },
+
+  {
+    "id": "24",
+    "name": "Muur Push-ups",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop tegenover een muur met je handen op schouderbreedte tegen de muur gedrukt. Buig je ellebogen om jezelf naar de muur toe te brengen en duw jezelf vervolgens weer terug. Zorg ervoor dat je romp recht blijft en je core aangespannen is.",
+    "icon": "chest"
+  },
+  {
+    "id": "25",
+    "name": "TheraBand Borstdruk",
+    "sets": 3,
+    "reps": 10,
+    "description": "Bevestig een weerstandsband achter je rug en houd de handvatten vast. Duw de handvatten naar voren tot je armen volledig gestrekt zijn. Breng de handvatten langzaam terug naar de beginpositie, waarbij je de spanning in de band behoudt.",
+    "icon": "chest"
+  },
+  {
+    "id": "26",
+    "name": "Borststretch tegen de muur",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga zijwaarts tegen een muur staan en plaats je hand en onderarm tegen de muur. Draai je lichaam langzaam van de muur weg totdat je een rek voelt in je borstspier. Houd deze positie 20-30 seconden vast en wissel dan van kant.",
+    "icon": "chest"
+  },
+  {
+    "id": "27",
+    "name": "Dumbbell Flyes",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga op je rug liggen op een bankje met een dumbbell in elke hand. Strek je armen recht boven je borst en laat ze langzaam zijwaarts zakken tot ze op schouderhoogte zijn. Breng de dumbbells vervolgens weer samen boven je borst.",
+    "icon": "chest"
+  },
+  {
+    "id": "28",
+    "name": "Schuine Borstdruk met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga op een schuin bankje liggen met een dumbbell in elke hand. Begin met de dumbbells op schouderhoogte en duw ze omhoog tot je armen volledig gestrekt zijn. Laat de dumbbells vervolgens langzaam terugzakken naar de startpositie.",
+    "icon": "chest"
+  },
+  {
+    "id": "29",
+    "name": "Borstpress met Medicijnbal",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga op je rug liggen met een medicijnbal in je handen. Houd de bal boven je borst en duw hem omhoog totdat je armen volledig gestrekt zijn. Laat de bal vervolgens langzaam terugzakken naar je borst.",
+    "icon": "chest"
+  },
+  {
+    "id": "30",
+    "name": "Armheffen tegen de muur",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met je rug tegen een muur. Hef je armen zijwaarts omhoog tot schouderhoogte, houd even vast en laat ze dan langzaam weer zakken. Zorg ervoor dat je rug tegen de muur blijft tijdens de oefening.",
+    "icon": "chest"
+  },
+  {
+    "id": "31",
+    "name": "Pec Deck Flyes",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zit rechtop in een pec deck machine en houd de handvatten vast met je armen gestrekt. Breng de handvatten naar elkaar toe voor je borst en laat ze dan langzaam terugkeren naar de startpositie.",
+    "icon": "chest"
+  },
+  {
+    "id": "32",
+    "name": "Push-ups op knieën",
+    "sets": 3,
+    "reps": 10,
+    "description": "Begin in een plankpositie op je knieën met je handen op schouderbreedte. Buig je ellebogen om je borst naar de grond te brengen en duw jezelf vervolgens weer omhoog. Houd je core aangespannen en je rug recht.",
+    "icon": "chest"
+  },
+  {
+    "id": "33",
+    "name": "Borstrek met weerstandsband",
+    "sets": 3,
+    "reps": 10,
+    "description": "Bevestig een weerstandsband op schouderhoogte aan een stevig ankerpunt. Houd de band met één hand vast en stap van het ankerpunt weg totdat je spanning in de band voelt. Draai je romp van het ankerpunt weg om een rek in je borst te voelen. Houd deze positie 20-30 seconden vast en wissel dan van kant.",
+    "icon": "chest"
+  },
+  {
+    "id": "34",
+    "name": "Rug stretch op handen en knieën",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga op handen en knieën zitten. Maak je rug bol door je buik in te trekken en je rug omhoog te duwen, houd deze positie een paar seconden vast en ontspan dan. Laat vervolgens je buik zakken en duw je rug naar beneden voor een holle rug, houd deze positie een paar seconden vast en herhaal.",
+    "icon": "back"
+  },
+  {
+    "id": "35",
+    "name": "Bird Dog",
+    "sets": 3,
+    "reps": 10,
+    "description": "Begin op handen en knieën met je handen recht onder je schouders en je knieën onder je heupen. Strek tegelijkertijd je rechterarm en linkerbeen uit tot ze in lijn zijn met je rug. Houd even vast, keer terug naar de startpositie en wissel dan van kant.",
+    "icon": "back"
+  },
+  {
+    "id": "36",
+    "name": "Superman",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga op je buik liggen met je armen gestrekt voor je uit. Til tegelijkertijd je armen, borst en benen van de grond, houd even vast en laat dan langzaam weer zakken. Deze oefening helpt bij het versterken van je onderrugspieren.",
+    "icon": "back"
+  },
+  {
+    "id": "37",
+    "name": "Rugextension op Swiss Ball",
+    "sets": 3,
+    "reps": 10,
+    "description": "Ga met je buik op een Swiss Ball liggen, met je voeten tegen de muur voor stabiliteit. Plaats je handen achter je hoofd of gestrekt voor je. Til je borst van de bal, houd even vast en laat dan langzaam weer zakken.",
+    "icon": "back"
+  },
+  {
+    "id": "38",
+    "name": "Brug",
+    "sets": 3,
+    "reps": 10,
+    "description": "Lig op je rug met je knieën gebogen en je voeten plat op de grond. Til je heupen omhoog tot je lichaam een rechte lijn vormt van je schouders tot je knieën. Houd even vast en laat dan langzaam weer zakken.",
+    "icon": "back"
+  },
+  {
+    "id": "39",
+    "name": "Rugrek met stoel",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zit rechtop op een stoel met je voeten plat op de grond. Plaats je handen achter je hoofd en buig langzaam naar achteren over de rugleuning van de stoel om een rek in je bovenrug te voelen. Houd deze positie een paar seconden vast en keer dan terug naar de startpositie.",
+    "icon": "back"
+  },
+  {
+    "id": "40",
+    "name": "Reverse Flyes met TheraBand",
+    "sets": 3,
+    "reps": 10,
+    "description": "Houd de uiteinden van een weerstandsband in elke hand met de band om een stevig ankerpunt op borsthoogte. Strek je armen zijwaarts uit, waarbij je schouderbladen samenknijpt. Breng je armen langzaam terug naar de startpositie.",
+    "icon": "back"
+  },
+  {
+    "id": "41",
+    "name": "Rugrol",
+    "sets": 3,
+    "reps": 10,
+    "description": "Lig op je rug met je knieën gebogen en je voeten plat op de grond. Rol langzaam je knieën naar één kant totdat je een rek voelt in je onderrug, houd even vast en keer dan terug naar de startpositie. Herhaal aan de andere kant.",
+    "icon": "back"
+  },
+  {
+    "id": "42",
+    "name": "Cat-Cow Stretch",
+    "sets": 3,
+    "reps": 10,
+    "description": "Begin op handen en knieën met je handen recht onder je schouders en je knieën onder je heupen. Maak je rug bol door je buik in te trekken en je rug omhoog te duwen (cat pose), houd even vast en laat dan je buik zakken en duw je rug naar beneden (cow pose). Herhaal deze beweging.",
+    "icon": "back"
+  },
+  {
+    "id": "43",
+    "name": "Zittende Rotatie",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zit rechtop op een stoel met je voeten plat op de grond. Plaats je rechterhand op de buitenkant van je linkerknie en draai je romp naar links, houd deze positie een paar seconden vast en keer dan terug naar de startpositie. Herhaal aan de andere kant.",
+    "icon": "back"
+  },
+  {
+    "id": "44",
+    "name": "Biceps Curl met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met een dumbbell in elke hand, armen langs je lichaam. Buig je ellebogen om de dumbbells naar je schouders te brengen en laat ze dan langzaam weer zakken. Zorg ervoor dat je ellebogen dicht bij je lichaam blijven.",
+    "icon": "arm"
+  },
+  {
+    "id": "45",
+    "name": "Triceps Dip op Stoel",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zit op de rand van een stevige stoel en plaats je handen naast je heupen. Schuif je heupen van de stoel en buig je ellebogen om je lichaam naar de grond te brengen. Duw jezelf vervolgens weer omhoog. Houd je rug dicht bij de stoel en je ellebogen naar achteren gericht.",
+    "icon": "arm"
+  },
+  {
+    "id": "46",
+    "name": "Schouderdruk met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met een dumbbell in elke hand op schouderhoogte. Duw de dumbbells omhoog tot je armen volledig gestrekt zijn en laat ze dan langzaam weer zakken naar schouderhoogte. Houd je core aangespannen en je rug recht.",
+    "icon": "arm"
+  },
+  {
+    "id": "47",
+    "name": "Biceps Curl met Weerstandsband",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta met beide voeten op een weerstandsband en houd de handvatten vast. Buig je ellebogen om de handvatten naar je schouders te brengen en laat ze dan langzaam weer zakken. Houd je ellebogen dicht bij je lichaam.",
+    "icon": "arm"
+  },
+  {
+    "id": "48",
+    "name": "Triceps Uitstrekken met Weerstandsband",
+    "sets": 3,
+    "reps": 10,
+    "description": "Bevestig een weerstandsband boven je hoofd en houd de handvatten vast. Buig je ellebogen om de handvatten achter je hoofd te brengen en strek dan je armen om de handvatten omhoog te duwen. Laat ze langzaam terugkeren naar de startpositie.",
+    "icon": "arm"
+  },
+  {
+    "id": "49",
+    "name": "Hamer Curl met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met een dumbbell in elke hand, armen langs je lichaam met je handpalmen naar je lichaam gericht. Buig je ellebogen om de dumbbells naar je schouders te brengen en laat ze dan langzaam weer zakken. Houd je ellebogen dicht bij je lichaam.",
+    "icon": "arm"
+  },
+  {
+    "id": "50",
+    "name": "Triceps Kickback met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Buig naar voren met een dumbbell in elke hand en je ellebogen gebogen. Strek je armen naar achteren tot ze volledig gestrekt zijn en breng ze dan langzaam terug naar de startpositie. Houd je bovenarmen stil en beweeg alleen je onderarmen.",
+    "icon": "arm"
+  },
+  {
+    "id": "51",
+    "name": "Zijwaartse Armheffing met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met een dumbbell in elke hand, armen langs je lichaam. Hef je armen zijwaarts tot schouderhoogte en laat ze dan langzaam weer zakken. Houd je ellebogen licht gebogen en je core aangespannen.",
+    "icon": "arm"
+  },
+  {
+    "id": "52",
+    "name": "Front Armheffing met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Sta rechtop met een dumbbell in elke hand, armen langs je lichaam. Hef je armen recht voor je uit tot schouderhoogte en laat ze dan langzaam weer zakken. Houd je ellebogen licht gebogen en je core aangespannen.",
+    "icon": "arm"
+  },
+  {
+    "id": "53",
+    "name": "Pols Curl met Dumbbells",
+    "sets": 3,
+    "reps": 10,
+    "description": "Zit op een bankje met een dumbbell in elke hand, onderarmen op je dijen en polsen over de rand van je knieën. Krul je polsen omhoog om de dumbbells naar je onderarmen te brengen en laat ze dan langzaam weer zakken.",
+    "icon": "arm"
   }
 ]
