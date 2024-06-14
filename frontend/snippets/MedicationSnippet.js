@@ -1,9 +1,5 @@
-// MedicationSnippet.js
-
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faPlus, faPills } from "@fortawesome/free-solid-svg-icons";
 
 const MedicationSnippet = ({ navigation, medications }) => {
   const navigateToMedicationScreen = () => {
@@ -19,10 +15,26 @@ const MedicationSnippet = ({ navigation, medications }) => {
     Pill6: require("../assets/Pill6.png"),
   };
 
+  console.log(medications);
+
+  if (!medications || medications.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Medication</Text>
+        <View style={styles.alignContainer}>
+          <View style={styles.noMedicationDetailsContainer}>
+            <Text style={styles.noMedicationDataText}>
+              No Medication Data Available
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Medication</Text>
-      {/* <View style={styles.medicationContainer}> */}
       <View style={styles.alignContainer}>
         <TouchableOpacity
           onPress={navigateToMedicationScreen}
@@ -32,7 +44,6 @@ const MedicationSnippet = ({ navigation, medications }) => {
             <View key={index} style={styles.medicationItem}>
               <View style={styles.infoContainer}>
                 <View style={styles.iconContainer}>
-                  {/* <FontAwesomeIcon icon={faPills} size={64} color="black" /> */}
                   <Image
                     source={Icon[medicationData.icon]}
                     style={styles.icon}
@@ -41,24 +52,21 @@ const MedicationSnippet = ({ navigation, medications }) => {
                 <View style={styles.detailsContainer}>
                   <Text style={styles.medName}>{medicationData.name}</Text>
                   <View style={styles.infoBottomContainer}>
-                    <Text style={styles.text}>{medicationData.dosage}, </Text>
-                    {/* <Text style={styles.text}>{medicationData.frequency}, </Text> */}
-                    <Text style={styles.text}>
-                      {new Date(medicationData.time).toLocaleTimeString(
-                        "en-US",
-                        {
-                          hour12: false,
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )}
-                    </Text>
+                    <Text style={styles.text}>{medicationData.dosage}</Text>
                   </View>
+                </View>
+                <View style={styles.timeContainer}>
+                  <Text style={styles.timeText}>
+                    {new Date(medicationData.time).toLocaleTimeString("en-US", {
+                      hour12: false,
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </Text>
                 </View>
               </View>
             </View>
           ))}
-          {/* </View> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -67,7 +75,6 @@ const MedicationSnippet = ({ navigation, medications }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "#f0f0f0",
     backgroundColor: "white",
     marginBottom: 25,
     borderRadius: 10,
@@ -88,19 +95,13 @@ const styles = StyleSheet.create({
     elevation: 6,
     borderRadius: 25,
     padding: 10,
-    // paddingTop: 15,
     paddingBottom: 20,
-    // backgroundColor: "lightgrey",
-    // backgroundColor: "#F2f2f2",
     backgroundColor: "#F6F6F6",
   },
   medicationItem: {
     paddingTop: 20,
     paddingBottom: 20,
     width: "100%",
-    // marginBottom: 10,
-    // borderRadius: 25,
-    // borderWidth: 1,
     borderBottomWidth: 1,
     borderColor: "lightgrey",
   },
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   iconContainer: {
-    width: "45%",
+    width: "30%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -118,10 +119,17 @@ const styles = StyleSheet.create({
     height: 64,
   },
   detailsContainer: {
-    width: "55%",
+    justifyContent: "center",
+    width: "40%",
   },
   infoBottomContainer: {
     flexDirection: "column",
+  },
+  timeContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    width: "30%",
   },
   title: {
     fontSize: 18,
@@ -137,11 +145,33 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginRight: 10,
   },
+  timeText: {
+    fontSize: 16,
+  },
   text: {
     fontSize: 16,
   },
-  medicationName: {
+  noMedicationDetailsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+    borderRadius: 25,
+    padding: 10,
+    paddingBottom: 20,
+    backgroundColor: "#F6F6F6",
+  },
+  noMedicationDataText: {
+    fontSize: 18,
     fontWeight: "bold",
+    color: "grey",
   },
 });
 
