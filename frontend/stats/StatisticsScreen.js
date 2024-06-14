@@ -599,7 +599,7 @@ const StatisticsScreen = () => {
           </View>
         </TouchableOpacity>
 
-        <Button title="Refresh Data" onPress={fetchHealthData} />
+        {/* <Button title="Refresh Data" onPress={fetchHealthData} /> */}
       </ScrollView>
       {/* </View> */}
     </View>
