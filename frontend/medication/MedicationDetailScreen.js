@@ -3,8 +3,10 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  Image,
   TouchableOpacity,
+  Modal,
+  FlatList,
   StyleSheet,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -16,6 +18,55 @@ import {
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
+const CustomDropdown = ({ options, selectedOption, onSelect }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSelect = (option) => {
+    onSelect(option);
+    setModalVisible(false);
+  };
+
+  return (
+    <View>
+      {/* <Text style={styles.modalTitle}>Select an icon</Text> */}
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={[styles.modalTrigger, { alignSelf: "center" }]}
+      >
+        <Image source={options[selectedOption]} style={styles.modalIcon} />
+      </TouchableOpacity>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <TouchableOpacity
+          style={styles.modalBackground}
+          onPress={() => setModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <Text style={styles.title}>Select an icon</Text>
+            <FlatList
+              data={Object.keys(options)}
+              keyExtractor={(item) => item}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  onPress={() => handleSelect(item)}
+                  style={styles.optionItem}
+                >
+                  <Image source={options[item]} style={styles.icon} />
+                  {/* <Text style={styles.optionText}>{item}</Text> */}
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </TouchableOpacity>
+      </Modal>
+    </View>
+  );
+};
+
 const MedicationDetailScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -24,11 +75,24 @@ const MedicationDetailScreen = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(medication.name);
   const [dosage, setDosage] = useState(medication.dosage);
+  const [icon, setIcon] = useState(medication.icon);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
+  const Icon = {
+    Pill1: require("../assets/Pill1.png"),
+    Pill2: require("../assets/Pill2.png"),
+    Pill3: require("../assets/Pill3.png"),
+    Pill4: require("../assets/Pill4.png"),
+    Pill5: require("../assets/Pill5.png"),
+    Pill6: require("../assets/Pill6.png"),
+  };
+
+  const handleIconSelect = (selectedOption) => {
+    setIcon(selectedOption);
+  };
   // const handleAddReminder = () => {
   //   if (newReminderDate && newReminderTime) {
   //     setReminders([
@@ -81,7 +145,7 @@ const MedicationDetailScreen = () => {
             dosage,
             date: selectedDate,
             time: selectedTime,
-            icon: medication.icon,
+            icon: icon,
           }),
         }
       );
@@ -106,7 +170,37 @@ const MedicationDetailScreen = () => {
         <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" />
       </TouchableOpacity>
       <View style={styles.contentContainer}>
-        <Text style={styles.title}>Medication Details</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Medication Details</Text>
+          <View style={styles.buttonContainer}>
+            {isEditing ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  handleUpdateMedication();
+                  setIsEditing(false);
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  size={20}
+                  style={styles.buttonIcon}
+                />
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setIsEditing(true)}
+              >
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  size={20}
+                  style={styles.buttonIcon}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Name:</Text>
           {isEditing ? (
@@ -134,12 +228,12 @@ const MedicationDetailScreen = () => {
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Date:</Text>
           {isEditing ? (
-            <View>
+            <View style={styles.dateTimePickerContainer}>
               <TouchableOpacity
                 style={styles.dateTimePicker}
                 onPress={showDatePicker}
               >
-                <Text style={styles.dateTimePickerText}>Open Date Picker</Text>
+                <Text style={styles.dateTimePickerText}>Open Calander</Text>
               </TouchableOpacity>
               {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
             </View>
@@ -155,12 +249,12 @@ const MedicationDetailScreen = () => {
         <View style={styles.detailContainer}>
           <Text style={styles.label}>Time:</Text>
           {isEditing ? (
-            <View>
+            <View style={styles.dateTimePickerContainer}>
               <TouchableOpacity
                 style={styles.dateTimePicker}
                 onPress={showTimePicker}
               >
-                <Text style={styles.dateTimePickerText}>Open Time Picker</Text>
+                <Text style={styles.dateTimePickerText}>Open Clock</Text>
               </TouchableOpacity>
 
               {selectedTime && (
@@ -177,24 +271,17 @@ const MedicationDetailScreen = () => {
             </Text>
           )}
         </View>
-        <View style={styles.buttonContainer}>
+
+        <View style={styles.detailContainer}>
+          <Text style={styles.label}>Icon:</Text>
           {isEditing ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                handleUpdateMedication();
-                setIsEditing(false);
-              }}
-            >
-              <FontAwesomeIcon icon={faCheck} size={20} color="white" />
-            </TouchableOpacity>
+            <CustomDropdown
+              options={Icon}
+              selectedOption={icon || Object.keys(Icon)[0]} // If no icon is selected, default to first option
+              onSelect={handleIconSelect}
+            />
           ) : (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => setIsEditing(true)}
-            >
-              <FontAwesomeIcon icon={faEdit} size={20} color="white" />
-            </TouchableOpacity>
+            <Image source={Icon[icon]} style={styles.icon} />
           )}
         </View>
 
@@ -227,20 +314,33 @@ const styles = StyleSheet.create({
     width: "100%",
     marginTop: 50,
   },
+  titleContainer: {
+    alignItems: "center",
+    flexDirection: "row",
+    marginBottom: 20,
+    justifyContent: "space-between",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  button: {
+    padding: 10,
+    borderRadius: 5,
+  },
+  buttonIcon: {
+    color: "#4facfe",
+  },
   backButton: {
     position: "absolute",
     top: 20,
     left: 20,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
   detailContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
+    width: "100%",
   },
   label: {
     fontSize: 18,
@@ -253,25 +353,13 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
+    borderRadius: 25,
     borderColor: "#ccc",
     padding: 10,
     width: "70%",
   },
-  reminderContainer: {
-    marginTop: 20,
-  },
-  reminderList: {
-    marginTop: 20,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  button: {
-    backgroundColor: "#007BFF",
-    padding: 10,
-    borderRadius: 5,
+  dateTimePickerContainer: {
+    width: "70%",
   },
   dateTimePicker: {
     alignItems: "center",
@@ -279,9 +367,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F8F8",
     borderWidth: 1,
     borderColor: "lightgrey",
-    borderRadius: 15,
-    paddingTop: 6,
-    paddingBottom: 6,
+    borderRadius: 25,
+    paddingTop: 10,
+    paddingBottom: 10,
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -290,13 +378,57 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 5,
     elevation: 6,
-    marginBottom: 10,
   },
   dateTimePickerText: {
     color: "black",
     fontSize: 17,
-    // fontWeight: "bold",
     fontWeight: "500",
+  },
+
+  modalTrigger: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "lightgray",
+    marginBottom: 20,
+  },
+  modalTitle: {
+    alignSelf: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalIcon: {
+    width: 70,
+    height: 70,
+    color: "black",
+  },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    alignItems: "center",
+    backgroundColor: "#F8F8F8",
+    padding: 20,
+    borderRadius: 20,
+    margin: 20,
+  },
+  optionItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  icon: {
+    width: 80,
+    height: 80,
+    marginRight: 10,
+  },
+  optionText: {
+    fontSize: 16,
   },
 });
 
