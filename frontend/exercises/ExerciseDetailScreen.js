@@ -82,10 +82,10 @@ const ExerciseDetailScreen = () => {
               onChangeText={setDescription}
             />
           ) : (
-            <Text style={styles.text}>{description}</Text>
+            <Text style={styles.descriptionText}>{description}</Text>
           )}
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
           {isEditing ? (
             <TouchableOpacity
               style={styles.button}
@@ -104,7 +104,7 @@ const ExerciseDetailScreen = () => {
               <FontAwesomeIcon icon={faEdit} size={20} color="white" />
             </TouchableOpacity>
           )}
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -154,6 +154,10 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     width: "70%",
+  },
+  descriptionText: {
+    fontSize: 16,
+    width: "100%",
   },
   input: {
     borderWidth: 1,
