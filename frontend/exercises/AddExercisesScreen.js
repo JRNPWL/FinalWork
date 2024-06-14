@@ -74,36 +74,46 @@ const AddExerciseScreen = ({ navigation }) => {
         {loading ? (
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
-          <FlatList
-            data={exerciseOptions}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={[
-                  styles.exerciseItem,
-                  selectedExercise?.id === item.id &&
-                    styles.selectedExerciseItem,
-                ]}
-                onPress={() => handleSelectExercise(item)}
-              >
-                <Image source={Icon[item.icon]} style={styles.icon} />
-                <View style={styles.exerciseDetails}>
-                  <Text style={styles.exerciseText}>{item.name}</Text>
-                  <Text style={styles.exerciseDescription}>
-                    {item.description}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-            )}
-          />
+          <>
+            {/* <View style={styles.flatlistContainer}> */}
+            <FlatList
+              data={exerciseOptions}
+              showsVerticalScrollIndicator={false}
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={[
+                    styles.exerciseItem,
+                    selectedExercise?.id === item.id &&
+                      styles.selectedExerciseItem,
+                  ]}
+                  onPress={() => handleSelectExercise(item)}
+                >
+                  <Image source={Icon[item.icon]} style={styles.icon} />
+                  <View style={styles.exerciseDetails}>
+                    <Text style={styles.exerciseText}>{item.name}</Text>
+                    <Text style={styles.exerciseDescription}>
+                      {item.description}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              ListFooterComponent={<View style={{ height: 80 }} />}
+            />
+            {/* </View> */}
+            <TouchableOpacity
+              style={[
+                styles.button,
+                { position: "absolute", bottom: 15, right: 0 },
+              ]}
+              onPress={handleSubmit}
+              disabled={!selectedExercise}
+            >
+              <Text style={styles.buttonText}>Add Exercise</Text>
+            </TouchableOpacity>
+          </>
         )}
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit}
-          disabled={!selectedExercise}
-        >
-          <Text style={styles.buttonText}>Add Exercise</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );
@@ -114,12 +124,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     width: "100%",
-    paddingBottom: 150,
+    paddingBottom: 120,
     paddingTop: 10,
     backgroundColor: "white",
   },
   contentContainer: {
+    // marginBottom: 55,
     width: "90%",
+    marginTop: 10,
   },
   backButton: {
     alignSelf: "flex-start",
@@ -129,6 +141,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 10,
+    marginLeft: 10,
   },
   icon: {
     width: 40,
@@ -156,15 +169,25 @@ const styles = StyleSheet.create({
     color: "#666",
   },
   button: {
-    backgroundColor: "#007bff",
+    backgroundColor: "#4facfe",
+    width: " 100%",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 25,
     alignItems: "center",
-    marginTop: 20,
+    marginTop: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
   },
   buttonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
