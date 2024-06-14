@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   TouchableOpacity,
   Text,
 } from "react-native";
@@ -39,26 +38,6 @@ const RegisterScreen = () => {
   };
 
   return (
-    // <View>
-    //   <TextInput placeholder="Name" value={name} onChangeText={setName} />
-    //   <TextInput placeholder="Email" value={email} onChangeText={setEmail} />
-    //   <TextInput
-    //     placeholder="Password"
-    //     value={password}
-    //     onChangeText={setPassword}
-    //     secureTextEntry
-    //   />
-    //   <input
-    //     type="file"
-    //     accept="image/*"
-    //     onChange={handleChooseProfilePicture}
-    //   />
-    //   <Button title="Login" onPress={handleRegister} />
-    //   {error && <Text style={{ color: "red" }}>{error}</Text>}
-    //   <TouchableOpacity onPress={navigateToRegister}>
-    //     <Text>Register</Text>
-    //   </TouchableOpacity>
-    // </View>
     <View style={styles.container}>
       <StatusBar style="light" />
       <View style={styles.loginContainer}>
