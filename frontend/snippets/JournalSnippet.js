@@ -1,5 +1,3 @@
-// JournalSnippet.js
-
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -7,6 +5,21 @@ const JournalSnippet = ({ navigation, journalEntries }) => {
   const navigateToJournalScreen = () => {
     navigation.navigate("JournalScreen");
   };
+
+  if (!journalEntries || journalEntries.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Journal</Text>
+        <View style={styles.alignContainer}>
+          <View style={styles.noJournalDetailsContainer}>
+            <Text style={styles.noJournalDataText}>
+              No Journal Data Available
+            </Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -78,6 +91,28 @@ const styles = StyleSheet.create({
   },
   entryContainer: {
     marginBottom: 10,
+  },
+  noJournalDetailsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: "90%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+    borderRadius: 25,
+    padding: 10,
+    paddingBottom: 20,
+    backgroundColor: "#F6F6F6",
+  },
+  noJournalDataText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "grey",
   },
 });
 
