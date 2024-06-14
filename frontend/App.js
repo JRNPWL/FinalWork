@@ -23,6 +23,7 @@ import CustomFooter from "./snippets/CustomFooter";
 import CustomHeader from "./snippets/CustomHeader";
 
 import * as Notifications from "expo-notifications";
+
 import {
   fetchMedicationData,
   fetchJournalData,
