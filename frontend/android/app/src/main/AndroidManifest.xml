@@ -1,12 +1,19 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.healthapp" xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO"/>
   <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
+  <uses-permission android:name="android.permission.health.READ_BLOOD_GLUCOSE"/>
+  <uses-permission android:name="android.permission.health.READ_BLOOD_PRESSURE"/>
   <uses-permission android:name="android.permission.health.READ_HEART_RATE"/>
+  <uses-permission android:name="android.permission.health.READ_NUTRITION"/>
+  <uses-permission android:name="android.permission.health.READ_OXYGEN_SATURATION"/>
   <uses-permission android:name="android.permission.health.READ_STEPS"/>
+  <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"/>
+  <uses-permission android:name="android.permission.health.READ_WEIGHT"/>
   <uses-permission android:name="android.permission.health.WRITE_HEART_RATE"/>
   <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
   <queries>
@@ -33,6 +40,9 @@
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="com.healthapp"/>
         <data android:scheme="exp+frontend"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
       </intent-filter>
       <intent-filter>
         <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
