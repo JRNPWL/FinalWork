@@ -211,28 +211,12 @@ MongoClient.connect(mongoURI)
       }
     });
 
-    // Route to update user profile
-    // app.put("/api/users/:userId", async (req, res) => {
-    //   const userId = req.params.userId;
-    //   const updatedProfile = req.body;
-    //   try {
-    //     const result = await usersCollection.updateOne(
-    //       { userId: userId },
-    //       { $set: updatedProfile }
-    //     );
-    //     res.json({ message: "User profile updated successfully" });
-    //   } catch (error) {
-    //     console.error("Error updating user profile:", error);
-    //     res.status(500).json({ error: "Internal server error" });
-    //   }
-    // });
     app.put(
       "/api/users/:userId",
       upload.single("profilePicture"),
       async (req, res) => {
         const userId = req.params.userId;
         const updatedProfile = req.body;
-
         try {
           let profilePictureId = "";
           let profilePicture = "";
@@ -252,10 +236,6 @@ MongoClient.connect(mongoURI)
                 value !== undefined && value !== null && value !== ""
             )
           );
-
-          // if (filteredUpdatedProfile.dob) {
-          //   filteredUpdatedProfile.dob = new Date(filteredUpdatedProfile.dob);
-          // }
 
           // Merge existing profile with filtered updated data
           const updatedData = {
@@ -295,48 +275,6 @@ MongoClient.connect(mongoURI)
       }
     });
 
-    // ADDS REMINDER IN BOTH DATE OBJECT AND SEPERATE STRINGS
-    // Route to add a new medication with reminders
-    // app.post('/api/medications/:userId', async (req, res) => {
-    //     const userId = req.params.userId;
-    //     const { name, dosage, frequency, time, reminders } = req.body; // Extract medication details and reminders from request body
-
-    //     // Generate unique ID for medication
-    //     const medicationId = uuidv4();
-
-    //     // Create medication object
-    //     let newMedication = {
-    //         userId: userId,
-    //         medicationId: medicationId,
-    //         name: name,
-    //         dosage: dosage,
-    //         frequency: frequency,
-    //         time: time,
-    //         reminders: reminders // Add reminders to the medication object
-    //     }
-
-    //     try {
-    //         // Insert medication into medications collection
-    //         const result = await medicationsCollection.insertOne(newMedication);
-    //         res.status(201).json(result);
-
-    //         // If reminders are provided, add reminders to the reminder collection
-    //         if (reminders && reminders.length > 0) {
-    //             for (const reminder of reminders) {
-    //                 const reminderDateTime = new Date(reminder.date + 'T' + reminder.time); // Combine date and time strings to create a Date object
-    //                 await medicationsCollection.updateOne(
-    //                     { medicationId:  medicationId },
-    //                     { $addToSet: { reminders: reminderDateTime } }
-    //                 );
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error('Error adding new medication:', error);
-    //         res.status(500).json({ error: 'Internal server error' });
-    //     }
-    // });
-
-    // ADDS REMINDER ONLY AS DATE OBJECT
     // Route to add a new medication with reminders
     app.post("/api/medications/:userId", async (req, res) => {
       const userId = req.params.userId;
@@ -344,6 +282,7 @@ MongoClient.connect(mongoURI)
 
       // Generate unique ID for medication
       const medicationId = uuidv4();
+      const medicationTaken = false;
 
       // Create medication object with basic details
       let newMedication = {
@@ -356,19 +295,10 @@ MongoClient.connect(mongoURI)
         time: time,
         // reminders: [], // Initialize reminders array
         icon: icon,
+        medicationTaken: medicationTaken,
       };
 
       try {
-        // If reminders are provided, convert date and time strings to Date objects and add them to the reminders array
-        // if (reminders && reminders.length > 0) {
-        //   for (const reminder of reminders) {
-        //     const reminderDateTime = new Date(
-        //       reminder.date + "T" + reminder.time
-        //     );
-        //     newMedication.reminders.push(reminderDateTime);
-        //   }
-        // }
-
         // Insert medication into medications collection
         const result = await medicationsCollection.insertOne(newMedication);
         res.status(201).json(result);
@@ -382,7 +312,7 @@ MongoClient.connect(mongoURI)
     app.put("/api/medications/:userId/:medicationId", async (req, res) => {
       const userId = req.params.userId;
       const medicationId = req.params.medicationId;
-      const { name, dosage, frequency, date, time, reminders, icon } = req.body; // Extract medication details and reminders from request body
+      const { name, dosage, date, time, icon, medicationTaken } = req.body; // Extract medication details and reminders from request body
 
       try {
         // Find the medication by userId and medicationId
@@ -400,18 +330,11 @@ MongoClient.connect(mongoURI)
           ...medication,
           name: name || medication.name,
           dosage: dosage || medication.dosage,
-          // frequency: frequency || medication.frequency,
           date: date || medication.date,
           time: time || medication.time,
           icon: icon || medication.icon,
+          medicationTaken: medicationTaken || medication.medicationTaken,
         };
-
-        // If reminders are provided, convert date and time strings to Date objects and update the reminders array
-        // if (reminders && reminders.length > 0) {
-        //   updatedMedication.reminders = reminders.map((reminder) => {
-        //     return new Date(reminder.date + "T" + reminder.time);
-        //   });
-        // }
 
         // Update medication in medications collection
         const result = await medicationsCollection.updateOne(
