@@ -1,33 +1,39 @@
-header
-profile icon - logo? - about icon
-about icon leads to about page, use image to explan all the different features
+# References
 
-naam:
-MyHealthTracker
-MyHealthManager
+## React Native
 
-add add medication page
-Fix edit and add layouts layouts
-home page styling
+- [Navigate](https://reactnavigation.org/docs/hello-react-navigation)
+- [Flatlist](https://reactnative.dev/docs/flatlist)
+- [Async Storage](https://jaka-tertinek.medium.com/where-to-store-user-information-after-login-react-native-e870905f3011)
+- [Async Storage](https://react-native-async-storage.github.io/async-storage/docs/usage/)
+- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/)
+- [React Native Spring](https://docs.swmansion.com/react-native-reanimated/docs/animations/withSpring/)
+- [React Native Shared Value](https://docs.swmansion.com/react-native-reanimated/docs/core/useSharedValue/)
+- [React Native Animated Style](https://docs.swmansion.com/react-native-reanimated/docs/core/useAnimatedStyle/)
+- [React Native Picker](https://github.com/react-native-picker/picker)
+- [react-native-modal-datetime-picker](https://www.npmjs.com/package/react-native-modal-datetime-picker)
+- [react-native-image-picker](https://www.npmjs.com/package/react-native-image-picker?activeTab=readme)
 
-FIX if medication and exercise is zero app breaks
+## Expo
 
-23/05/2024
-Fix Input styling
-Fix Shadow Styling on Homepage, Exercise page
+- [Expo EAS Build](https://docs.expo.dev/develop/development-builds/create-a-build/)
+- [Expo EAS Update ](https://docs.expo.dev/eas-update/publish/)
 
-24/05/2024
-Fixed User Updateing Backend CHECK
-Remove Select Time from Add Meds CHECK
-Add Date To Medication List CHECK
-Group Medications by date CHECK
-Create Page For Individual Medication
-Allow user to Add Reminders on this page (Edit other med info?)
-Add Backend Edit for Medication
+## Notifications
 
-Fix Medication Snippet Rendering
-Fix Profile Snippet Rendering
+- Youtube: [Marina Kim. Implementing Push Notifications in Expo React Native App](https://www.youtube.com/watch?v=xK2ImAUsXDw&ab_channel=MarinaKim)
 
-TODO
-CHANGE EDIT DATE, TIME TO DateTimePicker,
-CHANGE ADD REMINDER DATE, TIME TO DateTimePicker
+## Health Connect
+
+- [Health Connect Setup](https://matinzd.github.io/react-native-health-connect/docs/get-started)
+- [Health Connect Permissions](https://matinzd.github.io/react-native-health-connect/docs/permissions)
+- [Android Health Datatypes](https://developers.google.com/android/reference/com/google/android/gms/fitness/data/HealthDataTypes)
+
+## Multer
+
+- [Multer](https://www.npmjs.com/package/multer)
+- [Multer GridFS Storage](https://www.npmjs.com/package/multer-gridfs-storage)
+
+## Markdown
+
+- [Markdown: Basic Syntax](https://www.markdownguide.org/basic-syntax)
