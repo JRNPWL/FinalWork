@@ -83,11 +83,11 @@ const CustomHeader = () => {
               animatedStyle(springValues.AboutScreen),
             ]}
           >
-            <FontAwesomeIcon
+            {/* <FontAwesomeIcon
               icon={faCircleQuestion}
               size={iconSize}
               style={styles.menuItemIcon}
-            />
+            /> */}
           </Animated.View>
         </TouchableOpacity>
       </View>
