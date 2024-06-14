@@ -121,7 +121,7 @@ const MedicationScreen = () => {
   const fetchMedications = async () => {
     try {
       const meds = await fetchMedicationData();
-      console.log(meds);
+      // console.log(meds);
       setMedicationData(meds);
       setLoading(false);
     } catch (error) {

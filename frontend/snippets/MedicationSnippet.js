@@ -15,7 +15,7 @@ const MedicationSnippet = ({ navigation, medications }) => {
     Pill6: require("../assets/Pill6.png"),
   };
 
-  console.log(medications);
+  // console.log(medications);
 
   if (!medications || medications.length === 0) {
     return (
