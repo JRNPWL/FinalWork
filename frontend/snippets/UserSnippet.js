@@ -22,7 +22,7 @@ const UserSnippet = ({ navigation, userData }) => {
         const response = await axios.get(photoApiUrl);
         setProfilePicture(photoApiUrl);
       } catch {
-        // console.error("Error fetching user profile picture:", error);
+        console.error("Error fetching user profile picture:", error);
       }
     };
 
@@ -63,6 +63,32 @@ const UserSnippet = ({ navigation, userData }) => {
     navigation.navigate("UserProfile");
   };
 
+  if (!userData) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.pageTitle}>Profile</Text>
+        <View style={styles.alignContainer}>
+          <TouchableOpacity
+            onPress={navigateToJournalScreen}
+            style={styles.gridContainer}
+          >
+            <View style={styles.imageContainer}>
+              <Image
+                style={styles.image}
+                source={
+                  profilePicture ? { uri: profilePicture } : defaultProfilePhoto
+                }
+              />
+            </View>
+            <View style={styles.personlInfo}>
+              <Text style={styles.noUserDataText}>No User Data Available</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.pageTitle}>Profile</Text>
@@ -71,7 +97,6 @@ const UserSnippet = ({ navigation, userData }) => {
           onPress={navigateToJournalScreen}
           style={styles.gridContainer}
         >
-          {/* <View style={styles.gridContainer}> */}
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
@@ -88,19 +113,16 @@ const UserSnippet = ({ navigation, userData }) => {
             <View style={styles.gridItem}>
               <Text style={styles.label}>DOB:</Text>
               <Text style={styles.text}>{formatDob(userData.dob)}</Text>
-              {/* <Text style={styles.text}>{userData.dob}</Text> */}
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.label}>Age:</Text>
               <Text style={styles.text}>{calculateAge(userData.dob)}</Text>
-              {/* <Text style={styles.text}>{userData.dob}</Text> */}
             </View>
             <View style={styles.gridItem}>
               <Text style={styles.label}>Sex:</Text>
               <Text style={styles.text}>{userData.sex}</Text>
             </View>
           </View>
-          {/* </View> */}
         </TouchableOpacity>
       </View>
     </View>
@@ -109,7 +131,6 @@ const UserSnippet = ({ navigation, userData }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: "#f0f0f0",
     backgroundColor: "white",
     marginBottom: 25,
     borderRadius: 10,
@@ -119,7 +140,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     resizeMode: "cover",
-    borderRadius: 50, // Half of width and height
+    borderRadius: 50,
     backgroundColor: "lightgrey",
   },
   alignContainer: {
@@ -141,8 +162,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingTop: 15,
     paddingBottom: 15,
-    // backgroundColor: "lightgrey",
-    // backgroundColor: "#F2f2f2",
     backgroundColor: "#F6F6F6",
   },
   imageContainer: {
@@ -151,11 +170,7 @@ const styles = StyleSheet.create({
     width: "40%",
   },
   personlInfo: {
-    // height: "100%",
     width: "60%",
-    // padding: 10,
-    // paddingTop: 15,
-    // paddingBottom: 15,
     paddingLeft: 15,
     flexDirection: "column",
     flexWrap: "wrap",
@@ -177,6 +192,11 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+  },
+  noUserDataText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "grey",
   },
 });
 
