@@ -7,15 +7,12 @@ import {
   TextInput,
   Button,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { fetchJournalData } from "../services/dataService";
-import CustomHeader from "../snippets/CustomHeader";
-import CustomFooter from "../snippets/CustomFooter";
-
-import FooterVisibilityContext from "../services/FooterVisibilityContext";
 
 const JournalScreen = () => {
   const navigation = useNavigation();
@@ -24,35 +21,12 @@ const JournalScreen = () => {
   const [loading, setLoading] = useState(true);
   const [newEntryText, setNewEntryText] = useState("");
   const [displayedJournalData, setDisplayedJournalData] = useState([]);
-  // const { isFooterVisible } = useContext(FooterVisibilityContext);
 
   const handleMenuPress = () => {
     navigation.push("MenuScreen");
   };
 
   useEffect(() => {
-    // const fetchJournalData = async () => {
-    //   try {
-    //     const userId = await getUserId();
-
-    //     if (!userId) {
-    //       throw new Error("User is not logged in");
-    //     }
-
-    //     const apiUrl = `http://192.168.0.119:3000/api/journal/${userId}`;
-
-    //     const response = await axios.get(apiUrl);
-    //     setJournalData(response.data);
-    //     setDisplayedJournalData(response.data.reverse()); // Reverse the order for display
-    //     setLoading(false);
-    //   } catch (error) {
-    //     console.error("Error fetching journal data:", error);
-    //     setLoading(false);
-    //   }
-    // };
-
-    // fetchJournalData();
-
     const fetchJournal = async () => {
       try {
         const entries = await fetchJournalData();
@@ -109,12 +83,6 @@ const JournalScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <CustomHeader
-        title="Home"
-        iconName="menu"
-        onMenuPress={handleMenuPress}
-      /> */}
-      {/* <View style={styles.contentContainer}> */}
       <FlatList
         style={styles.contentContainer}
         showsVerticalScrollIndicator={false}
@@ -147,11 +115,11 @@ const JournalScreen = () => {
             placeholder="Add a new journal entry..."
             onSubmitEditing={handleAddEntry}
           />
-          <Button title="Add Entry" onPress={handleAddEntry} />
+          <TouchableOpacity onPress={handleAddEntry} style={styles.button}>
+            <Text style={styles.buttonText}>Add Entry</Text>
+          </TouchableOpacity>
         </View>
       </View>
-
-      {/* </View> */}
     </View>
   );
 };
@@ -219,6 +187,26 @@ const styles = StyleSheet.create({
     borderColor: "lightgrey",
     borderRadius: 10,
     padding: 10,
+  },
+  button: {
+    alignItems: "center",
+    width: "30%",
+    backgroundColor: "#4facfe",
+    borderRadius: 25,
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 3,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 5,
+    elevation: 6,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
