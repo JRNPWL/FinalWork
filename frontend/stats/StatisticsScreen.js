@@ -115,11 +115,6 @@ const StatisticsScreen = () => {
   //   }
   // };
 
-  // const calculateAverage = (data) => {
-  //   if (data.length === 0) return 0;
-  //   const sum = data.reduce((acc, val) => acc + val, 0);
-  //   return sum / data.length;
-  // };
   const calculateHeartRateAverage = (heartRateData) => {
     let sum = 0;
 
@@ -176,105 +171,105 @@ const StatisticsScreen = () => {
     // setIsLoading(true);
 
     // Mock data examples
-    const mockData = {
-      ActiveCaloriesBurned: [
-        {
-          startTime: "2023-06-09T07:30:00Z",
-          endTime: "2023-06-09T08:00:00Z",
-          energyBurned: 120,
-        },
-        {
-          startTime: "2023-06-09T12:00:00Z",
-          endTime: "2023-06-09T12:30:00Z",
-          energyBurned: 100,
-        },
-      ],
-      Steps: [
-        {
-          startTime: "2023-06-09T07:30:00Z",
-          endTime: "2023-06-09T08:00:00Z",
-          count: 1500,
-        },
-        {
-          startTime: "2023-06-09T12:00:00Z",
-          endTime: "2023-06-09T12:30:00Z",
-          count: 2000,
-        },
-      ],
-      TotalCaloriesBurned: [
-        {
-          startTime: "2023-06-09T00:00:00Z",
-          endTime: "2023-06-09T23:59:59Z",
-          energyBurned: 2500,
-        },
-      ],
-      Weight: [{ time: "2023-06-09T08:00:00Z", weight: 70.5 }],
-      Nutrition: [
-        {
-          time: "2023-06-09T08:00:00Z",
-          calories: 300,
-          protein: 20,
-          fat: 10,
-          carbohydrates: 50,
-        },
-      ],
-      HeartRate: [
-        { time: "2023-06-09T07:30:00Z", bpm: 70 },
-        { time: "2023-06-09T12:00:00Z", bpm: 85 },
-      ],
-      BloodGlucose: [
-        { time: "2023-06-09T07:30:00Z", level: 90 },
-        { time: "2023-06-09T12:00:00Z", level: 100 },
-      ],
-      BloodPressure: [
-        { time: "2023-06-09T07:30:00Z", systolic: 120, diastolic: 80 },
-        { time: "2023-06-09T12:00:00Z", systolic: 130, diastolic: 85 },
-      ],
-      OxygenSaturation: [
-        { time: "2023-06-09T07:30:00Z", saturation: 98 },
-        { time: "2023-06-09T12:00:00Z", saturation: 97 },
-      ],
-    };
+    // const mockData = {
+    //   ActiveCaloriesBurned: [
+    //     {
+    //       startTime: "2023-06-09T07:30:00Z",
+    //       endTime: "2023-06-09T08:00:00Z",
+    //       energyBurned: 120,
+    //     },
+    //     {
+    //       startTime: "2023-06-09T12:00:00Z",
+    //       endTime: "2023-06-09T12:30:00Z",
+    //       energyBurned: 100,
+    //     },
+    //   ],
+    //   Steps: [
+    //     {
+    //       startTime: "2023-06-09T07:30:00Z",
+    //       endTime: "2023-06-09T08:00:00Z",
+    //       count: 1500,
+    //     },
+    //     {
+    //       startTime: "2023-06-09T12:00:00Z",
+    //       endTime: "2023-06-09T12:30:00Z",
+    //       count: 2000,
+    //     },
+    //   ],
+    //   TotalCaloriesBurned: [
+    //     {
+    //       startTime: "2023-06-09T00:00:00Z",
+    //       endTime: "2023-06-09T23:59:59Z",
+    //       energyBurned: 2500,
+    //     },
+    //   ],
+    //   Weight: [{ time: "2023-06-09T08:00:00Z", weight: 70.5 }],
+    //   Nutrition: [
+    //     {
+    //       time: "2023-06-09T08:00:00Z",
+    //       calories: 300,
+    //       protein: 20,
+    //       fat: 10,
+    //       carbohydrates: 50,
+    //     },
+    //   ],
+    //   HeartRate: [
+    //     { time: "2023-06-09T07:30:00Z", bpm: 70 },
+    //     { time: "2023-06-09T12:00:00Z", bpm: 85 },
+    //   ],
+    //   BloodGlucose: [
+    //     { time: "2023-06-09T07:30:00Z", level: 90 },
+    //     { time: "2023-06-09T12:00:00Z", level: 100 },
+    //   ],
+    //   BloodPressure: [
+    //     { time: "2023-06-09T07:30:00Z", systolic: 120, diastolic: 80 },
+    //     { time: "2023-06-09T12:00:00Z", systolic: 130, diastolic: 85 },
+    //   ],
+    //   OxygenSaturation: [
+    //     { time: "2023-06-09T07:30:00Z", saturation: 98 },
+    //     { time: "2023-06-09T12:00:00Z", saturation: 97 },
+    //   ],
+    // };
 
-    // Simulate fetching data with mock data
-    const steps = mockData["Steps"];
-    const totalSteps = steps.reduce((sum, cur) => sum + cur.count, 0);
-    setSteps(totalSteps);
+    // // Simulate fetching data with mock data
+    // const steps = mockData["Steps"];
+    // const totalSteps = steps.reduce((sum, cur) => sum + cur.count, 0);
+    // setSteps(totalSteps);
 
-    const calories = mockData["TotalCaloriesBurned"][0].energyBurned;
-    setCalories(calories);
+    // const calories = mockData["TotalCaloriesBurned"][0].energyBurned;
+    // setCalories(calories);
 
-    const weight = mockData["Weight"][0].weight;
-    setWeight(weight);
+    // const weight = mockData["Weight"][0].weight;
+    // setWeight(weight);
 
-    const nutrition = mockData["Nutrition"][0];
-    setNutrition(nutrition);
+    // const nutrition = mockData["Nutrition"][0];
+    // setNutrition(nutrition);
 
-    const heartRateData = mockData["HeartRate"];
-    setHeartRate(heartRateData);
-    const heartRateAverage = calculateHeartRateAverage(heartRateData);
-    setHeartRateAverage(heartRateAverage);
+    // const heartRateData = mockData["HeartRate"];
+    // setHeartRate(heartRateData);
+    // const heartRateAverage = calculateHeartRateAverage(heartRateData);
+    // setHeartRateAverage(heartRateAverage);
 
-    // Set blood glucose data and calculate average
-    const bloodGlucoseData = mockData["BloodGlucose"];
-    setBloodGlucose(bloodGlucoseData);
-    const bloodGlucoseAverage = calculateBloodGlucoseAverage(bloodGlucoseData);
-    setBloodGlucoseAverage(bloodGlucoseAverage);
+    // // Set blood glucose data and calculate average
+    // const bloodGlucoseData = mockData["BloodGlucose"];
+    // setBloodGlucose(bloodGlucoseData);
+    // const bloodGlucoseAverage = calculateBloodGlucoseAverage(bloodGlucoseData);
+    // setBloodGlucoseAverage(bloodGlucoseAverage);
 
-    // Set blood pressure data and calculate average
-    const bloodPressureData = mockData["BloodPressure"];
-    setBloodPressure(bloodPressureData);
-    const { systolicAverage, diastolicAverage } =
-      calculateBloodPressureAverage(bloodPressureData);
-    setSystolicBloodPressureAverage(systolicAverage);
-    setDiastolicBloodPressureAverage(diastolicAverage);
+    // // Set blood pressure data and calculate average
+    // const bloodPressureData = mockData["BloodPressure"];
+    // setBloodPressure(bloodPressureData);
+    // const { systolicAverage, diastolicAverage } =
+    //   calculateBloodPressureAverage(bloodPressureData);
+    // setSystolicBloodPressureAverage(systolicAverage);
+    // setDiastolicBloodPressureAverage(diastolicAverage);
 
-    // Set oxygen saturation data and calculate average
-    const oxygenSaturationData = mockData["OxygenSaturation"];
-    setOxygenSaturation(oxygenSaturationData);
-    const oxygenSaturationAverage =
-      calculateOxygenSaturationAverage(oxygenSaturationData);
-    setOxygenSaturationAverage(oxygenSaturationAverage);
+    // // Set oxygen saturation data and calculate average
+    // const oxygenSaturationData = mockData["OxygenSaturation"];
+    // setOxygenSaturation(oxygenSaturationData);
+    // const oxygenSaturationAverage =
+    //   calculateOxygenSaturationAverage(oxygenSaturationData);
+    // setOxygenSaturationAverage(oxygenSaturationAverage);
 
     if (!isInitialized) return;
 
@@ -298,7 +293,6 @@ const StatisticsScreen = () => {
     //       JSON.stringify({ result }, null, 2)
     //     );
     //   });
-
     //   const stepsPromise = readRecords("Steps", {
     //     timeRangeFilter: {
     //       operator: "between",
@@ -313,111 +307,110 @@ const StatisticsScreen = () => {
     //     const totalSteps = steps.reduce((sum, cur) => sum + cur.count, 0);
     //     setSteps(totalSteps);
     //   });
-
     //   await Promise.all([caloriesPromise, stepsPromise]);
     // };
-    // try {
-    //   const [
-    //     activeCalories,
-    //     steps,
-    //     weight,
-    //     nutrition,
-    //     heartRate,
-    //     bloodGlucose,
-    //     bloodPressure,
-    //     oxygenSaturation,
-    //   ] = await Promise.all([
-    //     readRecords("ActiveCaloriesBurned", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("Steps", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("Weight", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("Nutrition", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("HeartRate", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("BloodGlucose", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("BloodPressure", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //     readRecords("OxygenSaturation", {
-    //       timeRangeFilter: {
-    //         operator: "between",
-    //         startTime: startTime.toISOString(),
-    //         endTime: endTime.toISOString(),
-    //       },
-    //     }),
-    //   ]);
+    try {
+      const [
+        activeCalories,
+        steps,
+        weight,
+        nutrition,
+        heartRate,
+        bloodGlucose,
+        bloodPressure,
+        oxygenSaturation,
+      ] = await Promise.all([
+        readRecords("ActiveCaloriesBurned", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("Steps", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("Weight", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("Nutrition", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("HeartRate", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("BloodGlucose", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("BloodPressure", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+        readRecords("OxygenSaturation", {
+          timeRangeFilter: {
+            operator: "between",
+            startTime: startTime.toISOString(),
+            endTime: endTime.toISOString(),
+          },
+        }),
+      ]);
 
-    //   setSteps(steps.reduce((sum, cur) => sum + cur.count, 0));
-    //   setCalories(
-    //     activeCalories.reduce((sum, cur) => sum + cur.energyBurned, 0)
-    //   );
-    //   if (weight.length > 0) setWeight(weight[0].weight);
-    //   if (nutrition.length > 0) setNutrition(nutrition[0]);
+      setSteps(steps.reduce((sum, cur) => sum + cur.count, 0));
+      setCalories(
+        activeCalories.reduce((sum, cur) => sum + cur.energyBurned, 0)
+      );
+      if (weight.length > 0) setWeight(weight[0].weight);
+      if (nutrition.length > 0) setNutrition(nutrition[0]);
 
-    //   const heartRateAverage = calculateAverage(
-    //     heartRate.map((entry) => entry.bpm)
-    //   );
-    //   const bloodGlucoseAverage = calculateAverage(
-    //     bloodGlucose.map((entry) => entry.level)
-    //   );
-    //   const systolicAverage = calculateAverage(
-    //     bloodPressure.map((entry) => entry.systolic)
-    //   );
-    //   const diastolicAverage = calculateAverage(
-    //     bloodPressure.map((entry) => entry.diastolic)
-    //   );
-    //   const saturationAverage = calculateAverage(
-    //     oxygenSaturation.map((entry) => entry.saturation)
-    //   );
+      const heartRateAverage = calculateAverage(
+        heartRate.map((entry) => entry.bpm)
+      );
+      const bloodGlucoseAverage = calculateAverage(
+        bloodGlucose.map((entry) => entry.level)
+      );
+      const systolicAverage = calculateAverage(
+        bloodPressure.map((entry) => entry.systolic)
+      );
+      const diastolicAverage = calculateAverage(
+        bloodPressure.map((entry) => entry.diastolic)
+      );
+      const saturationAverage = calculateAverage(
+        oxygenSaturation.map((entry) => entry.saturation)
+      );
 
-    //   setHeartRate(heartRateAverage);
-    //   setBloodGlucose(bloodGlucoseAverage);
-    //   setBloodPressureSystolic(systolicAverage);
-    //   setBloodPressureDiastolic(diastolicAverage);
-    //   setOxygenSaturation(saturationAverage);
-    // } catch (error) {
-    //   console.error("Error fetching records:", error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+      setHeartRate(heartRateAverage);
+      setBloodGlucose(bloodGlucoseAverage);
+      setBloodPressureSystolic(systolicAverage);
+      setBloodPressureDiastolic(diastolicAverage);
+      setOxygenSaturation(saturationAverage);
+    } catch (error) {
+      console.error("Error fetching records:", error);
+    } finally {
+      setIsLoading(false);
+    }
 
     const minimumLoadingTime = new Promise((resolve) => {
       setTimeout(resolve, 500);
@@ -489,6 +482,19 @@ const StatisticsScreen = () => {
                 <View style={styles.detailsDirectionContainer}>
                   <Text style={styles.dataText}>{weight}</Text>
                   <Text style={styles.text}>kg</Text>
+                </View>
+              </View>
+              <View style={styles.iconContainer}>
+                <Image source={Icon["weight"]} style={styles.icon} />
+              </View>
+            </View>
+            <View style={styles.itemContainer}>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.pageTitleSub}>Steps</Text>
+
+                <View style={styles.detailsDirectionContainer}>
+                  <Text style={styles.dataText}>{steps}</Text>
+                  <Text style={styles.text}>steps</Text>
                 </View>
               </View>
               <View style={styles.iconContainer}>
