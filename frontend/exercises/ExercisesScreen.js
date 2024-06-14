@@ -75,31 +75,25 @@ const ExercisesScreen = () => {
             </TouchableOpacity>
           </View>
           <FlatList
-            style={styles.contentContainer}
+            contentContainerStyle={{
+              justifyContent: "center",
+              width: "100%",
+              paddingLeft: "5%",
+              paddingRight: "5%",
+            }}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
             data={exerciseData}
             keyExtractor={(item, index) => index.toString()}
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={styles.medicationContainerButton}
+                style={styles.exerciseContainerButton}
                 onPress={() => handleExercisePress(item)}
               >
                 <View style={styles.centerBottomContainer}>
                   <View style={styles.bottomContainer}>
                     <View style={styles.iconContainer}>
                       <Image source={Icon[item.icon]} style={styles.icon} />
-                      {/* <FontAwesomeIcon
-                        icon={
-                          item.icon === "faDumbbell"
-                            ? faDumbbell
-                            : item.icon === "faRunning"
-                            ? faRunning
-                            : faBicycle
-                        }
-                        size={64}
-                        style={styles.icon}
-                      /> */}
                     </View>
 
                     <View style={styles.detailsContainer}>
@@ -134,10 +128,6 @@ const styles = StyleSheet.create({
     paddingTop: 10, // Keep same number as header+20
     backgroundColor: "white",
   },
-  contentContainer: {
-    paddingBottom: 20, // List is reversed, add padding to bottom to add to top
-    width: "100%",
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
@@ -167,10 +157,9 @@ const styles = StyleSheet.create({
   centerBottomContainer: {
     alignItems: "center",
   },
-  bottomContainer: {
-    width: "90%",
+  exerciseContainerButton: {
+    width: "100%",
     alignItems: "center",
-    flexDirection: "row",
     borderRadius: 25,
     shadowColor: "#000",
     shadowOffset: {
@@ -182,8 +171,11 @@ const styles = StyleSheet.create({
     elevation: 6,
     marginBottom: 5,
     marginTop: 5,
-    // backgroundColor: "lightgrey",
     backgroundColor: "#F8F8F8",
+  },
+  bottomContainer: {
+    width: "100%",
+    flexDirection: "row",
     padding: 10,
   },
   iconContainer: {
@@ -201,8 +193,6 @@ const styles = StyleSheet.create({
   },
   detailItem: {
     flexDirection: "row",
-    // marginTop: 5,
-    // marginBottom: 5,
   },
   title: {
     fontSize: 18,
