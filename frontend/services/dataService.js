@@ -75,6 +75,22 @@ export const addMedication = async (
   }
 };
 
+export const updateMedicationTaken = async (medicationId, medicationTaken) => {
+  try {
+    const userId = await getUserId();
+
+    const response = await axios.put(
+      `http://${DEV_IP}/api/medications/${userId}/${medicationId}`,
+      {
+        medicationTaken,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating medication:", error);
+    throw error;
+  }
+};
 export const fetchExercisesData = async () => {
   try {
     const userId = await getUserId();
