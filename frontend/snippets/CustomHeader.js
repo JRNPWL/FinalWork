@@ -8,12 +8,10 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from "react-native-reanimated";
-// import FooterVisibilityContext from "../services/FooterVisibilityContext";
 
 const CustomHeader = () => {
   const navigation = useNavigation();
   const iconSize = 28;
-  // const { isFooterVisible } = useContext(FooterVisibilityContext);
 
   const springValues = {
     userProfile: useSharedValue(1),
