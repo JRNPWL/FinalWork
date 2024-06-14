@@ -192,9 +192,9 @@ const EditUserProfile = () => {
           <Text style={styles.title}>Update Profile</Text>
 
           <View style={styles.personalInfoContainer}>
-            <TouchableOpacity onPress={handleChooseProfilePicture}>
+            {/* <TouchableOpacity onPress={handleChooseProfilePicture}>
               <Text>Choose Profile Picture</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             {profilePicture ? (
               <Image
                 source={{ uri: profilePicture }}
