@@ -1,4 +1,3 @@
-// LoginScreen.js
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -7,7 +6,6 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
 import { login } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
@@ -24,7 +22,6 @@ const LoginScreen = ({ onLoginSuccess }) => {
 
     const response = await login(email, password);
 
-    // console.log(response);
     if (response) {
       onLoginSuccess();
     } else {
