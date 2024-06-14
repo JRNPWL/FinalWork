@@ -11,10 +11,12 @@ import {
   fetchMedicationData,
   fetchJournalData,
   fetchUserData,
+  fetchExercisesData,
 } from "./services/dataService";
 import MedicationSnippet from "./snippets/MedicationSnippet";
 import JournalSnippet from "./snippets/JournalSnippet";
 import UserSnippet from "./snippets/UserSnippet";
+import ExerciseSnippet from "./snippets/ExerciseSnippet";
 
 const HomeScreen = ({
   // onLogoutSuccess,
@@ -25,6 +27,7 @@ const HomeScreen = ({
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [medications, setMedications] = useState([]);
+  const [exercises, setExercises] = useState([]);
   const [journalEntries, setJournalEntries] = useState([]);
   const [userData, setUserData] = useState([]);
 
@@ -39,14 +42,16 @@ const HomeScreen = ({
     const meds = await fetchMedicationData();
     const entries = await fetchJournalData();
     const user = await fetchUserData();
+    const exercise = await fetchExercisesData();
     setMedications(meds);
+    setExercises(exercise);
     setJournalEntries(entries);
     setUserData(user);
   };
 
   useEffect(() => {
     fetchData();
-    setIsLoading(false); //
+    setIsLoading(false);
   }, []);
 
   useFocusEffect(
@@ -84,14 +89,12 @@ const HomeScreen = ({
 
         <UserSnippet navigation={navigation} userData={userData} />
         <MedicationSnippet navigation={navigation} medications={medications} />
+        <ExerciseSnippet navigation={navigation} exercises={exercises} />
         <JournalSnippet
           navigation={navigation}
           journalEntries={journalEntries}
         />
       </ScrollView>
-      {/* )} */}
-      {/* <CustomFooter /> */}
-      {/* {isFooterVisible && <CustomFooter />} */}
     </View>
   );
 };
@@ -102,7 +105,7 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     backgroundColor: "white",
-    paddingBottom: 40, // Keep same number as footer+20
+    paddingBottom: 60, // Keep same number as footer+20
   },
   loadingContainer: {
     flex: 1,
@@ -110,7 +113,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   scrollContainer: {
-    // padding: 20,
     paddingTop: 15,
   },
   contentContainer: {
