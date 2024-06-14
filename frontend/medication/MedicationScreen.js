@@ -1,17 +1,3 @@
-//   const scheduleNotificationsForReminders = (reminders, medicationName) => {
-//     reminders.forEach((reminder, index) => {
-//       const dateTime = new Date(reminder);
-//       const notificationMessage = `Reminder ${
-//         index + 1
-//       }: Take ${medicationName} at ${dateTime.toLocaleString()}`;
-
-//       PushNotification.localNotificationSchedule({
-//         message: notificationMessage,
-//         date: dateTime,
-//       });
-//     });
-//   };
-
 import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
@@ -21,25 +7,95 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Alert,
 } from "react-native";
-// import { getUserId } from "../services/authService";
 import { useNavigation } from "@react-navigation/native";
-// import * as Notifications from "expo-notifications";
 import { fetchMedicationData } from "../services/dataService";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
   faPlus,
-  faPills,
   faChevronRight,
-  faDumbbell,
-  faRunning,
-  faBicycle,
+  faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useFocusEffect } from "@react-navigation/native";
+import { updateMedicationTaken } from "../services/dataService";
+
+const CircleButton = ({
+  medTaken,
+  medicationId,
+  medicationDate,
+  medicationTime,
+  onPress,
+}) => {
+  const [ticked, setTicked] = useState(medTaken);
+
+  const handlePress = async () => {
+    const currentTime = new Date();
+    const medicationDateObj = new Date(medicationDate);
+    const medicationTimeObj = new Date(medicationTime);
+
+    if (
+      currentTime < medicationDateObj ||
+      (currentTime.toDateString() === medicationDateObj.toDateString() &&
+        currentTime < medicationTimeObj)
+    ) {
+      // Medication time is in the future, show alert
+      Alert.alert(
+        "Medication Time Alert",
+        "It's not yet time to take this medication. Do you want to proceed?",
+        [
+          {
+            text: "Proceed",
+            onPress: () => {
+              const updatedTicked = !ticked;
+              setTicked(updatedTicked);
+
+              onPress(
+                medicationId,
+                medicationDate,
+                medicationTime,
+                updatedTicked
+              );
+            },
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+            onPress: () => {
+              // Do nothing if cancelled
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    } else {
+      const updatedTicked = !ticked;
+      setTicked(updatedTicked);
+      onPress(medicationId, medicationDate, medicationTime, updatedTicked);
+    }
+  };
+
+  return (
+    <TouchableOpacity onPress={handlePress} style={styles.circleButton}>
+      {ticked ? (
+        <FontAwesomeIcon icon={faCheck} size={30} color="#4facfe" />
+      ) : (
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            borderWidth: 1,
+            borderColor: "#4facfe",
+          }}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
 
 const MedicationScreen = () => {
   const navigation = useNavigation();
-
   const [medicationData, setMedicationData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -52,9 +108,20 @@ const MedicationScreen = () => {
     Pill6: require("../assets/Pill6.png"),
   };
 
+  // Navigation
+  const navigateToAddMedication = async () => {
+    navigation.navigate("AddMedicationScreen");
+  };
+
+  const handleMedicationPress = (medication) => {
+    navigation.navigate("MedicationDetailScreen", { medication });
+  };
+
+  // Fetching Data
   const fetchMedications = async () => {
     try {
       const meds = await fetchMedicationData();
+      console.log(meds);
       setMedicationData(meds);
       setLoading(false);
     } catch (error) {
@@ -73,18 +140,32 @@ const MedicationScreen = () => {
     }, [])
   );
 
-  const navigateToAddMedication = async () => {
-    navigation.navigate("AddMedicationScreen");
+  // Handle medicationTaken
+  const handleCirclePress = async (
+    medicationId,
+    medicationDate,
+    medicationTime,
+    updatedTicked
+  ) => {
+    try {
+      console.log("Medication ID:", medicationId);
+      console.log("Medication Date:", medicationDate);
+      console.log("Medication Time:", medicationTime);
+      console.log("Updated Ticked:", updatedTicked);
+
+      await updateMedicationTaken(medicationId, updatedTicked);
+      console.log(`Medication taken status updated for ID: ${medicationId}`);
+
+      fetchMedications();
+    } catch (error) {
+      console.error("Failed to update medication:", error);
+    }
   };
 
-  const handleMedicationPress = (medication) => {
-    navigation.navigate("MedicationDetailScreen", { medication });
-  };
-
+  // Group Medications By Date
   const groupMedicationsByDate = (medications) => {
     return medications.reduce((acc, med) => {
       const date = new Date(med.date).toISOString().slice(0, 10);
-
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -112,8 +193,7 @@ const MedicationScreen = () => {
     return dateB.getDate() - dateA.getDate();
   });
 
-  console.log(sortedDates);
-
+  // Loading
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
@@ -135,7 +215,6 @@ const MedicationScreen = () => {
           <FontAwesomeIcon icon={faPlus} size={11} color="black" />
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.alignContainer}> */}
       <ScrollView
         contentContainerStyle={{
           justifyContent: "center",
@@ -168,18 +247,6 @@ const MedicationScreen = () => {
                           source={Icon[medicationData.icon]}
                           style={styles.icon}
                         />
-                        {/* 
-                        <FontAwesomeIcon
-                          icon={
-                            medicationData.icon === "faDumbbell"
-                              ? faDumbbell
-                              : medicationData.icon === "faRunning"
-                              ? faRunning
-                              : faBicycle
-                          }
-                          size={64}
-                          style={styles.icon}
-                        /> */}
                       </View>
                       <View style={styles.detailsContainer}>
                         <Text style={styles.label}>{medicationData.name}</Text>
@@ -190,8 +257,7 @@ const MedicationScreen = () => {
                         </View>
                       </View>
                       <View style={styles.timeContainer}>
-                        <Text style={styles.text}>
-                          {/* {medicationData.time} */}
+                        <Text style={styles.timeText}>
                           {new Date(medicationData.time).toLocaleTimeString(
                             "en-US",
                             {
@@ -201,11 +267,18 @@ const MedicationScreen = () => {
                             }
                           )}
                         </Text>
-                        <FontAwesomeIcon
+                        <CircleButton
+                          medTaken={medicationData.medicationTaken}
+                          medicationId={medicationData.medicationId}
+                          medicationDate={medicationData.date}
+                          medicationTime={medicationData.time}
+                          onPress={handleCirclePress}
+                        />
+                        {/* <FontAwesomeIcon
                           icon={faChevronRight}
                           size={15}
                           color="grey"
-                        />
+                        /> */}
                       </View>
                     </View>
                   </View>
@@ -217,7 +290,6 @@ const MedicationScreen = () => {
           <Text>No medication data available</Text>
         )}
       </ScrollView>
-      {/* </View> */}
     </View>
   );
 };
@@ -256,14 +328,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginRight: 3,
   },
-  // alignContainer: {
-  //   // width: "100%",
-  //   alignItems: "center",
-  //   // marginBottom: 20,
-  // },
   dateGroup: {
     width: "95%",
-    // marginBottom: 20,
   },
   dateText: {
     marginLeft: "4%",
@@ -294,14 +360,12 @@ const styles = StyleSheet.create({
   infoContainer: {
     width: "100%",
     flexDirection: "row",
-    // backgroundColor: "#F8F8F8",
     padding: 15,
-    // borderRadius: 15,
   },
   iconContainer: {
-    width: "30%",
-    alignItems: "center",
-    justifyContent: "center",
+    width: "25%",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   icon: {
     width: 64,
@@ -309,13 +373,14 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     justifyContent: "center",
+    alignItems: "flex-start",
     width: "40%",
   },
   timeContainer: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "right",
-    width: "30%",
+    justifyContent: "flex-end",
+    width: "35%",
   },
   infoBottomContainer: {
     flexDirection: "column",
@@ -329,6 +394,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+  },
+  circleButton: {
+    paddingLeft: 5,
+    paddingRight: 5,
   },
 });
 
