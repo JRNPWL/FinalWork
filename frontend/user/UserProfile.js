@@ -8,8 +8,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { getUserId } from "../services/authService";
-import { logout } from "../services/authService";
+import { getUserId, logout } from "../services/authService";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 
@@ -30,7 +29,7 @@ const UserProfile = ({ onLogoutSuccess }) => {
     navigation.navigate("EditUserProfile");
   };
 
-  const fetchUserData = async () => {
+  const fetchUserProfilePic = async () => {
     try {
       const userId = await getUserId();
 
@@ -39,10 +38,26 @@ const UserProfile = ({ onLogoutSuccess }) => {
         throw new Error("User is not logged in");
       }
 
+      const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
+      // const response = await axios.get(photoApiUrl);
+      setProfilePicture(photoApiUrl);
+    } catch {
+      console.error("Error fetching user profile picture:", error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const userId = await getUserId();
+
+      if (!userId) {
+        throw new Error("User is not logged in");
+      }
+
       const apiUrl = `http://192.168.0.119:3000/api/users/${userId}`;
 
       const response = await axios.get(apiUrl);
-      // console.log(response);
+      console.log(response.data);
       setUserData(response.data);
       setLoading(false);
     } catch (error) {
@@ -52,32 +67,18 @@ const UserProfile = ({ onLogoutSuccess }) => {
   };
 
   useEffect(() => {
+    fetchUserProfilePic();
     fetchUserData();
-    // const fetchUserProfilePic = async () => {
-    //   try {
-    //     const userId = await getUserId();
-
-    //     // Extra Check, routes are protected. User schouldnt even be able to see the page without already being logged in.
-    //     if (!userId) {
-    //       throw new Error("User is not logged in");
-    //     }
-
-    //     const photoApiUrl = `http://192.168.0.119:3000/api/users/${userId}/profilePicture`;
-    //     // const response = await axios.get(photoApiUrl);
-    //     setProfilePicture(photoApiUrl);
-    //   } catch {
-    //     console.error("Error fetching user profile picture:", error);
-    //   }
-    // };
-
-    // fetchUserProfilePic();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
+      fetchUserProfilePic();
+
       fetchUserData();
     }, [])
   );
+
   const formatDob = (dob) => {
     if (!dob) return "";
 
@@ -120,87 +121,97 @@ const UserProfile = ({ onLogoutSuccess }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        {userData ? (
-          <>
-            <View style={styles.topContainer}>
-              <TouchableOpacity
-                onPress={navigateToEditProfile}
-                style={styles.text}
-              >
-                <Text style={styles.editProfile}>Edit Profile</Text>
-              </TouchableOpacity>
-              <Image
-                style={styles.image}
-                source={
-                  profilePicture ? { uri: profilePicture } : defaultProfilePhoto
-                }
-              />
+        <View style={styles.topContainer}>
+          <TouchableOpacity onPress={navigateToEditProfile} style={styles.text}>
+            <Text style={styles.editProfile}>Edit Profile</Text>
+          </TouchableOpacity>
+          <Image
+            style={styles.image}
+            source={
+              profilePicture ? { uri: profilePicture } : defaultProfilePhoto
+            }
+          />
+        </View>
+        <View style={styles.gridContainer}>
+          <Text style={styles.perTitle}>Personal Info</Text>
+          <View style={styles.personlInfo}>
+            <View style={styles.infoGridItem}>
+              <Text style={styles.label}>Name:</Text>
+              <Text style={styles.text}>
+                {userData?.name || "edit profile to add"}
+              </Text>
             </View>
-            <View style={styles.gridContainer}>
-              <Text style={styles.perTitle}>Personal Info</Text>
-              <View style={styles.personlInfo}>
-                <View style={styles.infoGridItem}>
-                  <Text style={styles.label}>Name:</Text>
-                  <Text style={styles.text}>{userData.name}</Text>
-                </View>
-                <View style={styles.infoGridItem}>
-                  <Text style={styles.label}>DOB:</Text>
-                  <Text style={styles.text}>{formatDob(userData.dob)}</Text>
-                </View>
-                <View style={styles.infoGridItem}>
-                  <Text style={styles.label}>Age:</Text>
-                  <Text style={styles.text}>{calculateAge(userData.dob)}</Text>
-                </View>
-                <View style={styles.infoGridItem}>
-                  <Text style={styles.label}>Sex:</Text>
-                  <Text style={styles.text}>{userData.sex}</Text>
+            <View style={styles.infoGridItem}>
+              <Text style={styles.label}>DOB:</Text>
+              <Text style={styles.text}>
+                {userData?.dob
+                  ? formatDob(userData.dob)
+                  : "edit profile to add"}
+              </Text>
+            </View>
+            <View style={styles.infoGridItem}>
+              <Text style={styles.label}>Age:</Text>
+              <Text style={styles.text}>
+                {userData?.dob
+                  ? calculateAge(userData.dob)
+                  : "edit profile to add"}
+              </Text>
+            </View>
+            <View style={styles.infoGridItem}>
+              <Text style={styles.label}>Sex:</Text>
+              <Text style={styles.text}>
+                {userData?.sex || "edit profile to add"}
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.medTitle}>Medical Info</Text>
+          <View style={styles.medicalInfo}>
+            <View style={styles.medGridItemRow}>
+              <Text style={styles.label}>Blood Type:</Text>
+              <Text style={styles.text}>
+                {userData?.bloodType || "edit profile to add"}
+              </Text>
+            </View>
+            <View style={styles.medGridItemRow}>
+              <Text style={styles.label}>Doctor:</Text>
+              <Text style={styles.text}>
+                {userData?.doctor
+                  ? `Dr. ${userData.doctor}`
+                  : "edit profile to add"}
+              </Text>
+            </View>
+            <View style={styles.medicalSubInfo}>
+              <View style={styles.medGridItem}>
+                <Text style={styles.medGridItemLabel}>Emergency Contact:</Text>
+                <Text style={styles.text}>
+                  {userData?.emergencyContact
+                    ? `+32 ${userData.emergencyContact}`
+                    : "edit profile to add"}
+                </Text>
+              </View>
+              <View style={styles.medGridItem}>
+                <Text style={styles.medGridItemLabel}>Medical History:</Text>
+                <View>
+                  {userData?.medicalHistory &&
+                  userData.medicalHistory.length > 0 ? (
+                    userData.medicalHistory.map((medicalHistoryItem, index) => (
+                      <View key={index}>
+                        <Text
+                          style={styles.text}
+                        >{`\u2022 ${medicalHistoryItem}`}</Text>
+                      </View>
+                    ))
+                  ) : (
+                    <Text style={styles.text}>edit profile to add</Text>
+                  )}
                 </View>
               </View>
-              <Text style={styles.medTitle}>Medical Info</Text>
-              <View style={styles.medicalInfo}>
-                <View style={styles.medGridItemRow}>
-                  <Text style={styles.label}>Blood Type:</Text>
-                  <Text style={styles.text}>{userData.bloodType}</Text>
-                </View>
-                <View style={styles.medGridItemRow}>
-                  <Text style={styles.label}>Doctor:</Text>
-                  <Text style={styles.text}>Dr. {userData.doctor}</Text>
-                </View>
-                <View style={styles.medicalSubInfo}>
-                  <View style={styles.medGridItem}>
-                    <Text style={styles.medGridItemLabel}>
-                      Emergency Contact:
-                    </Text>
-                    <Text style={styles.text}>
-                      +32 {userData.emergencyContact}
-                    </Text>
-                  </View>
-                  <View style={styles.medGridItem}>
-                    <Text style={styles.medGridItemLabel}>
-                      Medical History:
-                    </Text>
-                    <View>
-                      {userData.medicalHistory.map(
-                        (medicalHistoryItem, index) => (
-                          <View key={index}>
-                            <Text
-                              style={styles.text}
-                            >{`\u2022 ${medicalHistoryItem}`}</Text>
-                          </View>
-                        )
-                      )}
-                    </View>
-                  </View>
-                </View>
-              </View>
             </View>
-            <TouchableOpacity onPress={handleLogout} style={styles.text}>
-              <Text style={styles.editProfile}>logout</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <Text style={styles.error}>Error: Failed to load user data.</Text>
-        )}
+          </View>
+        </View>
+        <TouchableOpacity onPress={handleLogout} style={styles.text}>
+          <Text style={styles.editProfile}>logout</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
