@@ -173,7 +173,7 @@ const AddMedicationScreen = ({ navigation }) => {
               style={styles.dateTimePicker}
               onPress={showDatePicker}
             >
-              <Text style={styles.dateTimePickerText}>Open Date Picker</Text>
+              <Text style={styles.dateTimePickerText}>Open Calander</Text>
             </TouchableOpacity>
             {selectedDate && <Text>Date: {selectedDate.toDateString()}</Text>}
           </View>
@@ -184,7 +184,7 @@ const AddMedicationScreen = ({ navigation }) => {
               style={styles.dateTimePicker}
               onPress={showTimePicker}
             >
-              <Text style={styles.dateTimePickerText}>Open Time Picker</Text>
+              <Text style={styles.dateTimePickerText}>Open Clock</Text>
             </TouchableOpacity>
 
             {selectedTime && (
@@ -297,17 +297,15 @@ const styles = StyleSheet.create({
   dateTimePickerText: {
     color: "black",
     fontSize: 17,
-    // fontWeight: "bold",
     fontWeight: "500",
   },
   button: {
     alignItems: "center",
     width: "100%",
     backgroundColor: "#4facfe",
-    borderRadius: 15,
-    // marginTop: 5,
-    paddingTop: 5,
-    paddingBottom: 5,
+    borderRadius: 25,
+
+    padding: 15,
     shadowColor: "#000",
     shadowOffset: {
       width: 2,
@@ -322,7 +320,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-
   modalTrigger: {
     alignItems: "center",
     justifyContent: "center",
@@ -350,9 +347,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     alignItems: "center",
-    // backgroundColor: "white",
     backgroundColor: "#F8F8F8",
-    // backgroundColor: "red",
     padding: 20,
     borderRadius: 20,
     margin: 20,
